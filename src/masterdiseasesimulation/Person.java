@@ -136,6 +136,10 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 		this.friends.add(newFriend);
 	}
 	
+	public void clearFriends(){
+		friends.clear();
+	}
+	
 	public void setOrigSick(boolean value) {
 		this.origSick = value;
 		this.sick = this.origSick;

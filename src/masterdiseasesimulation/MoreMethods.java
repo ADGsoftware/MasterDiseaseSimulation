@@ -178,7 +178,7 @@ public class MoreMethods {
 
 	public ArrayList<Person> infectRandom (ArrayList<Person> people, int numInfect) { // Make numInfect people initially sick
 		ArrayList<Person> infected = new ArrayList<Person>();
-		
+
 		for (int i = 0; i < numInfect; i++) {
 			int personInt = randInt(0, people.size() - 1);
 			if (!people.get(personInt).isSick() && !people.get(personInt).isImmune()) {
@@ -189,13 +189,13 @@ public class MoreMethods {
 				i--;
 			}
 		}
-		
+
 		return infected;
 	}
 
 	public ArrayList<Person> vaccRandom (ArrayList<Person> people, int numVacc) { // Make numVacc people initially vaccinated
 		ArrayList<Person> vaccinnated = new ArrayList<Person>();
-		
+
 		for (int i = 0; i < numVacc; i++) {
 			int personInt = randInt(0, people.size() - 1);
 			if (!people.get(personInt).isSick() && !people.get(personInt).isImmune()) {
@@ -206,7 +206,7 @@ public class MoreMethods {
 				i--;
 			}
 		}
-		
+
 		return vaccinnated;
 	}
 
@@ -353,7 +353,6 @@ public class MoreMethods {
 		int numPeople = people.size();
 		makeHubs(hubNumber, people, random);
 		boolean done = false;
-
 		//Range Variable
 		int halfRange;
 
@@ -366,13 +365,12 @@ public class MoreMethods {
 		} else {
 			halfRange = (maxFriends + 1) / 2;
 		}
-
 		ArrayList<Person> possibleFriends = new ArrayList<Person>();
 		//This is where actual befriending starts! Otdel Znakmostv!!! Get Excited
 		for (Person person : people) {
 			//Add People in the Possible Friend range to ArrayList
-			int ID = person.getID() + 1;
-			for(int x = 0; x < halfRange*2 + 1; x++){
+			int ID = (((person.getID() - halfRange)) % numPeople + numPeople) % numPeople;
+			for(int x = 0; x < halfRange*2; x++){
 				ID = (((ID)) % numPeople + numPeople) % numPeople;
 				if(ID == 0){
 					ID = numPeople;
@@ -380,7 +378,7 @@ public class MoreMethods {
 				possibleFriends.add(people.get(ID -1));
 				ID = (((ID + 1)) % numPeople + numPeople) % numPeople;
 			}
-
+			//System.out.println(person + " : " + possibleFriends + " ' " + person.getCapacity());	
 			while(!person.capacityFull()){
 				Collections.shuffle(possibleFriends);
 				for(Person friendApplicant : possibleFriends){
@@ -399,7 +397,7 @@ public class MoreMethods {
 					if(!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)){
 						person.addFriend(people.get(friendApplicant.getID() - 1));
 						people.get(friendApplicant.getID() - 1).addFriend(person);
-					}			
+					}	
 				}
 				counter = 0;
 				for(Person control : possibleFriends){
@@ -417,7 +415,6 @@ public class MoreMethods {
 					break;
 				}
 			}
-
 			done = false;
 			if (person.isHub()) {
 				while (!done) {
@@ -429,7 +426,6 @@ public class MoreMethods {
 					}
 				}
 			}
-			//System.out.println("Aquatineces of person "+ person + " are: " + person.getFriends());
 			possibleFriends.clear();
 		}
 	}
@@ -597,7 +593,7 @@ public class MoreMethods {
 			return 100*people.get(index).getConnectivity();
 		}
 	}
-	
+
 	public float standardDeviation(ArrayList<Person> people){
 		float mean = averageConnectivityPercentage(people);
 		float result = 0;
@@ -695,78 +691,78 @@ public class MoreMethods {
 
 		return new Integer[]{day, successful};
 	}
-	
+
 	// Simulation for MasterManySims updated for ManyLinesAverage
-    public static ArrayList<ArrayList<InfoStorage>> simulate (ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes, int percentCurfewed) {
-        int day = 0;
-        int cost = origVacc;
+	public static ArrayList<ArrayList<InfoStorage>> simulate (ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes, int percentCurfewed) {
+		int day = 0;
+		int cost = origVacc;
 
-        //System.out.println("RunTimes: " + runTimes);
+		//System.out.println("RunTimes: " + runTimes);
 
-        ArrayList<ArrayList<InfoStorage>> infoStorage = new ArrayList<ArrayList<InfoStorage>>();
+		ArrayList<ArrayList<InfoStorage>> infoStorage = new ArrayList<ArrayList<InfoStorage>>();
 
-        for (int runTime = 0; runTime < runTimes; runTime++) {
-            infoStorage.add(new ArrayList<InfoStorage>());
-            //System.out.println(runTime);
-            while (getNumSickPeople(people) > 0) {
-                for (Person person : people) {
-                    for (Person teenager : teenagers) {
-                        teenager.incrementCurfewedDays();
-                        if (!teenager.isImmuneToCurfews()) {
-                            if (randInt(1, 100 / percentCurfewed) == 1) {
-                                teenager.setCurfewed(true);
-                            }
-                        }
-                        if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
-                            teenager.setCurfewed(false);
-                            teenager.setCurfewedDays(0);
-                            teenager.setImmuneToCurfews(true);
-                        }
-                    }
-                    if (person.isImmune()) {
-                        // Do nothing
-                    }
-                    else if (person.isSick()) {
-                        person.incrementDaysSick();
-                    }
-                    else {
-                        ArrayList<Person> friends = person.getFriends();
-                        for (Person friend : friends) {
-                            if (friend.getDaysSick() > 0 && friend.isSick()) {
-                                boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
-                                boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
-                                if (getSick) {
-                                    person.setSick(true);
-                                    break;
-                                }
-                                if (getVacc) {
-                                    person.getWell();
-                                    cost++;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    //System.out.println(person.getDaysSick());
-                    if (person.getDaysSick() == getWellDays && !person.isImmune()) {
-                        person.getWell();
-                    }
-                }
-                day++;
-                infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), cost));
-                //System.out.println(people);
-                //System.out.println(getNumSickPeople(people));
-            }
-            day = 0;
-            cost = origVacc;
-            
-            resetAll(people);
-            people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
-            // It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
-        }
+		for (int runTime = 0; runTime < runTimes; runTime++) {
+			infoStorage.add(new ArrayList<InfoStorage>());
+			//System.out.println(runTime);
+			while (getNumSickPeople(people) > 0) {
+				for (Person person : people) {
+					for (Person teenager : teenagers) {
+						teenager.incrementCurfewedDays();
+						if (!teenager.isImmuneToCurfews()) {
+							if (randInt(1, 100 / percentCurfewed) == 1) {
+								teenager.setCurfewed(true);
+							}
+						}
+						if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
+							teenager.setCurfewed(false);
+							teenager.setCurfewedDays(0);
+							teenager.setImmuneToCurfews(true);
+						}
+					}
+					if (person.isImmune()) {
+						// Do nothing
+					}
+					else if (person.isSick()) {
+						person.incrementDaysSick();
+					}
+					else {
+						ArrayList<Person> friends = person.getFriends();
+						for (Person friend : friends) {
+							if (friend.getDaysSick() > 0 && friend.isSick()) {
+								boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
+								boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
+								if (getSick) {
+									person.setSick(true);
+									break;
+								}
+								if (getVacc) {
+									person.getWell();
+									cost++;
+									break;
+								}
+							}
+						}
+					}
+					//System.out.println(person.getDaysSick());
+					if (person.getDaysSick() == getWellDays && !person.isImmune()) {
+						person.getWell();
+					}
+				}
+				day++;
+				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), cost));
+				//System.out.println(people);
+				//System.out.println(getNumSickPeople(people));
+			}
+			day = 0;
+			cost = origVacc;
 
-        return infoStorage;
-    }
+			resetAll(people);
+			people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
+			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
+		}
+
+		return infoStorage;
+	}
 
 	// Simulation for MasterManySims
 	public static ArrayList<Integer> simulate (ArrayList<Person> people, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes) {
