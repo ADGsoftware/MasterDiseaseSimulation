@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import jxl.Cell;
 import jxl.Sheet;
@@ -856,5 +858,21 @@ public class MoreMethods {
 
 	private static void addPoint(DefaultCategoryDataset dataset, int yValue, String lineLabel, String xValue) {
 		dataset.addValue(yValue, lineLabel, xValue);
+	}
+	
+	public static LinkedHashMap<Integer, Double> getDerivative (LinkedHashMap<Integer, Double> averages) {
+		Set<Integer> keySet = averages.keySet();
+		ArrayList<Integer> keyList = new ArrayList<Integer>();
+		for (int key : keySet) {
+			keyList.add(key);
+		}
+		
+		LinkedHashMap<Integer, Double> derivative = new LinkedHashMap<Integer, Double>();
+		
+		for (int i = 0; i < keySet.size() - 1; i++ ) {
+			derivative.put(keyList.get(i), (averages.get(keyList.get(i)) - averages.get(keyList.get(i + 1)))/ (keyList.get(i) - keyList.get(i + 1)));
+		}
+		
+		return derivative;
 	}
 }

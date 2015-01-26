@@ -502,11 +502,15 @@ public class MasterManySimsObject
 			
 			int key;
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+			LinkedHashMap<Integer, Double> averages = new LinkedHashMap<Integer, Double>();
 			for (Entry<Integer, Double> entry : data.entrySet()) {
 				key = entry.getKey();
 				dataset.addValue((1.0 * data.get(key)) / runTimes.get(key), xAxis, Integer.toString(key));
+				averages.put(key, (1.0 * data.get(key)) / runTimes.get(key));
 			}
-			System.out.println(data);
+			System.out.println(averages);
+			System.out.println(MoreMethods.getDerivative(averages));
+			System.out.println(MoreMethods.getDerivative(MoreMethods.getDerivative(averages)));
 
 			File lineChart = MoreMethods.makeChart(dataset, graphFileName, yAxis + " vs. " + xAxis, xAxis, yAxis);
 			
