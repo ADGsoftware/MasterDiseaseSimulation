@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import moremethods.MoreMethods;
+
 import jxl.read.biff.BiffException;
 
 public class UserInterface {

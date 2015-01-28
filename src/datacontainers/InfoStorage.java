@@ -1,4 +1,4 @@
-package masterdiseasesimulation;
+package datacontainers;
 
 public class InfoStorage {
     private int day;

@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
+import moremethods.MoreMethods;
+
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import jxl.Workbook;

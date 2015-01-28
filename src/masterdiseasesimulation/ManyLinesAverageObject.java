@@ -7,14 +7,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import javax.swing.*;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
+import datacontainers.DayStat;
+import datacontainers.InfoStorage;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
+import moremethods.MoreMethods;
+
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ManyLinesAverageObject {
@@ -187,7 +197,7 @@ public class ManyLinesAverageObject {
         // Gets input from user after graph
         while (!done) {
             JPanel panel2 = new JPanel();
-            panel2.setLayout(new GridLayout(18, 0));
+            panel2.setLayout(new GridLayout(19, 0));
 
             JTextField getWellDaysAnswer = new JTextField("10", 10);
             JTextField discoveryAnswer = new JTextField("10000", 10);
@@ -357,21 +367,13 @@ public class ManyLinesAverageObject {
         //System.out.println(people);
 
         double estimatedTime = Math.floor(0.447 * runTimes + 2768.902);
-
         int estimatedTimeInt = (int) estimatedTime;
-
         System.out.println("Estimated time: " + estimatedTimeInt + " milliseconds.");
-
         Long startTime =  System.currentTimeMillis();
-
         ArrayList<ArrayList<InfoStorage>> results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed); //Meh I don't know how to do it better
-
         Long endTime =  System.currentTimeMillis();
-
         System.out.println("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.");
-
         boolean display = false;
-
         int maxDays = 100;
 
         ArrayList<DayStat> days = new ArrayList<DayStat>();
@@ -409,7 +411,7 @@ public class ManyLinesAverageObject {
             }
         }
 
-        //Make a graph //TODO: Checkbox for graph
+        //Make a graph
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (DayStat day : days) {

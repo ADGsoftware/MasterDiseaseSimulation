@@ -1,4 +1,4 @@
-package masterdiseasesimulation;
+package moremethods;
 
 import java.awt.*;
 import java.io.File;
@@ -16,12 +16,16 @@ import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 
+import masterdiseasesimulation.Person;
+
 import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+
+import datacontainers.InfoStorage;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;

@@ -1,4 +1,4 @@
-package masterdiseasesimulation;
+package datacontainers;
 
 public class DayStat {
     private int day;
