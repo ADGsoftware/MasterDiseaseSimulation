@@ -501,7 +501,11 @@ public class MasterManySimsObject
 			panel.add(status);
 			
 			int key;
+			double value;
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+			DefaultCategoryDataset derivatives = new DefaultCategoryDataset();
+			//DefaultCategoryDataset derivativeData = new DefaultCategoryDataset();
+			//DefaultCategoryDataset secondDerivativeData = new DefaultCategoryDataset();
 			LinkedHashMap<Integer, Double> averages = new LinkedHashMap<Integer, Double>();
 			for (Entry<Integer, Double> entry : data.entrySet()) {
 				key = entry.getKey();
@@ -509,10 +513,23 @@ public class MasterManySimsObject
 				averages.put(key, (1.0 * data.get(key)) / runTimes.get(key));
 			}
 			System.out.println(averages);
-			System.out.println(MoreMethods.getDerivative(averages));
-			System.out.println(MoreMethods.getDerivative(MoreMethods.getDerivative(averages)));
+			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
+			System.out.println(derivative);
+			for (Entry<Integer, Double> entry : derivative.entrySet()) {
+				key = entry.getKey();
+				value = entry.getValue();
+				derivatives.addValue(value, "Derivative", Integer.toString(key));
+			}
+			LinkedHashMap<Integer, Double> secondDerivative = MoreMethods.getDerivative(derivative);
+			System.out.println(secondDerivative);
+			for (Entry<Integer, Double> entry : secondDerivative.entrySet()) {
+				key = entry.getKey();
+				value = entry.getValue();
+				derivatives.addValue(value, "2nd Derivative", Integer.toString(key));
+			}
 
 			File lineChart = MoreMethods.makeChart(dataset, graphFileName, yAxis + " vs. " + xAxis, xAxis, yAxis);
+			File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", yAxis + " vs. " + xAxis, xAxis, yAxis);
 			
 			if (openGraph) {
 				status.setText("Opening graph...");
@@ -520,6 +537,7 @@ public class MasterManySimsObject
 				panel.add(status);
 				
 				Desktop.getDesktop().open(lineChart);
+				Desktop.getDesktop().open(derivativeChart);
 			}
 		}
 

@@ -21,7 +21,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
@@ -178,9 +177,7 @@ public class HistogramGenerator {
 
 		int width = 640;
 		int height = 480;
-
-		XYBarRenderer br = (XYBarRenderer) histogramObject.getXYPlot().getRenderer();
-
+		
 		File histogram = new File(numPeople + networkType + ".png");
 		ChartUtilities.saveChartAsPNG(histogram, histogramObject, width, height);
 
