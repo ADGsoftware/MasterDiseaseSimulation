@@ -3,12 +3,21 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -16,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import moremethods.MoreMethods;
 
@@ -809,16 +820,92 @@ public class UserInterface {
 		openGraph.add(new JLabel("Open: "));
 		openGraph.add(openGraphBox);
 		
+		JPanel contentPane = new JPanel(new GridBagLayout());
+		final JTextField[] fields = {numPeopleMinAnswer, numPeopleStepAnswer, numPeopleMaxAnswer, minFriendsMinAnswer, minFriendsStepAnswer, minFriendsMaxAnswer, maxFriendsMinAnswer, maxFriendsStepAnswer, maxFriendsMaxAnswer, hubNumberMinAnswer, hubNumberStepAnswer, hubNumberMaxAnswer, getWellDaysMinAnswer, getWellDaysStepAnswer, getWellDaysMaxAnswer, percentSickMinAnswer, percentSickStepAnswer, percentSickMaxAnswer, initiallySickMinAnswer, initiallySickStepAnswer, initiallySickMaxAnswer, initiallyVaccMinAnswer, initiallyVaccStepAnswer, initiallyVaccMaxAnswer, getVaccMinAnswer, getVaccStepAnswer, getVaccMaxAnswer, discoveryMinAnswer, discoveryStepAnswer, discoveryMaxAnswer, newGetWellDaysMinAnswer, newGetWellDaysStepAnswer, newGetWellDaysMaxAnswer, curfewDaysMinAnswer, curfewDaysStepAnswer, curfewDaysMaxAnswer, percentTeensMinAnswer, percentTeensStepAnswer, percentTeensMaxAnswer, percentCurfewMinAnswer, percentCurfewStepAnswer, percentCurfewMaxAnswer};
+		
+		JButton openButton = new JButton("Open config...");
+		openButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				FileFilter filter = new FileNameExtensionFilter("TXT file", new String[] {"txt"});
+				fileChooser.addChoosableFileFilter(filter);
+				fileChooser.setFileFilter(filter);
+				int result = fileChooser.showOpenDialog(new JFrame());
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					//System.out.println(selectedFile.getAbsolutePath());
+					BufferedReader reader;
+					try {
+						reader = new BufferedReader(new FileReader(selectedFile.getAbsolutePath()));
+					}
+					catch (FileNotFoundException e) {
+						return;
+					}
+					String restoredStr;
+					try {
+						restoredStr = reader.readLine();
+						reader.close();
+					}
+					catch (IOException e) {
+						return;
+					}
+					//System.out.println(restoredStr);
+					ArrayList<Integer> restored = MoreMethods.commaListToArrayList(restoredStr);
+					//System.out.println(restored);
+					
+					for (int i = 0; i < fields.length; i++) {
+						fields[i].setText(Integer.toString(restored.get(i)));
+					}
+				}
+			}
+		});
+		
+		JButton saveButton = new JButton("Save config...");
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+				FileFilter filter = new FileNameExtensionFilter("TXT file", new String[] {"txt"});
+				fileChooser.addChoosableFileFilter(filter);
+				fileChooser.setFileFilter(filter);
+				int result = fileChooser.showSaveDialog(new JFrame());
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					String path = selectedFile.getAbsolutePath();
+					//System.out.println(path);
+					if (!path.substring(path.length() - 4).equals(".txt")) {
+						path += ".txt";
+					}
+					PrintWriter writer;
+					try {
+						writer = new PrintWriter(path, "UTF-8");
+					}
+					catch (FileNotFoundException e) {
+						return;
+					}
+					catch (UnsupportedEncodingException e) {
+						return;
+					}
+					
+					String toSave = fields[0].getText();
+					for (int i = 1; i < fields.length; i++) {
+						toSave += ", " + fields[i].getText();
+					}
+					//System.out.println(toSave);
+					writer.print(toSave);
+					writer.close();
+				}
+			}
+		});
+
 		String[] xVars = {"numPeople", "minFriends", "maxFriends", "hubNumber", "getWellDays", "percentSick", "initiallySick", "initiallyVacc", "getVacc", "discovery", "newGetWellDays", "percentTeens", "curfewDays", "percentCurfew"};
 		JComboBox xAxisChoice = new JComboBox(xVars);
 		String[] yVars = {"Cost", "Days", "TotalSick"};
 		JComboBox yAxisChoice = new JComboBox(yVars);
 		
-
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
-		
-		JTextField[] fields = {numPeopleMinAnswer, numPeopleStepAnswer, numPeopleMaxAnswer, minFriendsMinAnswer, minFriendsStepAnswer, minFriendsMaxAnswer, maxFriendsMinAnswer, maxFriendsStepAnswer, maxFriendsMaxAnswer, hubNumberMinAnswer, hubNumberStepAnswer, hubNumberMaxAnswer, getWellDaysMinAnswer, getWellDaysStepAnswer, getWellDaysMaxAnswer, percentSickMinAnswer, percentSickStepAnswer, percentSickMaxAnswer, initiallySickMinAnswer, initiallySickStepAnswer, initiallySickMaxAnswer, initiallyVaccMinAnswer, initiallyVaccStepAnswer, initiallyVaccMaxAnswer, getVaccMinAnswer, getVaccStepAnswer, getVaccMaxAnswer, discoveryMinAnswer, discoveryStepAnswer, discoveryMaxAnswer, newGetWellDaysMinAnswer, newGetWellDaysStepAnswer, newGetWellDaysMaxAnswer, curfewDaysMinAnswer, curfewDaysStepAnswer, curfewDaysMaxAnswer, percentTeensMinAnswer, percentTeensStepAnswer, percentTeensMaxAnswer, percentCurfewMinAnswer, percentCurfewStepAnswer, percentCurfewMaxAnswer};
 
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1054,6 +1141,13 @@ public class UserInterface {
 		panel.add(new JLabel("y-axis:"), c);
 		c.gridx = 1;
 		panel.add(yAxisChoice, c);
+		c.gridx = 0;
+		c.gridy += 1;
+		panel.add(new JLabel("Restore config:"), c);
+		c.gridx = 1;
+		panel.add(saveButton, c);
+		c.gridx = 2;
+		panel.add(openButton, c);
 
 		JPanel header = new JPanel (new GridBagLayout());
 		c = new GridBagConstraints();
@@ -1074,7 +1168,6 @@ public class UserInterface {
 		scrollPane.setBounds(0, 0, 500, 500);
 		scrollPane.setPreferredSize(new Dimension(660, maxOut((int)(screenSize.height / 1.6), 500))); //640
 
-		JPanel contentPane = new JPanel(new GridBagLayout());
 		c = new GridBagConstraints();
 		c.ipadx = 0;
 		c.ipady = 0;

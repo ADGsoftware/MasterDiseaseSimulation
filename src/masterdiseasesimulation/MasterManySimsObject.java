@@ -34,7 +34,7 @@ public class MasterManySimsObject
 		Random random = new Random();
 		
 		ArrayList<Object> inputs = UserInterface.getInput(); // Get inputs from user
-		//System.out.println(inputs);
+		System.out.println(inputs);
 		
 		// Separate input into variables
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
