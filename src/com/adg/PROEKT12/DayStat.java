@@ -3,9 +3,10 @@ package com.adg.PROEKT12;
 public class DayStat {
     private int day;
     private float currentSick;
+    private float totalSick;
     private float cost;
 
-    public DayStat(int day, float currentSick, float cost) {
+    public DayStat(int day, float currentSick, float totalSick, float cost) {
         this.day = day;
         this.currentSick = currentSick;
         this.cost = cost;
@@ -20,6 +21,10 @@ public class DayStat {
         return currentSick;
     }
 
+    public float getTotalSick() {
+        return totalSick;
+    }
+
     public float getCost() {
         return cost;
     }
@@ -31,6 +36,10 @@ public class DayStat {
 
     public void setCurrentSick(float currentSick) {
         this.currentSick = currentSick;
+    }
+
+    public void setTotalSick(float totalSick) {
+        this.totalSick = totalSick;
     }
 
     public void setCost(float cost) {

@@ -20,6 +20,7 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -31,6 +32,10 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
+import org.jfree.data.time.ohlc.OHLCSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -729,6 +734,7 @@ public class MoreMethods {
         pBar.setTitle("Running simulations...");
         pBar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
         for (int runTime = 0; runTime < runTimes; runTime++) {
             int value = runTime * 100 / runTimes;
             progressBar.setValue(value);
@@ -744,6 +750,7 @@ public class MoreMethods {
             infoStorage.add(new ArrayList<InfoStorage>());
             //System.out.println(runTime);
             while (getNumSickPeople(people) > 0) {
+                int numberSickOnDay = 0;
                 for (Person person : people) {
                     for (Person teenager : teenagers) {
                         teenager.incrementCurfewedDays();
@@ -760,11 +767,9 @@ public class MoreMethods {
                     }
                     if (person.isImmune()) {
                         // Do nothing
-                    }
-                    else if (person.isSick()) {
+                    } else if (person.isSick()) {
                         person.incrementDaysSick();
-                    }
-                    else {
+                    } else {
                         ArrayList<Person> friends = person.getFriends();
                         for (Person friend : friends) {
                             if (friend.getDaysSick() > 0 && friend.isSick()) {
@@ -772,6 +777,7 @@ public class MoreMethods {
                                 boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
                                 if (getSick) {
                                     person.setSick(true);
+                                    totalSickPeople.add(person.getID());
                                     break;
                                 }
                                 if (getVacc) {
@@ -788,12 +794,22 @@ public class MoreMethods {
                     }
                 }
                 day++;
-                infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), cost));
+                //System.out.println("Total sick:" + totalSickPeople.size());
+                infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost));
                 //System.out.println(people);
                 //System.out.println(getNumSickPeople(people));
             }
+            //For any other days, make totalSickPeople equal to the number of total sick people on the last day
+            while (day < ManyLinesAverageObject.maxDays + 1) {
+                day++;
+                //System.out.println("totalSickPeople.size() = " + totalSickPeople.size());
+                infoStorage.get(runTime).add(new InfoStorage(day, 0, totalSickPeople.size(), cost));
+            }
+
             day = 0;
             cost = origVacc;
+
+            totalSickPeople.clear();
 
             resetAll(people);
             people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
@@ -885,6 +901,19 @@ public class MoreMethods {
     public static File makeChart(DefaultCategoryDataset dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
         JFreeChart lineChartObject = ChartFactory.createLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
 
+
+        int width = 640;
+        int height = 480;
+        File lineChart = new File(filename + ".png");
+        ChartUtilities.saveChartAsPNG(lineChart, lineChartObject, width, height);
+
+        return lineChart;
+    }
+
+    public static File makeChart(XYSeriesCollection dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
+        JFreeChart lineChartObject = ChartFactory.createXYLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
+
+
         int width = 640;
         int height = 480;
         File lineChart = new File(filename + ".png");
@@ -899,6 +928,10 @@ public class MoreMethods {
 
     public static void addPoint(DefaultCategoryDataset dataset, float yValue, String lineLabel, String xValue) {
         dataset.addValue(yValue, lineLabel, xValue);
+    }
+
+    public static void addPoint(XYSeries series, int xValue, float yValue) {
+        series.add(xValue, yValue);
     }
 
     //Alert function. Creates an alert dialog with some text.

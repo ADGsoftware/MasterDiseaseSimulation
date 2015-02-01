@@ -1,12 +1,16 @@
 package com.adg.PROEKT12;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -17,9 +21,14 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DatasetGroup;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class ManyLinesAverageObject {
-    public static void run () throws IOException {
+    public static int maxDays = 100;
+
+    public static void run() throws IOException {
         MoreMethods methods = new MoreMethods();
 
         // Initialize variables
@@ -129,11 +138,9 @@ public class ManyLinesAverageObject {
         }
         if (networkSelectString.equals("Random")) {
             methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
-        }
-        else if (networkSelectString.equals("Small World")) {
+        } else if (networkSelectString.equals("Small World")) {
             methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
-        }
-        else if (networkSelectString.equals("Scale-Free")) {
+        } else if (networkSelectString.equals("Scale-Free")) {
             methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
         }
         if (drawJung) {
@@ -327,9 +334,9 @@ public class ManyLinesAverageObject {
                     throw new NumberFormatException();
                 }
 
-                for (int i : infectedPeople){
-                    for (int j : vaccinatedPeople){
-                        if (i == j){
+                for (int i : infectedPeople) {
+                    for (int j : vaccinatedPeople) {
+                        if (i == j) {
                             throw new NumberFormatException();
                         }
                     }
@@ -339,8 +346,7 @@ public class ManyLinesAverageObject {
             } catch (NumberFormatException e) {
                 if (result == JOptionPane.OK_OPTION) {
                     JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
-                else {
+                } else {
                     System.exit(0);
                 }
             }
@@ -361,33 +367,35 @@ public class ManyLinesAverageObject {
 
         int estimatedTimeInt = (int) estimatedTime;
 
-        System.out.println("Estimated time: " + estimatedTimeInt + " milliseconds.");
+        if (numPeople == 100) {
+            System.out.println("Estimated time: " + estimatedTimeInt + " milliseconds.");
+        }
 
-        Long startTime =  System.currentTimeMillis();
+        Long startTime = System.currentTimeMillis();
 
         ArrayList<ArrayList<InfoStorage>> results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed); //Meh I don't know how to do it better
 
-        Long endTime =  System.currentTimeMillis();
+        Long endTime = System.currentTimeMillis();
 
         methods.alert("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.", "Complete!");
 
         boolean display = false;
-
-        int maxDays = 100; //TODO: Calculate this
+        boolean displayAverages = false;
 
         ArrayList<DayStat> days = new ArrayList<DayStat>();
 
         //Initialize daystat array
         for (int k = 0; k < maxDays; k++) {
-            days.add(new DayStat(k, 0, 0));
+            days.add(new DayStat(k, 0, 0, 0));
         }
 
         //Add totals for each day
-        for (int i = 0; i < runTimes; i ++) {
-            for (int j = 0; j < maxDays; j ++) {
+        for (int i = 0; i < runTimes; i++) {
+            for (int j = 0; j < maxDays; j++) {
                 //System.out.println(results.get(i).size() + " " + j);
                 if (results.get(i).size() > j + 1) { //If this day is existent
                     days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
+                    days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
                     days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
                 } else {
                     //Add 0 to numSick and cost, which is the same as doing nothing
@@ -398,6 +406,7 @@ public class ManyLinesAverageObject {
         //Get averages for each day
         for (DayStat dayStat : days) {
             dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
+            dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
             dayStat.setCost(dayStat.getCost() / runTimes);
         }
 
@@ -405,24 +414,42 @@ public class ManyLinesAverageObject {
             for (ArrayList<InfoStorage> alis : results) {
                 System.out.println("NEW RUNTIME_________________________________________________________________________");
                 for (InfoStorage is : alis) {
-                    System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Cost: " + is.getCost() + ".");
+                    System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
                 }
             }
         }
 
-        for (DayStat day : days) {
-            //System.out.println("On day " + day.getDay() + ", there were " + day.getCurrentSick() + " sick people and the cost was " + day.getCost() + ".");
+        if (displayAverages) {
+            for (DayStat day : days) {
+                System.out.println("Day " + day.getDay() + ". Sick: " + day.getCurrentSick() + ". Total sick: " + day.getTotalSick() + ". Cost: " + day.getCost() + ".");
+            }
         }
 
         //Make a graph
 
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        XYSeries numSick = new XYSeries("Sick People");
+        XYSeries totalSick = new XYSeries("Total Sick People");
+        XYSeries cost = new XYSeries("Cost");
+
+        dataset.addSeries(numSick);
+        dataset.addSeries(totalSick);
+        dataset.addSeries(cost);
 
         for (DayStat day : days) {
-            methods.addPoint(dataset, day.getCurrentSick(), "Infected People", Integer.toString(day.getDay()));
+            MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
+            MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
+            MoreMethods.addPoint(cost, day.getDay(), day.getCost());
         }
 
-        methods.makeChart(dataset, fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+        MoreMethods.makeChart(dataset, fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+
+        //Open graph image
+        File f = new File(fileName + ".png");
+        Desktop dt = Desktop.getDesktop();
+        dt.open(f);
+
 
         if (doFwF) {
             //Friends with Friends stuff---------------------------------------
