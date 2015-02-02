@@ -10,7 +10,7 @@ import jxl.read.biff.BiffException;
 import jxl.write.WriteException;
 
 public class Main {
-    public static void main(String[] args) throws WriteException, BiffException, IOException {
+    public static void main(String[] args) throws Exception {
 		/*
 		JPanel panel = new JPanel();
 		
@@ -37,9 +37,12 @@ public class Main {
 		*/
 
         //while (true) { // Uncomment to loop program
-        Object[] options = {"MasterManySims", "ManyLinesAverage", "Analyze", "Draw Histograms"};
+        Object[] options = {"MasterManySims", "ManyLinesAverage", "Analyze", "Draw Histograms", "Hospital Analysis"};
         int selection = JOptionPane.showOptionDialog(null, "What program to run?", "Program Choice", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 
+        if (selection == 4) {
+             new DataMiner().run();
+        }
         if (selection == 3) {
             HistogramGenerator.run();
         }

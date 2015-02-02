@@ -703,7 +703,7 @@ public class MoreMethods {
     }
 
     // Simulation for MasterManySims updated for ManyLinesAverage
-    public static ArrayList<ArrayList<InfoStorage>> simulate (ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes, int percentCurfewed) {
+    public static ArrayList<ArrayList<InfoStorage>> simulate (ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
         int day = 0;
         int cost = origVacc;
 
@@ -774,7 +774,7 @@ public class MoreMethods {
                         for (Person friend : friends) {
                             if (friend.getDaysSick() > 0 && friend.isSick()) {
                                 boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
-                                boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
+                                boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
                                 if (getSick) {
                                     person.setSick(true);
                                     totalSickPeople.add(person.getID());
@@ -814,6 +814,118 @@ public class MoreMethods {
             resetAll(people);
             people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
             // It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
+        }
+
+        return infoStorage;
+    }
+
+    public static ArrayList<ArrayList<TransmissionTestInfoStorage>> transmissionTest(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed) {
+        ArrayList<ArrayList<TransmissionTestInfoStorage>> infoStorage = new ArrayList<ArrayList<TransmissionTestInfoStorage>>();
+        for (int k = 0; k < runTimes; k++) { //Populate arraylist of arraylists with arraylists
+            infoStorage.add(new ArrayList<TransmissionTestInfoStorage>());
+        }
+        for (int i = 0; i < 100; i += 5) {
+            percentSick = i;
+
+            int day = 0;
+            int cost = origVacc;
+
+            //System.out.println("RunTimes: " + runTimes);
+
+            // Make progress bar
+            JPanel panel = new JPanel();
+            panel.setLayout(new GridLayout(1,0));
+            panel.add(new JLabel("Running simulations..."));
+            JFrame pBar = new JFrame();
+            JProgressBar progressBar = new JProgressBar(0, 100);
+            progressBar.setValue(0);
+            progressBar.setIndeterminate(false);
+            progressBar.setStringPainted(true);
+            panel.add(progressBar);
+            panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+            panel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+            progressBar.setStringPainted(true);
+            //progressBar.setBackground(new Color(255, 255, 255));
+            //progressBar.setForeground(new Color(0, 0, 0));
+            pBar.add(panel);
+            pBar.pack();
+            pBar.setLocationRelativeTo(null);
+            pBar.setResizable(false);
+            pBar.setVisible(true);
+            pBar.setTitle("Running simulations...");
+            pBar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+            ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
+            for (int runTime = 0; runTime < runTimes; runTime++) {
+                int value = runTime * 100 / runTimes;
+                progressBar.setValue(value);
+                if (runTime == Math.floor(runTimes / 4)) {
+                    pBar.setTitle("Running simulations... 25%");
+                }
+                if (runTime == Math.floor(runTimes / 2)) {
+                    pBar.setTitle("Running simulations... 50%");
+                }
+                if (runTime == Math.floor(runTimes * 0.75)) {
+                    pBar.setTitle("Running simulations... 75%");
+                }
+                //System.out.println(runTime);
+                while (getNumSickPeople(people) > 0) {
+                    int numberSickOnDay = 0;
+                    for (Person person : people) {
+                        for (Person teenager : teenagers) {
+                            teenager.incrementCurfewedDays();
+                            if (!teenager.isImmuneToCurfews()) {
+                                if (randInt(1, 100 / percentCurfewed) == 1) {
+                                    teenager.setCurfewed(true);
+                                }
+                            }
+                            if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
+                                teenager.setCurfewed(false);
+                                teenager.setCurfewedDays(0);
+                                teenager.setImmuneToCurfews(true);
+                            }
+                        }
+                        if (person.isImmune()) {
+                            // Do nothing
+                        } else if (person.isSick()) {
+                            person.incrementDaysSick();
+                        } else {
+                            ArrayList<Person> friends = person.getFriends();
+                            for (Person friend : friends) {
+                                if (friend.getDaysSick() > 0 && friend.isSick()) {
+                                    boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
+                                    boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
+                                    if (getSick) {
+                                        person.setSick(true);
+                                        totalSickPeople.add(person.getID());
+                                        break;
+                                    }
+                                    if (getVacc) {
+                                        person.getWell();
+                                        cost++;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        //System.out.println(person.getDaysSick());
+                        if (person.getDaysSick() == getWellDays && !person.isImmune()) {
+                            person.getWell();
+                        }
+                    }
+                }
+                //For any other days, make totalSickPeople equal to the number of total sick people on the last day
+                infoStorage.get(runTime).add(new TransmissionTestInfoStorage(percentSick, day));
+
+                day = 0;
+                cost = origVacc;
+
+                totalSickPeople.clear();
+
+                resetAll(people);
+                people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
+                // It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
+            }
         }
 
         return infoStorage;
@@ -930,6 +1042,11 @@ public class MoreMethods {
         dataset.addValue(yValue, lineLabel, xValue);
     }
 
+    public static void addPoint(DefaultCategoryDataset dataset, int yValue, String lineLabel, int xValue) {
+        String newXValue = Integer.toString(xValue); //To disambiguate the method call
+        dataset.addValue(yValue, lineLabel, newXValue);
+    }
+
     public static void addPoint(XYSeries series, int xValue, float yValue) {
         series.add(xValue, yValue);
     }
@@ -937,5 +1054,11 @@ public class MoreMethods {
     //Alert function. Creates an alert dialog with some text.
     protected void alert(String text, String title) {
         JOptionPane.showMessageDialog(new JFrame(), text, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    //Data mining
+
+    public int getColumnByType(int type) {
+        return type + 3;
     }
 }

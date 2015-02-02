@@ -176,6 +176,7 @@ public class ManyLinesAverageObject {
         }
 
         // Initialize variables
+        boolean transmissionTest = false;
         int getWellDays = 0;
         int discovery = 0;
         int newGetWell = 0;
@@ -195,8 +196,9 @@ public class ManyLinesAverageObject {
         // Gets input from user after graph
         while (!done) {
             JPanel panel2 = new JPanel();
-            panel2.setLayout(new GridLayout(18, 0));
+            panel2.setLayout(new GridLayout(20, 0));
 
+            Checkbox transmissionTestCheckbox = new Checkbox("", null, false);
             JTextField getWellDaysAnswer = new JTextField("10", 10);
             JTextField discoveryAnswer = new JTextField("10000", 10);
             JTextField newGetWellAnswer = new JTextField("5", 10);
@@ -219,6 +221,8 @@ public class ManyLinesAverageObject {
 
             panel2.add(new JLabel("TRANSMISSION SETUP:"));
             panel2.add(new JLabel("----------------------------------------------"));
+            panel2.add(new JLabel("Start TransmissionTest? (Does not work)"));
+            panel2.add(transmissionTestCheckbox);
             panel2.add(new JLabel("Amount of get well days before the cure is invented?"));
             panel2.add(getWellDaysAnswer);
             panel2.add(new JLabel("What chance does each person have of catching the disease (___ %)?"));
@@ -259,6 +263,8 @@ public class ManyLinesAverageObject {
             }
 
             try {
+                transmissionTest = transmissionTestCheckbox.getState();
+
                 String getWellDaysString = getWellDaysAnswer.getText();
                 getWellDays = Integer.parseInt(getWellDaysString);
                 if (getWellDays < 1) {
@@ -361,7 +367,18 @@ public class ManyLinesAverageObject {
             people.get(i - 1).setImmune(true);
         }
 
+
+
+
+
+
+
+        //Begin actual simulations
+
+
         //System.out.println(people);
+
+        System.out.println("TransmissionTest: " + transmissionTest);
 
         double estimatedTime = Math.floor(0.447 * runTimes + 2768.902);
 
@@ -373,77 +390,107 @@ public class ManyLinesAverageObject {
 
         Long startTime = System.currentTimeMillis();
 
-        ArrayList<ArrayList<InfoStorage>> results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed); //Meh I don't know how to do it better
+        ArrayList<ArrayList<TransmissionTestInfoStorage>> transmissionTestResults = new ArrayList<ArrayList<TransmissionTestInfoStorage>>();
+        ArrayList<ArrayList<InfoStorage>> results = new ArrayList<ArrayList<InfoStorage>>();
+
+        if (transmissionTest) {
+            transmissionTestResults = MoreMethods.transmissionTest(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed);
+        } else {
+            results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest); //Meh I don't know how to do it better
+        }
 
         Long endTime = System.currentTimeMillis();
 
         methods.alert("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.", "Complete!");
 
-        boolean display = false;
-        boolean displayAverages = false;
 
-        ArrayList<DayStat> days = new ArrayList<DayStat>();
 
-        //Initialize daystat array
-        for (int k = 0; k < maxDays; k++) {
-            days.add(new DayStat(k, 0, 0, 0));
-        }
+        //Begin analysis
 
-        //Add totals for each day
-        for (int i = 0; i < runTimes; i++) {
-            for (int j = 0; j < maxDays; j++) {
-                //System.out.println(results.get(i).size() + " " + j);
-                if (results.get(i).size() > j + 1) { //If this day is existent
-                    days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
-                    days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
-                    days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
-                } else {
-                    //Add 0 to numSick and cost, which is the same as doing nothing
+        //TODO: Turn this into a method
+
+        if (!transmissionTest) { //If it's a normal simulation
+            boolean display = false;
+            boolean displayAverages = false;
+
+            ArrayList<DayStat> days = new ArrayList<DayStat>();
+
+            //Initialize daystat array
+            for (int k = 0; k < maxDays; k++) {
+                days.add(new DayStat(k, 0, 0, 0));
+            }
+
+            //Add totals for each day
+            for (int i = 0; i < runTimes; i++) {
+                for (int j = 0; j < maxDays; j++) {
+                    //System.out.println(results.get(i).size() + " " + j);
+                    if (results.get(i).size() > j + 1) { //If this day is existent
+                        days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
+                        days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
+                        days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
+                    } else {
+                        //Add 0 to numSick and cost, which is the same as doing nothing
+                    }
                 }
             }
-        }
 
-        //Get averages for each day
-        for (DayStat dayStat : days) {
-            dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
-            dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
-            dayStat.setCost(dayStat.getCost() / runTimes);
-        }
+            //Get averages for each day
+            for (DayStat dayStat : days) {
+                dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
+                dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
+                dayStat.setCost(dayStat.getCost() / runTimes);
+            }
 
-        if (display) {
-            for (ArrayList<InfoStorage> alis : results) {
-                System.out.println("NEW RUNTIME_________________________________________________________________________");
-                for (InfoStorage is : alis) {
-                    System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
+            if (display) {
+                for (ArrayList<InfoStorage> alis : results) {
+                    System.out.println("NEW RUNTIME_________________________________________________________________________");
+                    for (InfoStorage is : alis) {
+                        System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
+                    }
                 }
             }
-        }
 
-        if (displayAverages) {
+            if (displayAverages) {
+                for (DayStat day : days) {
+                    System.out.println("Day " + day.getDay() + ". Sick: " + day.getCurrentSick() + ". Total sick: " + day.getTotalSick() + ". Cost: " + day.getCost() + ".");
+                }
+            }
+
+            //Make a graph
+
+            XYSeriesCollection dataset = new XYSeriesCollection();
+
+            XYSeries numSick = new XYSeries("Sick People");
+            XYSeries totalSick = new XYSeries("Total Sick People");
+            XYSeries cost = new XYSeries("Cost");
+
+            dataset.addSeries(numSick);
+            dataset.addSeries(totalSick);
+            dataset.addSeries(cost);
+
             for (DayStat day : days) {
-                System.out.println("Day " + day.getDay() + ". Sick: " + day.getCurrentSick() + ". Total sick: " + day.getTotalSick() + ". Cost: " + day.getCost() + ".");
+                MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
+                MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
+                MoreMethods.addPoint(cost, day.getDay(), day.getCost());
             }
+
+            MoreMethods.makeChart(dataset, fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+        } else { //If it's a TransmissionTest simulation
+            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+            for (int i = 0; i < runTimes; i++) {
+                for (int j = 0; j < transmissionTestResults.get(i).size(); j++) {
+                    System.out.println("At runtime " + i + ", with percentage " + transmissionTestResults.get(i).get(j).getPercentage() + ", the duration was " + transmissionTestResults.get(i).get(j).getDuration() + ".");
+                }
+            }
+
+//            for (TransmissionTestInfoStorage ttis : transmissionTestResults) {
+//                methods.addPoint(dataset, ttis.getDuration(), "Duration", ttis.getPercentage());
+//
+//                MoreMethods.makeChart(dataset, fileName, "Duration of disease vs. Percent Chance of Transmission - " + networkSelectString + " Network", "Percent chance of transmission", "Duration");
+//            }
         }
 
-        //Make a graph
-
-        XYSeriesCollection dataset = new XYSeriesCollection();
-
-        XYSeries numSick = new XYSeries("Sick People");
-        XYSeries totalSick = new XYSeries("Total Sick People");
-        XYSeries cost = new XYSeries("Cost");
-
-        dataset.addSeries(numSick);
-        dataset.addSeries(totalSick);
-        dataset.addSeries(cost);
-
-        for (DayStat day : days) {
-            MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
-            MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
-            MoreMethods.addPoint(cost, day.getDay(), day.getCost());
-        }
-
-        MoreMethods.makeChart(dataset, fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
 
         //Open graph image
         File f = new File(fileName + ".png");
@@ -459,7 +506,8 @@ public class ManyLinesAverageObject {
                     + "Median: " + methods.medianConnectivityPrecentage(people));
         }
 
-        if (!drawJung) { // If no graph was drawn, exit
+        if (!drawJung) { // If no graph was drawn, re-run
+            run();
             System.exit(0);
         }
     }

@@ -9,6 +9,7 @@ public class DayStat {
     public DayStat(int day, float currentSick, float totalSick, float cost) {
         this.day = day;
         this.currentSick = currentSick;
+        this.totalSick = totalSick;
         this.cost = cost;
     }
 
