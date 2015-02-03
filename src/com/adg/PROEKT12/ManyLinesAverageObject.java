@@ -29,7 +29,7 @@ public class ManyLinesAverageObject {
 
     public void run() throws IOException {
         //.config
-        List<String> config = readFile(".config", StandardCharsets.UTF_8);
+        List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8);
         System.out.println(config);
 
         ArrayList<String> params = new ArrayList<String>();
@@ -483,9 +483,6 @@ public class ManyLinesAverageObject {
         methods.alert("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.", "Complete!");
 
 
-        System.out.println("maxDays = " + maxDays);
-
-
         //Begin analysis
 
         boolean display = false;
@@ -596,7 +593,7 @@ public class ManyLinesAverageObject {
 
     protected void createConfig(ArrayList<String> contents) throws FileNotFoundException, UnsupportedEncodingException {
         //Create configuration file
-        PrintWriter writer = new PrintWriter(".config", "UTF-8");
+        PrintWriter writer = new PrintWriter(".manyLinesAverageConfig", "UTF-8");
         for (String content : contents) {
             writer.println(content);
         }

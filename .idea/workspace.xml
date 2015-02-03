@@ -57,25 +57,25 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ManyLinesAverageObject.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ManyLinesAverageObject.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/adg/PROEKT12/ManyLinesAverageObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10795">
-              <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.4520325" vertical-offset="283" max-vertical-offset="10744">
+              <caret line="33" column="98" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1231#1239#0" expanded="true" />
-                <element signature="e#20987#21011#0" expanded="true" />
-                <element signature="e#21656#21665#0" expanded="true" />
+                <element signature="e#1247#1255#0" expanded="true" />
+                <element signature="e#21003#21027#0" expanded="true" />
+                <element signature="e#21618#21627#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MoreMethods.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MoreMethods.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/adg/PROEKT12/MoreMethods.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.61300814" vertical-offset="12679" max-vertical-offset="17323">
+            <state vertical-scroll-proportion="0.0" vertical-offset="12679" max-vertical-offset="17323">
               <caret line="800" column="0" selection-start-line="800" selection-start-column="0" selection-end-line="800" selection-end-column="0" />
               <folding>
                 <element signature="e#43843#43844#0" expanded="true" />
@@ -171,8 +171,8 @@
         <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/DataMiner.java" />
         <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/Audio.java" />
         <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/Main.java" />
-        <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/ManyLinesAverageObject.java" />
         <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/MoreMethods.java" />
+        <option value="$PROJECT_DIR$/src/com/adg/PROEKT12/ManyLinesAverageObject.java" />
       </list>
     </option>
   </component>
@@ -561,9 +561,9 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1231#1239#0" expanded="true" />
-            <element signature="e#20987#21011#0" expanded="true" />
-            <element signature="e#21656#21665#0" expanded="true" />
+            <element signature="e#1247#1255#0" expanded="true" />
+            <element signature="e#21003#21027#0" expanded="true" />
+            <element signature="e#21618#21627#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -644,9 +644,9 @@
           <caret line="383" column="0" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1231#1239#0" expanded="true" />
-            <element signature="e#20987#21011#0" expanded="true" />
-            <element signature="e#21656#21665#0" expanded="true" />
+            <element signature="e#1247#1255#0" expanded="true" />
+            <element signature="e#21003#21027#0" expanded="true" />
+            <element signature="e#21618#21627#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -715,9 +715,9 @@
           <caret line="383" column="53" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1231#1239#0" expanded="true" />
-            <element signature="e#20987#21011#0" expanded="true" />
-            <element signature="e#21656#21665#0" expanded="true" />
+            <element signature="e#1247#1255#0" expanded="true" />
+            <element signature="e#21003#21027#0" expanded="true" />
+            <element signature="e#21618#21627#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -786,9 +786,9 @@
           <caret line="383" column="53" selection-start-line="383" selection-start-column="0" selection-end-line="383" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1231#1239#0" expanded="true" />
-            <element signature="e#20987#21011#0" expanded="true" />
-            <element signature="e#21656#21665#0" expanded="true" />
+            <element signature="e#1247#1255#0" expanded="true" />
+            <element signature="e#21003#21027#0" expanded="true" />
+            <element signature="e#21618#21627#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -967,26 +967,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/adg/PROEKT12/ManyLinesAverageObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="10795">
-          <caret line="27" column="34" selection-start-line="27" selection-start-column="34" selection-end-line="27" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1231#1239#0" expanded="true" />
-            <element signature="e#20987#21011#0" expanded="true" />
-            <element signature="e#21656#21665#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/adg/PROEKT12/MoreMethods.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61300814" vertical-offset="12679" max-vertical-offset="17323">
+        <state vertical-scroll-proportion="0.0" vertical-offset="12679" max-vertical-offset="17323">
           <caret line="800" column="0" selection-start-line="800" selection-start-column="0" selection-end-line="800" selection-end-column="0" />
           <folding>
             <element signature="e#43843#43844#0" expanded="true" />
             <element signature="e#43874#43875#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/adg/PROEKT12/ManyLinesAverageObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4520325" vertical-offset="283" max-vertical-offset="10744">
+          <caret line="33" column="98" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1247#1255#0" expanded="true" />
+            <element signature="e#21003#21027#0" expanded="true" />
+            <element signature="e#21618#21627#0" expanded="true" />
           </folding>
         </state>
       </provider>
