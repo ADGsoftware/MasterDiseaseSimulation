@@ -516,6 +516,21 @@ public class MasterManySimsObject
 			}
 			System.out.println(averages);
 			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
+			
+			LinkedHashMap<Integer, Double> sine = new LinkedHashMap<Integer, Double>();
+			sine.put(-1, -0.841);
+			sine.put(0, 0.0);
+			sine.put(1, 0.841);
+			sine.put(2, 0.909);
+			sine.put(3, 0.141);
+			sine.put(4, -0.757);
+			sine.put(5, -0.959);
+			sine.put(6, -0.279);
+			sine.put(7, 0.657);
+			sine.put(8, 0.989);
+			
+			//derivative = MoreMethods.getDerivative(sine);
+			
 			System.out.println(derivative);
 			for (Entry<Integer, Double> entry : derivative.entrySet()) {
 				key = entry.getKey();

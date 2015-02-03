@@ -22,6 +22,7 @@ import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 
+@SuppressWarnings("serial")
 public class Network extends ArrayList<Person> {
 	private int hubNumber;
 	private int maxFriends;

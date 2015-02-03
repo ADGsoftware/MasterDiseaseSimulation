@@ -1,9 +1,9 @@
 package masterdiseasesimulation;
 
+import org.apache.commons.collections15.Transformer;
+
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import org.apache.commons.collections15.Transformer;
 
 //Ladies and Gnetlemen lo and behold the Person class *Correction : "Klass!!!!!!!"
 public class Person implements Transformer<Person, String>, Comparator<Person> {
@@ -38,7 +38,7 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	}
 
 	/*
-	public void curfew() { // We don't actually need this method since we have setCurfewed but it looks nice. As in Grisha.curfew(), not Grisha.setCurfewed(true).
+    public void curfew() { // We don't actually need this method since we have setCurfewed but it looks nice. As in Grisha.curfew(), not Grisha.setCurfewed(true).
 		this.curfewed = true;
 	}
 	 */
@@ -135,11 +135,11 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	public void addFriend(Person newFriend) {
 		this.friends.add(newFriend);
 	}
-	
-	public void clearFriends(){
+
+	public void clearFriends() {
 		friends.clear();
 	}
-	
+
 	public void setOrigSick(boolean value) {
 		this.origSick = value;
 		this.sick = this.origSick;
@@ -148,7 +148,7 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	public void setSick(boolean value) {
 		this.sick = value;
 	}
-	
+
 	public void setOrigVacc(boolean value) {
 		this.origVacc = value;
 		this.vacc = this.origVacc;
@@ -171,21 +171,22 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 		this.vacc = true;
 		this.sick = false;
 	}
-	
+
 	public void reset() {
 		this.daysSick = 0;
 		this.vacc = this.origVacc;
 		this.sick = this.origSick;
 	}
-	
-	public void setConnecticity (float newValue){
-		this.connectivityAroundPerson = newValue; 
+
+	public void setConnecticity(float newValue) {
+		this.connectivityAroundPerson = newValue;
 	}
-	
+
 	// Get the Connectivity Value ----------------------------------------------------------------------
-	public float getConnectivity(){
+	public float getConnectivity() {
 		return connectivityAroundPerson;
 	}
+
 	// Custom Transformer and Comparator ------------------------------------------------------------------
 	public static final Comparator<Person> orderByID = new Comparator<Person>() {
 		public int compare(Person person1, Person person2) {
@@ -226,7 +227,7 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 			return p2.getNumFriends() - p1.getNumFriends(); // Descending
 		}
 	}
-	
+
 	public static final Comparator<Person> orderByConnectivity = new Comparator<Person>() {
 		public int compare(Person person1, Person person2) {
 			if (person1.getConnectivity() - person2.getConnectivity() == 0) {
@@ -242,18 +243,16 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 		}
 	};
 
-	public String toString () {
+	public String toString() {
 		return ("Person " + ID + " (" + state() + ")");
 	}
 
 	private String state() {
 		if (sick) {
 			return "Sick";
-		}
-		else if (vacc) {
+		} else if (vacc) {
 			return "Vaccinated";
-		}
-		else {
+		} else {
 			return "Unchanged";
 		}
 	}
