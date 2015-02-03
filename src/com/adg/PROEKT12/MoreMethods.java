@@ -1,44 +1,29 @@
 package com.adg.PROEKT12;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-
+import edu.uci.ics.jung.algorithms.layout.*;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
-
 import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberTickUnit;
-import org.jfree.chart.axis.ValueAxis;
-import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
-
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.algorithms.layout.FRLayout;
-import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
-import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.algorithms.layout.SpringLayout;
-import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
-import org.jfree.data.time.ohlc.OHLCSeriesCollection;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 public class MoreMethods {
     /**
@@ -60,7 +45,7 @@ public class MoreMethods {
         return arrayList;
     }
 
-    public static ArrayList<Integer> arrayListFromTo (int start, int step, int end) { // Returns an ArrayList containing integers from start to end with given step
+    public static ArrayList<Integer> arrayListFromTo(int start, int step, int end) { // Returns an ArrayList containing integers from start to end with given step
         ArrayList<Integer> list = new ArrayList<Integer>();
         for (int i = start; i <= end; i += step) {
             list.add(i);
@@ -85,7 +70,7 @@ public class MoreMethods {
      * WORKING WITH SPREADSHEETS ----------------------------------------------------------------------
      */
 
-    public static ArrayList<ArrayList<Integer>> getAllData (String filename) throws BiffException, IOException {
+    public static ArrayList<ArrayList<Integer>> getAllData(String filename) throws BiffException, IOException {
         ArrayList<ArrayList<Integer>> data = new ArrayList<ArrayList<Integer>>();
         Workbook workbook = Workbook.getWorkbook(new File(filename));
         int numSheets = workbook.getSheets().length;
@@ -125,7 +110,7 @@ public class MoreMethods {
         return randomNum;
     }
 
-    public static ArrayList<Long> getTime(long leftSec){ // This method returns an ArrayList with the number of hours, minutes, and seconds in a given number of seconds
+    public static ArrayList<Long> getTime(long leftSec) { // This method returns an ArrayList with the number of hours, minutes, and seconds in a given number of seconds
         // Creates arrayList to add values to later
         ArrayList<Long> times = new ArrayList<Long>();
 
@@ -151,8 +136,8 @@ public class MoreMethods {
         return (times);
     }
 
-    public static String timeString (double estTime) { // Returns time in readable format
-        ArrayList<Long> times = getTime((long)estTime);
+    public static String timeString(double estTime) { // Returns time in readable format
+        ArrayList<Long> times = getTime((long) estTime);
         long days = times.get(0);
         long hours = times.get(1);
         long mins = times.get(2);
@@ -163,11 +148,9 @@ public class MoreMethods {
         }
         if (hours != 0) {
             return hours + " hours, " + mins + " minutes, and " + secs + " seconds";
-        }
-        else if (mins != 0) {
+        } else if (mins != 0) {
             return mins + " minutes and " + secs + " seconds";
-        }
-        else {
+        } else {
             return secs + " seconds";
         }
     }
@@ -176,7 +159,7 @@ public class MoreMethods {
      * INITIAL SETUP OF PEOPLE ----------------------------------------------------------------------
      */
 
-    public static ArrayList<Person> getPeople (int numPeople) {
+    public static ArrayList<Person> getPeople(int numPeople) {
         ArrayList<Person> people = new ArrayList<Person>();
 
         for (int i = 1; i <= numPeople; i++) {
@@ -186,7 +169,7 @@ public class MoreMethods {
         return people;
     }
 
-    public ArrayList<Person> infectRandom (ArrayList<Person> people, int numInfect) { // Make numInfect people initially sick
+    public ArrayList<Person> infectRandom(ArrayList<Person> people, int numInfect) { // Make numInfect people initially sick
         ArrayList<Person> infected = new ArrayList<Person>();
 
         for (int i = 0; i < numInfect; i++) {
@@ -194,8 +177,7 @@ public class MoreMethods {
             if (!people.get(personInt).isSick() && !people.get(personInt).isImmune()) {
                 people.get(personInt).setOrigSick(true);
                 infected.add(people.get(personInt));
-            }
-            else {
+            } else {
                 i--;
             }
         }
@@ -203,7 +185,7 @@ public class MoreMethods {
         return infected;
     }
 
-    public ArrayList<Person> vaccRandom (ArrayList<Person> people, int numVacc) { // Make numVacc people initially vaccinated
+    public ArrayList<Person> vaccRandom(ArrayList<Person> people, int numVacc) { // Make numVacc people initially vaccinated
         ArrayList<Person> vaccinnated = new ArrayList<Person>();
 
         for (int i = 0; i < numVacc; i++) {
@@ -211,8 +193,7 @@ public class MoreMethods {
             if (!people.get(personInt).isSick() && !people.get(personInt).isImmune()) {
                 people.get(personInt).setOrigVacc(true);
                 vaccinnated.add(people.get(personInt));
-            }
-            else {
+            } else {
                 i--;
             }
         }
@@ -282,16 +263,16 @@ public class MoreMethods {
         assignCapacities(people, minFriends, maxFriends, random);
         // Make friends
         ArrayList<Person> peopleReference = new ArrayList<Person>();
-        for(Person newPerson : people){
+        for (Person newPerson : people) {
             peopleReference.add(newPerson);
         }
-        for(Person person : people){
+        for (Person person : people) {
             //Hub Case
-            if(person.isHub()){
+            if (person.isHub()) {
                 person.setCapacity(people.size() + 1);
-                for(Person hubFriend : people){
-                    if((hubFriend != person) && !(person.getFriends().contains(hubFriend))){
-                        if((random.nextInt(100) + 1 > 20) && !(hubFriend.capacityFull())){
+                for (Person hubFriend : people) {
+                    if ((hubFriend != person) && !(person.getFriends().contains(hubFriend))) {
+                        if ((random.nextInt(100) + 1 > 20) && !(hubFriend.capacityFull())) {
                             person.addFriend(hubFriend);
                             hubFriend.addFriend(person);
                         }
@@ -299,21 +280,19 @@ public class MoreMethods {
                 }
             }
             // If not HUB
-            else{
+            else {
                 Collections.shuffle(peopleReference);
                 //System.out.println(person.getID());
-                for(Person possibleFriend: peopleReference){
+                for (Person possibleFriend : peopleReference) {
                     //System.out.println(possibleFriend.getID());
-                    if(possibleFriend.getID() <= person.getID()){
+                    if (possibleFriend.getID() <= person.getID()) {
                         //System.out.println("PERSON BEFRIEND HIMSELF ERROR");
-                    }
-                    else if(possibleFriend.capacityFull() || person.capacityFull()){
+                    } else if (possibleFriend.capacityFull() || person.capacityFull()) {
                         //System.out.println("Capacity full ERROR");
-                    }
-                    else{
+                    } else {
                         //System.out.println("FRIENDSHIP!!!!!!!!!!!");
-                        person.addFriend(people.get(possibleFriend.getID()-1));
-                        people.get(possibleFriend.getID()-1).addFriend(person);
+                        person.addFriend(people.get(possibleFriend.getID() - 1));
+                        people.get(possibleFriend.getID() - 1).addFriend(person);
                     }
                 }
             }
@@ -380,48 +359,48 @@ public class MoreMethods {
         for (Person person : people) {
             //Add People in the Possible Friend range to ArrayList
             int ID = (((person.getID() - halfRange)) % numPeople + numPeople) % numPeople;
-            for(int x = 0; x < halfRange*2; x++){
+            for (int x = 0; x < halfRange * 2; x++) {
                 ID = (((ID)) % numPeople + numPeople) % numPeople;
-                if(ID == 0){
+                if (ID == 0) {
                     ID = numPeople;
                 }
-                possibleFriends.add(people.get(ID -1));
+                possibleFriends.add(people.get(ID - 1));
                 ID = (((ID + 1)) % numPeople + numPeople) % numPeople;
             }
             //System.out.println(person + " : " + possibleFriends + " ' " + person.getCapacity());
-            while(!person.capacityFull()){
+            while (!person.capacityFull()) {
                 Collections.shuffle(possibleFriends);
-                for(Person friendApplicant : possibleFriends){
-                    if(person.capacityFull()){
+                for (Person friendApplicant : possibleFriends) {
+                    if (person.capacityFull()) {
                         break;
                     }
-                    if(friendApplicant.capacityFull()){
+                    if (friendApplicant.capacityFull()) {
                         continue;
                     }
-                    if(person.getFriends().contains(friendApplicant)){
+                    if (person.getFriends().contains(friendApplicant)) {
                         continue;
                     }
-                    if(person == friendApplicant){
+                    if (person == friendApplicant) {
                         continue;
                     }
-                    if(!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)){
+                    if (!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)) {
                         person.addFriend(people.get(friendApplicant.getID() - 1));
                         people.get(friendApplicant.getID() - 1).addFriend(person);
                     }
                 }
                 counter = 0;
-                for(Person control : possibleFriends){
-                    if(control.capacityFull()){
+                for (Person control : possibleFriends) {
+                    if (control.capacityFull()) {
                         counter++;
                     }
-                    if(person.getFriends().contains(control)){
+                    if (person.getFriends().contains(control)) {
                         counter++;
                     }
-                    if(control == person){
+                    if (control == person) {
                         counter++;
                     }
                 }
-                if(counter >= possibleFriends.size()){
+                if (counter >= possibleFriends.size()) {
                     break;
                 }
             }
@@ -441,7 +420,7 @@ public class MoreMethods {
     }
 
 	/*
-	// Used by ManyLinesAverage
+    // Used by ManyLinesAverage
 	public static void addFriendsRandom (ArrayList<Person> people, int hubNumber, int minFriends, int maxFriends) {
 		int numPeople = people.size();
 
@@ -556,66 +535,65 @@ public class MoreMethods {
      * FRIENDS WITH FRIENDS METHODS ----------------------------------------------------------------------
      */
 
-    public void calculateConnectivityRatios(ArrayList<Person> people){
+    public void calculateConnectivityRatios(ArrayList<Person> people) {
         float numerator = 0;
         float denominator;
         ArrayList<Person> friends = new ArrayList<Person>();
         ArrayList<Person> friendsOfFriend = new ArrayList<Person>();
-        for(Person person: people){
+        for (Person person : people) {
             friends = person.getFriends();
-            denominator = friends.size()*(friends.size()-1)/2;
-            if(denominator == 0){
+            denominator = friends.size() * (friends.size() - 1) / 2;
+            if (denominator == 0) {
                 person.setConnecticity(0);
                 continue;
             }
-            for(Person friend: friends){
+            for (Person friend : friends) {
                 friendsOfFriend = friend.getFriends();
-                for(Person friendOfFriend: friendsOfFriend){
-                    if(friends.contains(friendOfFriend)){
+                for (Person friendOfFriend : friendsOfFriend) {
+                    if (friends.contains(friendOfFriend)) {
                         numerator++;
                     }
                 }
             }
-            numerator = numerator/2;
-            person.setConnecticity(numerator/denominator);
+            numerator = numerator / 2;
+            person.setConnecticity(numerator / denominator);
             numerator = 0;
             denominator = 0;
         }
     }
 
-    public float averageConnectivityPercentage(ArrayList<Person> people){
+    public float averageConnectivityPercentage(ArrayList<Person> people) {
         float result = 0;
-        for(Person person: people){
+        for (Person person : people) {
             result = result + person.getConnectivity();
         }
-        return result*100/people.size();
+        return result * 100 / people.size();
     }
 
-    public float medianConnectivityPrecentage(ArrayList<Person> people){
+    public float medianConnectivityPrecentage(ArrayList<Person> people) {
         int index = 0;
         Collections.sort(people, Person.orderByConnectivity);
-        if(people.size() % 2 == 0){
-            index = people.size()/2;
-            return 100*(people.get(index - 1).getConnectivity() + people.get(index).getConnectivity())/2;
-        }
-        else{
-            index = people.size()/2 + 1;
-            return 100*people.get(index).getConnectivity();
+        if (people.size() % 2 == 0) {
+            index = people.size() / 2;
+            return 100 * (people.get(index - 1).getConnectivity() + people.get(index).getConnectivity()) / 2;
+        } else {
+            index = people.size() / 2 + 1;
+            return 100 * people.get(index).getConnectivity();
         }
     }
 
-    public float standardDeviation(ArrayList<Person> people){
+    public float standardDeviation(ArrayList<Person> people) {
         float mean = averageConnectivityPercentage(people);
         float result = 0;
-        for(Person person: people){
+        for (Person person : people) {
             System.out.println("Mean Is: " + mean);
             System.out.println(result);
             System.out.println("Connectivity Is: " + person.getConnectivity());
-            System.out.println("We are Adding: " + Math.pow((mean - 100*person.getConnectivity()), 2) +" To the Result");
-            result = (float) (result + Math.pow((mean - 100*person.getConnectivity()), 2));
+            System.out.println("We are Adding: " + Math.pow((mean - 100 * person.getConnectivity()), 2) + " To the Result");
+            result = (float) (result + Math.pow((mean - 100 * person.getConnectivity()), 2));
             System.out.println("Result Is: " + result);
         }
-        return (float)(Math.sqrt((result/people.size())));
+        return (float) (Math.sqrt((result / people.size())));
     }
 
     /**
@@ -703,7 +681,7 @@ public class MoreMethods {
     }
 
     // Simulation for MasterManySims updated for ManyLinesAverage
-    public static ArrayList<ArrayList<InfoStorage>> simulate (ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
+    public static ArrayList<ArrayList<InfoStorage>> simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
         int day = 0;
         int cost = origVacc;
 
@@ -713,7 +691,7 @@ public class MoreMethods {
 
         // Make progress bar
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(1,0));
+        panel.setLayout(new GridLayout(1, 0));
         panel.add(new JLabel("Running simulations..."));
         JFrame pBar = new JFrame();
         JProgressBar progressBar = new JProgressBar(0, 100);
@@ -834,7 +812,7 @@ public class MoreMethods {
 
             // Make progress bar
             JPanel panel = new JPanel();
-            panel.setLayout(new GridLayout(1,0));
+            panel.setLayout(new GridLayout(1, 0));
             panel.add(new JLabel("Running simulations..."));
             JFrame pBar = new JFrame();
             JProgressBar progressBar = new JProgressBar(0, 100);
@@ -932,7 +910,7 @@ public class MoreMethods {
     }
 
     // Simulation for MasterManySims
-    public static ArrayList<Integer> simulate (ArrayList<Person> people, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes) {
+    public static ArrayList<Integer> simulate(ArrayList<Person> people, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes) {
         int day = 0;
         int totalDay = 0;
         int cost = origVacc;
@@ -953,11 +931,9 @@ public class MoreMethods {
                     }
                     if (person.isImmune()) {
                         // Do nothing
-                    }
-                    else if (person.isSick()) {
+                    } else if (person.isSick()) {
                         person.incrementDaysSick();
-                    }
-                    else {
+                    } else {
                         ArrayList<Person> friends = person.getFriends();
                         for (Person friend : friends) {
                             if (friend.getDaysSick() > 0 && friend.isSick()) {

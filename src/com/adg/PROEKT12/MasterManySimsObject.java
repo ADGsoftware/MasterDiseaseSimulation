@@ -1,33 +1,25 @@
 package com.adg.PROEKT12;
 
-import java.awt.Desktop;
-import java.awt.GridLayout;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Random;
-import java.util.Map.Entry;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.border.EmptyBorder;
-
-import org.jfree.data.category.DefaultCategoryDataset;
-
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import org.jfree.data.category.DefaultCategoryDataset;
 
-public class MasterManySimsObject
-{
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
+import java.util.Random;
+
+public class MasterManySimsObject {
     @SuppressWarnings("static-access")
-    public static void run () throws java.io.IOException, jxl.write.WriteException, BiffException {
+    public static void run() throws java.io.IOException, jxl.write.WriteException, BiffException {
         MoreMethods methods = new MoreMethods();
         Random random = new Random();
 
@@ -92,11 +84,11 @@ public class MasterManySimsObject
         int percentCurfewStep = Integer.parseInt(inputs.get(40).toString());
 
         String fileName = inputs.get(42).toString() + ".xls";
-        boolean saveResults = (Boolean)inputs.get(46);
-        boolean openResults = (Boolean)inputs.get(47);
+        boolean saveResults = (Boolean) inputs.get(46);
+        boolean openResults = (Boolean) inputs.get(47);
         String graphFileName = inputs.get(43).toString();
-        boolean saveGraph = (Boolean)inputs.get(48);
-        boolean openGraph = (Boolean)inputs.get(49);
+        boolean saveGraph = (Boolean) inputs.get(48);
+        boolean openGraph = (Boolean) inputs.get(49);
 
         String xAxis = inputs.get(44).toString();
         String yAxis = inputs.get(45).toString();
@@ -109,20 +101,20 @@ public class MasterManySimsObject
         // Calculate totalRuns for progress bar
         int totalRuns = 0;
 
-        for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep){
-            for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep){
-                for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep){
-                    for (int hubNumberI = hubNumber; hubNumberI <= hubNumberMax; hubNumberI += hubNumberStep){
-                        for (int getWellDaysI = getWellDays; getWellDaysI <= getWellDaysMax; getWellDaysI += getWellDaysStep){
-                            for (int discoveryI = discovery; discoveryI <= discovery; discoveryI += discoveryStep){
-                                for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep){
-                                    for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep){
-                                        for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep){
-                                            for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep){
-                                                for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep){
-                                                    for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep){
-                                                        for (int percentCurfewI = percentCurfew; percentCurfewI <= percentCurfewMax; percentCurfewI += percentCurfewStep){
-                                                            for (int curfewDaysI = curfewDays; curfewDaysI <= curfewDaysMax; curfewDaysI += curfewDaysStep){
+        for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep) {
+            for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep) {
+                for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep) {
+                    for (int hubNumberI = hubNumber; hubNumberI <= hubNumberMax; hubNumberI += hubNumberStep) {
+                        for (int getWellDaysI = getWellDays; getWellDaysI <= getWellDaysMax; getWellDaysI += getWellDaysStep) {
+                            for (int discoveryI = discovery; discoveryI <= discovery; discoveryI += discoveryStep) {
+                                for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep) {
+                                    for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep) {
+                                        for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep) {
+                                            for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep) {
+                                                for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep) {
+                                                    for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep) {
+                                                        for (int percentCurfewI = percentCurfew; percentCurfewI <= percentCurfewMax; percentCurfewI += percentCurfewStep) {
+                                                            for (int curfewDaysI = curfewDays; curfewDaysI <= curfewDaysMax; curfewDaysI += curfewDaysStep) {
                                                                 if (!((minFriendsI > numPeopleI) || (maxFriendsI > numPeopleI) || (minFriendsI > maxFriendsI) || (hubNumberI > numPeopleI) || (initiallySickI + initiallyVaccI > numPeople))) {
                                                                     totalRuns++;
                                                                 }
@@ -143,8 +135,7 @@ public class MasterManySimsObject
         if (totalRuns <= 0) {
             JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
             System.exit(0);
-        }
-        else if (totalRuns > 100000) {
+        } else if (totalRuns > 100000) {
             int answer = JOptionPane.showConfirmDialog(null, "WARNING: Given parameters could exceed java heap space. Continue?", "Warning", JOptionPane.YES_NO_OPTION);
             if (answer != JOptionPane.YES_OPTION) {
                 System.exit(0);
@@ -194,46 +185,61 @@ public class MasterManySimsObject
             int step = 0;
             int max = 0;
             if (xAxis.equals("numPeople")) {
-                init = numPeople; step = numPeopleStep; max = numPeopleMax;
-            }
-            else if (xAxis.equals("minFriends")) {
-                init = minFriends; step = minFriendsStep; max = minFriendsMax;
-            }
-            else if (xAxis.equals("maxFriends")) {
-                init = maxFriends; step = maxFriendsStep; max = maxFriendsMax;
-            }
-            else if (xAxis.equals("hubNumber")) {
-                init = hubNumber; step = hubNumberStep; max = hubNumberMax;
-            }
-            else if (xAxis.equals("getWellDays")) {
-                init = getWellDays; step = getWellDaysStep; max = getWellDaysMax;
-            }
-            else if (xAxis.equals("percentSick")) {
-                init = percentSick; step = percentSickStep; max = percentSickMax;
-            }
-            else if (xAxis.equals("initiallySick")) {
-                init = initiallySick; step = initiallySickStep; max = initiallySickMax;
-            }
-            else if (xAxis.equals("initiallyVacc")) {
-                init = initiallyVacc; step = initiallyVaccStep; max = initiallyVaccMax;
-            }
-            else if (xAxis.equals("getVacc")) {
-                init = getVac; step = getVacStep; max = getVacMax;
-            }
-            else if (xAxis.equals("discovery")) {
-                init = discovery; step = discoveryStep; max = discoveryMax;
-            }
-            else if (xAxis.equals("newGetWellDays")) {
-                init = newGetWellDays; step = newGetWellDaysStep; max = newGetWellDaysMax;
-            }
-            else if (xAxis.equals("percentTeens")) {
-                init = percentTeens; step = percentTeensStep; max = percentTeensMax;
-            }
-            else if (xAxis.equals("curfewDays")) {
-                init = curfewDays; step = curfewDaysStep; max = curfewDaysMax;
-            }
-            else if (xAxis.equals("percentCurfew")) {
-                init = percentCurfew; step = percentCurfewStep; max = percentCurfewMax;
+                init = numPeople;
+                step = numPeopleStep;
+                max = numPeopleMax;
+            } else if (xAxis.equals("minFriends")) {
+                init = minFriends;
+                step = minFriendsStep;
+                max = minFriendsMax;
+            } else if (xAxis.equals("maxFriends")) {
+                init = maxFriends;
+                step = maxFriendsStep;
+                max = maxFriendsMax;
+            } else if (xAxis.equals("hubNumber")) {
+                init = hubNumber;
+                step = hubNumberStep;
+                max = hubNumberMax;
+            } else if (xAxis.equals("getWellDays")) {
+                init = getWellDays;
+                step = getWellDaysStep;
+                max = getWellDaysMax;
+            } else if (xAxis.equals("percentSick")) {
+                init = percentSick;
+                step = percentSickStep;
+                max = percentSickMax;
+            } else if (xAxis.equals("initiallySick")) {
+                init = initiallySick;
+                step = initiallySickStep;
+                max = initiallySickMax;
+            } else if (xAxis.equals("initiallyVacc")) {
+                init = initiallyVacc;
+                step = initiallyVaccStep;
+                max = initiallyVaccMax;
+            } else if (xAxis.equals("getVacc")) {
+                init = getVac;
+                step = getVacStep;
+                max = getVacMax;
+            } else if (xAxis.equals("discovery")) {
+                init = discovery;
+                step = discoveryStep;
+                max = discoveryMax;
+            } else if (xAxis.equals("newGetWellDays")) {
+                init = newGetWellDays;
+                step = newGetWellDaysStep;
+                max = newGetWellDaysMax;
+            } else if (xAxis.equals("percentTeens")) {
+                init = percentTeens;
+                step = percentTeensStep;
+                max = percentTeensMax;
+            } else if (xAxis.equals("curfewDays")) {
+                init = curfewDays;
+                step = curfewDaysStep;
+                max = curfewDaysMax;
+            } else if (xAxis.equals("percentCurfew")) {
+                init = percentCurfew;
+                step = percentCurfewStep;
+                max = percentCurfewMax;
             }
             for (int j = init; j <= max; j += step) {
                 data.put(j, 0.0);
@@ -242,18 +248,16 @@ public class MasterManySimsObject
 
             if (yAxis.equals("Cost")) {
                 resultIndex = 1;
-            }
-            else if (yAxis.equals("Days")) {
+            } else if (yAxis.equals("Days")) {
                 resultIndex = 0;
-            }
-            else if (yAxis.equals("TotalSick")) {
+            } else if (yAxis.equals("TotalSick")) {
                 resultIndex = 2;
             }
         }
 
         // Make progress bar
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2,0));
+        panel.setLayout(new GridLayout(2, 0));
         panel.add(new JLabel("Running simulations..."));
         JFrame frame = new JFrame();
         JProgressBar progressBar = new JProgressBar(0, totalRuns);
@@ -278,37 +282,33 @@ public class MasterManySimsObject
         double endTime = startTime;
         String estDisplay = "";
 
-        for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep){
-            for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep){
-                for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep){
-                    for (int hubNumberI = hubNumber; hubNumberI <= hubNumberMax; hubNumberI += hubNumberStep){
-                        for (int getWellDaysI = getWellDays; getWellDaysI <= getWellDaysMax; getWellDaysI += getWellDaysStep){
-                            for (int discoveryI = discovery; discoveryI <= discovery; discoveryI += discoveryStep){
-                                for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep){
-                                    for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep){
-                                        for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep){
-                                            for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep){
-                                                for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep){
-                                                    for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep){
-                                                        for (int percentCurfewI = percentCurfew; percentCurfewI <= percentCurfewMax; percentCurfewI += percentCurfewStep){
-                                                            for (int curfewDaysI = curfewDays; curfewDaysI <= curfewDaysMax; curfewDaysI += curfewDaysStep){
+        for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep) {
+            for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep) {
+                for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep) {
+                    for (int hubNumberI = hubNumber; hubNumberI <= hubNumberMax; hubNumberI += hubNumberStep) {
+                        for (int getWellDaysI = getWellDays; getWellDaysI <= getWellDaysMax; getWellDaysI += getWellDaysStep) {
+                            for (int discoveryI = discovery; discoveryI <= discovery; discoveryI += discoveryStep) {
+                                for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep) {
+                                    for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep) {
+                                        for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep) {
+                                            for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep) {
+                                                for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep) {
+                                                    for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep) {
+                                                        for (int percentCurfewI = percentCurfew; percentCurfewI <= percentCurfewMax; percentCurfewI += percentCurfewStep) {
+                                                            for (int curfewDaysI = curfewDays; curfewDaysI <= curfewDaysMax; curfewDaysI += curfewDaysStep) {
                                                                 if ((minFriendsI > numPeopleI) || (maxFriendsI > numPeopleI) || (minFriendsI > maxFriendsI) || (hubNumberI > numPeopleI) || (initiallySickI + initiallyVaccI > numPeople)) {
                                                                     //Do nothing
-                                                                }
-                                                                else {
+                                                                } else {
                                                                     i++;
                                                                     progress++;
                                                                     people = methods.getPeople(numPeople);
                                                                     if (networkType.equals("Small World")) {
                                                                         methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
-                                                                    }
-                                                                    else if (networkType.equals("Random")) {
+                                                                    } else if (networkType.equals("Random")) {
                                                                         methods.befriendRandom(people, minFriendsI, maxFriendsI, random, hubNumberI);
-                                                                    }
-                                                                    else if (networkType.equals("Scale-Free")) {
+                                                                    } else if (networkType.equals("Scale-Free")) {
                                                                         methods.befriendScaleFree(people, minFriendsI, maxFriendsI, random);
-                                                                    }
-                                                                    else {
+                                                                    } else {
                                                                         JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
                                                                         System.exit(0);
                                                                     }
@@ -329,56 +329,43 @@ public class MasterManySimsObject
                                                                         if (xAxis.equals("numPeople")) {
                                                                             data.put(numPeopleI, data.get(numPeopleI) + results.get(resultIndex));
                                                                             runTimes.put(numPeopleI, runTimes.get(numPeopleI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("minFriends")) {
+                                                                        } else if (xAxis.equals("minFriends")) {
                                                                             data.put(minFriendsI, data.get(minFriendsI) + results.get(resultIndex));
                                                                             runTimes.put(minFriendsI, runTimes.get(minFriendsI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("maxFriends")) {
+                                                                        } else if (xAxis.equals("maxFriends")) {
                                                                             data.put(maxFriendsI, data.get(maxFriends) + results.get(resultIndex));
                                                                             runTimes.put(maxFriends, runTimes.get(maxFriends) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("hubNumber")) {
+                                                                        } else if (xAxis.equals("hubNumber")) {
                                                                             data.put(hubNumberI, data.get(hubNumberI) + results.get(resultIndex));
                                                                             runTimes.put(hubNumberI, runTimes.get(hubNumberI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("getWellDays")) {
+                                                                        } else if (xAxis.equals("getWellDays")) {
                                                                             data.put(getWellDaysI, data.get(getWellDaysI) + results.get(resultIndex));
                                                                             runTimes.put(getWellDaysI, runTimes.get(getWellDaysI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("percentSick")) {
+                                                                        } else if (xAxis.equals("percentSick")) {
                                                                             data.put(percentSickI, data.get(percentSickI) + results.get(resultIndex));
                                                                             runTimes.put(percentSickI, runTimes.get(percentSickI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("initiallySick")) {
+                                                                        } else if (xAxis.equals("initiallySick")) {
                                                                             data.put(initiallySickI, data.get(initiallySickI) + results.get(resultIndex));
                                                                             runTimes.put(initiallySickI, runTimes.get(initiallySickI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("initiallyVacc")) {
+                                                                        } else if (xAxis.equals("initiallyVacc")) {
                                                                             data.put(initiallyVaccI, data.get(initiallyVaccI) + results.get(resultIndex));
                                                                             runTimes.put(initiallyVaccI, runTimes.get(initiallyVaccI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("getVacc")) {
+                                                                        } else if (xAxis.equals("getVacc")) {
                                                                             data.put(getVacI, data.get(getVacI) + results.get(resultIndex));
                                                                             runTimes.put(getVacI, runTimes.get(getVacI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("discovery")) {
+                                                                        } else if (xAxis.equals("discovery")) {
                                                                             data.put(discoveryI, data.get(getVacI) + results.get(resultIndex));
                                                                             runTimes.put(getVacI, runTimes.get(getVacI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("newGetWellDays")) {
+                                                                        } else if (xAxis.equals("newGetWellDays")) {
                                                                             data.put(newGetWellDaysI, data.get(newGetWellDaysI) + results.get(resultIndex));
                                                                             runTimes.put(newGetWellDaysI, runTimes.get(newGetWellDaysI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("percentTeens")) {
+                                                                        } else if (xAxis.equals("percentTeens")) {
                                                                             data.put(percentTeensI, data.get(percentTeensI) + results.get(resultIndex));
                                                                             runTimes.put(percentTeensI, runTimes.get(percentTeensI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("curfewDays")) {
+                                                                        } else if (xAxis.equals("curfewDays")) {
                                                                             data.put(curfewDaysI, data.get(percentTeensI) + results.get(resultIndex));
                                                                             runTimes.put(percentTeensI, runTimes.get(percentTeensI) + 1);
-                                                                        }
-                                                                        else if (xAxis.equals("percentCurfew")) {
+                                                                        } else if (xAxis.equals("percentCurfew")) {
                                                                             data.put(percentCurfewI, data.get(percentCurfewI) + results.get(resultIndex));
                                                                             runTimes.put(percentCurfewI, runTimes.get(percentCurfewI) + 1);
                                                                         }
@@ -387,8 +374,7 @@ public class MasterManySimsObject
                                                                         try {
                                                                             sheet.insertRow(i);
                                                                             sheet.addCell(new Label(0, i, Integer.toString(numPeopleI)));
-                                                                        }
-                                                                        catch (jxl.write.biff.RowsExceededException e) {
+                                                                        } catch (jxl.write.biff.RowsExceededException e) {
                                                                             sheetIndex++;
                                                                             i = 1;
                                                                             workbook.createSheet("Sheet" + sheetIndex, sheetIndex);
@@ -437,7 +423,7 @@ public class MasterManySimsObject
                                                                     }
 
                                                                     // Update progress bar
-                                                                    if (execTime + 500.0 < System.currentTimeMillis() - startTime){
+                                                                    if (execTime + 500.0 < System.currentTimeMillis() - startTime) {
                                                                         progressBar.setIndeterminate(false);
                                                                         endTime = System.currentTimeMillis();
                                                                         execTime = endTime - startTime;
@@ -527,8 +513,7 @@ public class MasterManySimsObject
 
             try {
                 workbook.write();
-            }
-            catch (java.lang.OutOfMemoryError e) {
+            } catch (java.lang.OutOfMemoryError e) {
                 JOptionPane.showMessageDialog(new JFrame(), "ERROR: Java heap space exceeded. Please try again with smaller parameters.", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             }
@@ -541,8 +526,7 @@ public class MasterManySimsObject
 
                 Desktop.getDesktop().open(file);
             }
-        }
-        else {
+        } else {
             file.delete();
         }
 
@@ -555,8 +539,7 @@ public class MasterManySimsObject
             ArrayList<Integer> best = UserInterface.analyze(inputs);
             if (best == null) {
                 JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid solution found. Please try again valid input.", "No Solution Error", JOptionPane.ERROR_MESSAGE);
-            }
-            else {
+            } else {
                 UserInterface.displayMessage("The best option for the entered input is: " + best + "\nnumPeople: " + best.get(0) + "\nminFriends: " + best.get(1) + "\nmaxFriends: " + best.get(2) + "\nhubNumber: " + best.get(3) + "\ngetWellDays: " + best.get(4) + "\ndiscovery: " + best.get(5) + "\nnewGetWellDays: " + best.get(6) + "\ninitiallySick: " + best.get(7) + "\ninitiallyVacc: " + best.get(8) + "\npercentSick: " + best.get(9) + "\ngetVac: " + best.get(10) + "\ncurfewDays: " + best.get(11) + "\npercentTeens: " + best.get(12) + "\npercentCurfew: " + best.get(13) + "\n\ndays: " + best.get(14) + "\ncost: " + best.get(15) + "\ntotalSick: " + best.get(16));
             }
         }

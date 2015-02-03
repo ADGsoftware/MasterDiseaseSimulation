@@ -1,31 +1,19 @@
 package com.adg.PROEKT12;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import jxl.read.biff.BiffException;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-import jxl.read.biff.BiffException;
 
 public class UserInterface {
     /**
      * INPUT METHODS
      */
 
-    public static ArrayList<Integer> analyze () throws BiffException, IOException {
+    public static ArrayList<Integer> analyze() throws BiffException, IOException {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -216,7 +204,7 @@ public class UserInterface {
         c.gridx = 1;
         panel.add(fileNameAnswer, c);
 
-        JPanel header = new JPanel (new GridBagLayout());
+        JPanel header = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
         c.ipady = 5;
         c.gridx = 0;
@@ -228,7 +216,7 @@ public class UserInterface {
 
         JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
         scrollPane.setBounds(0, 0, 500, 500);
-        scrollPane.setPreferredSize(new Dimension(515, maxOut((int)(screenSize.height / 1.6), 500))); //515
+        scrollPane.setPreferredSize(new Dimension(515, maxOut((int) (screenSize.height / 1.6), 500))); //515
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
@@ -247,7 +235,7 @@ public class UserInterface {
         boolean error = false;
         while (true) {
             int result = JOptionPane.showConfirmDialog(null, contentPane, "Configuration", JOptionPane.OK_CANCEL_OPTION);
-            dependent = (String)minimize.getSelectedItem();
+            dependent = (String) minimize.getSelectedItem();
             fileName = fileNameAnswer.getText();
             fileNameAnswer.setText(fileName);
             fileName += ".xls";
@@ -272,8 +260,7 @@ public class UserInterface {
                     list = MoreMethods.commaListToArrayList(text);
                     System.out.println(list);
                     input.add(list);
-                }
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     error = true;
                     field.setText("");
                 }
@@ -282,8 +269,7 @@ public class UserInterface {
             if (error) {
                 JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.\nPossible reasons include non-integer input, or input not in range of experiment.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 error = false;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -311,15 +297,12 @@ public class UserInterface {
             if (numPeopleList.contains(list.get(0)) && minFriendsList.contains(list.get(1)) && maxFriendsList.contains(list.get(2)) && hubNumberList.contains(list.get(3)) && getWellDaysList.contains(list.get(4)) && percentSickList.contains(list.get(9)) && initiallySickList.contains(list.get(7)) && initiallyVaccList.contains(list.get(8)) && getVaccList.contains(list.get(10)) && discoveryList.contains(list.get(5)) && newGetWellDaysList.contains(list.get(6)) && curfewDaysList.contains(list.get(11)) && percentTeensList.contains(list.get(12)) && percentCurfewList.contains(list.get(13))) {
                 if (best == null) {
                     best = list;
-                }
-                else {
+                } else {
                     if (dependent.equals("Days")) {
                         index = list.size() - 3;
-                    }
-                    else if (dependent.equals("Cost")) {
+                    } else if (dependent.equals("Cost")) {
                         index = list.size() - 2;
-                    }
-                    else if (dependent.equals("Total Sick")) {
+                    } else if (dependent.equals("Total Sick")) {
                         index = list.size() - 1;
                     }
 
@@ -335,7 +318,7 @@ public class UserInterface {
 
 
     @SuppressWarnings("unchecked")
-    public static ArrayList<Integer> analyze (ArrayList<Object> inputs) throws BiffException, IOException {
+    public static ArrayList<Integer> analyze(ArrayList<Object> inputs) throws BiffException, IOException {
         int numPeople = Integer.parseInt(inputs.get(0).toString());
         int numPeopleMax = Integer.parseInt(inputs.get(2).toString());
         int numPeopleStep = Integer.parseInt(inputs.get(1).toString());
@@ -584,7 +567,7 @@ public class UserInterface {
         fileNameAnswer.setText(fileName.replace(".xls", ""));
         panel.add(fileNameAnswer, c);
 
-        JPanel header = new JPanel (new GridBagLayout());
+        JPanel header = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
         c.ipady = 5;
         c.gridx = 0;
@@ -596,7 +579,7 @@ public class UserInterface {
 
         JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
         scrollPane.setBounds(0, 0, 500, 500);
-        scrollPane.setPreferredSize(new Dimension(515, maxOut((int)(screenSize.height / 1.6), 500))); //515
+        scrollPane.setPreferredSize(new Dimension(515, maxOut((int) (screenSize.height / 1.6), 500))); //515
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
@@ -614,7 +597,7 @@ public class UserInterface {
         boolean error = false;
         while (true) {
             int result = JOptionPane.showConfirmDialog(null, contentPane, "Configuration", JOptionPane.OK_CANCEL_OPTION);
-            dependent = (String)minimize.getSelectedItem();
+            dependent = (String) minimize.getSelectedItem();
             fileName = fileNameAnswer.getText();
             fileNameAnswer.setText(fileName);
             fileName += ".xls";
@@ -639,11 +622,10 @@ public class UserInterface {
                 try {
                     list = MoreMethods.commaListToArrayList(text);
                     if (list == null) {
-                        input.add((ArrayList<Integer>)lists[j]);
-                    }
-                    else {
-						/*
-						for (int item : list) {
+                        input.add((ArrayList<Integer>) lists[j]);
+                    } else {
+                        /*
+                        for (int item : list) {
 							if (!((ArrayList<Integer>)lists[j]).contains(item)) {
 								throw new NumberFormatException();
 							}
@@ -652,8 +634,7 @@ public class UserInterface {
                         System.out.println(list);
                         input.add(list);
                     }
-                }
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     error = true;
                     field.setText("");
                 }
@@ -664,8 +645,7 @@ public class UserInterface {
                 JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.\nPossible reasons include non-integer input, or input not in range of experiment.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 inputs.clear();
                 error = false;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -693,15 +673,12 @@ public class UserInterface {
             if (numPeopleList.contains(list.get(0)) && minFriendsList.contains(list.get(1)) && maxFriendsList.contains(list.get(2)) && hubNumberList.contains(list.get(3)) && getWellDaysList.contains(list.get(4)) && percentSickList.contains(list.get(9)) && initiallySickList.contains(list.get(7)) && initiallyVaccList.contains(list.get(8)) && getVaccList.contains(list.get(10)) && discoveryList.contains(list.get(5)) && newGetWellDaysList.contains(list.get(6)) && curfewDaysList.contains(list.get(11)) && percentTeensList.contains(list.get(12)) && percentCurfewList.contains(list.get(13))) {
                 if (best == null) {
                     best = list;
-                }
-                else {
+                } else {
                     if (dependent.equals("Days")) {
                         index = list.size() - 3;
-                    }
-                    else if (dependent.equals("Cost")) {
+                    } else if (dependent.equals("Cost")) {
                         index = list.size() - 2;
-                    }
-                    else if (dependent.equals("Total Sick")) {
+                    } else if (dependent.equals("Total Sick")) {
                         index = list.size() - 1;
                     }
 
@@ -715,7 +692,7 @@ public class UserInterface {
         return best;
     }
 
-    public static ArrayList<Object> getInput () {
+    public static ArrayList<Object> getInput() {
         ArrayList<Object> inputs = new ArrayList<Object>();
 
         JPanel panel = new JPanel(new GridBagLayout());
@@ -1054,7 +1031,7 @@ public class UserInterface {
         c.gridx = 1;
         panel.add(yAxisChoice, c);
 
-        JPanel header = new JPanel (new GridBagLayout());
+        JPanel header = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
         c.ipady = 5;
         c.gridx = 0;
@@ -1071,7 +1048,7 @@ public class UserInterface {
 
         JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
         scrollPane.setBounds(0, 0, 500, 500);
-        scrollPane.setPreferredSize(new Dimension(660, maxOut((int)(screenSize.height / 1.6), 500))); //640
+        scrollPane.setPreferredSize(new Dimension(660, maxOut((int) (screenSize.height / 1.6), 500))); //640
 
         JPanel contentPane = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
@@ -1103,8 +1080,7 @@ public class UserInterface {
                         throw new NumberFormatException();
                     }
                     inputs.add(integer);
-                }
-                catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     error = true;
                     field.setText("");
                 }
@@ -1124,20 +1100,19 @@ public class UserInterface {
                 JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 inputs.clear();
                 error = false;
-            }
-            else {
+            } else {
                 return inputs;
             }
         }
     }
 
-    private static JLabel separatorJLabel () {
+    private static JLabel separatorJLabel() {
         JLabel label = new JLabel(" ----------------------------------------------------");
         //label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
         return label;
     }
 
-    private static int maxOut (int largeNum, int max) {
+    private static int maxOut(int largeNum, int max) {
         if (largeNum > max) {
             return max;
         }
@@ -1148,7 +1123,7 @@ public class UserInterface {
      * OUTPUT METHODS
      */
 
-    public static void displayMessage (String message) { // Displays message to user
+    public static void displayMessage(String message) { // Displays message to user
         JTextArea outputMessage = new JTextArea(message);
         outputMessage.setLineWrap(true);
         outputMessage.setWrapStyleWord(true);

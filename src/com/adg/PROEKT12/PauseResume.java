@@ -1,8 +1,9 @@
 package com.adg.PROEKT12;
 
 //Imports
-import java.awt.Frame;
-import javax.swing.JButton;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class PauseResume {
     public PauseResume(Frame frame) {

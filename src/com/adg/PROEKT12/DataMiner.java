@@ -23,7 +23,7 @@ public class DataMiner {
         String line = br.readLine();
         ArrayList<String> hospitals = new ArrayList<String>();
         ArrayList<Integer> hospitalResults = new ArrayList<Integer>();
-        while ((line = br.readLine()) !=null) {
+        while ((line = br.readLine()) != null) {
             String[] b = line.split(splitBy);
 
             //Number

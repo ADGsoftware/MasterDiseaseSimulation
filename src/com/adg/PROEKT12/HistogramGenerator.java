@@ -1,22 +1,5 @@
 package com.adg.PROEKT12;
 
-import java.awt.Desktop;
-import java.awt.GridLayout;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -25,8 +8,17 @@ import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+
 public class HistogramGenerator {
-    public static void run () throws IOException {
+    public static void run() throws IOException {
         boolean done = false;
 
         int numPeople = 0;
@@ -39,7 +31,7 @@ public class HistogramGenerator {
         int hubNumber = 0;
         boolean open = false;
 
-        while (!done){
+        while (!done) {
             //Interface SHtuff
 
             JPanel panel = new JPanel(new GridLayout(7, 0));
@@ -72,7 +64,7 @@ public class HistogramGenerator {
                 System.exit(0);
             }
 
-            try{
+            try {
                 numPeople = Integer.parseInt(numPeopleField.getText());
                 if (numPeople <= 0) {
                     throw new NumberFormatException();
@@ -88,13 +80,13 @@ public class HistogramGenerator {
                     throw new NumberFormatException();
                 }
 
-                if (checkBoxSW.isSelected()){
+                if (checkBoxSW.isSelected()) {
                     networks.add("SW");
                 }
-                if (checkBoxRand.isSelected()){
+                if (checkBoxRand.isSelected()) {
                     networks.add("Rand");
                 }
-                if (checkBoxSF.isSelected()){
+                if (checkBoxSF.isSelected()) {
                     networks.add("SF");
                 }
 
@@ -102,8 +94,7 @@ public class HistogramGenerator {
                     open = true;
                 }
                 done = true;
-            }
-            catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 if (result == JOptionPane.OK_OPTION) {
                     JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid.", "Input Error", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -112,14 +103,14 @@ public class HistogramGenerator {
             }
         }
 
-        for (int x = 0; x < numPeople; x++){
+        for (int x = 0; x < numPeople; x++) {
             Person person = new Person(x + 1);
             people.add(person);
         }
 
         // Make progress bar
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(1,0));
+        panel.setLayout(new GridLayout(1, 0));
         panel.add(new JLabel("Making histograms..."));
         JFrame frame = new JFrame();
         JProgressBar progressBar = new JProgressBar(0, 100);
@@ -135,14 +126,14 @@ public class HistogramGenerator {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (String networkType : networks){
-            if (networkType == "SW"){
+        for (String networkType : networks) {
+            if (networkType == "SW") {
                 methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
             }
-            if (networkType == "Rand"){
+            if (networkType == "Rand") {
                 methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
             }
-            if (networkType == "SF"){
+            if (networkType == "SF") {
                 methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
             }
 
@@ -151,7 +142,7 @@ public class HistogramGenerator {
                 Desktop.getDesktop().open(histogram);
             }
 
-            for (Person person : people){
+            for (Person person : people) {
                 person.clearFriends();
             }
         }
@@ -159,20 +150,20 @@ public class HistogramGenerator {
         frame.dispose();
     }
 
-    public static File makeHistogram(ArrayList<Person> people, int numPeople, int maxFriends, String networkType) throws IOException{
+    public static File makeHistogram(ArrayList<Person> people, int numPeople, int maxFriends, String networkType) throws IOException {
         HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.FREQUENCY);
         ArrayList<Double> friendNumbers = new ArrayList<Double>();
         double[] friendNumbersDoubleList = new double[people.size()];
-        for(Person person: people){
-            friendNumbers.add((double)(person.getFriends().size()));
+        for (Person person : people) {
+            friendNumbers.add((double) (person.getFriends().size()));
         }
-        for(int i = 0; i < friendNumbers.size(); i++){
-            friendNumbersDoubleList [i] = friendNumbers.get(i);
+        for (int i = 0; i < friendNumbers.size(); i++) {
+            friendNumbersDoubleList[i] = friendNumbers.get(i);
         }
         //System.out.println(friendNumbersDoubleList);
         Collections.sort(friendNumbers);
-        dataset.addSeries("Histogram", friendNumbersDoubleList, (friendNumbers.get(friendNumbers.size() - 1)).intValue()*2, 0, friendNumbers.get(friendNumbers.size() - 1) + 0.5);
+        dataset.addSeries("Histogram", friendNumbersDoubleList, (friendNumbers.get(friendNumbers.size() - 1)).intValue() * 2, 0, friendNumbers.get(friendNumbers.size() - 1) + 0.5);
 
         JFreeChart histogramObject = ChartFactory.createHistogram("FriendNumberAnalysis - " + networkType, "NumberOfFriends", "NumberOfPeople", dataset, PlotOrientation.VERTICAL, true, true, false);
 

@@ -1,34 +1,38 @@
 package com.adg.PROEKT12;
 
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public class ManyLinesAverageObject {
     public static int maxDays = 100;
 
-    public static void run() throws IOException {
+    public void run() throws IOException {
+        //.config
+        List<String> config = readFile(".config", StandardCharsets.UTF_8);
+        System.out.println(config);
+
+        ArrayList<String> params = new ArrayList<String>();
+
         MoreMethods methods = new MoreMethods();
 
         // Initialize variables
@@ -46,18 +50,35 @@ public class ManyLinesAverageObject {
 
         // Gets input from user before graph
         while (!done) {
+            //Get params from .config
+            int cNumPeople = getValue(config.get(0));
+            int cMinFriends = getValue(config.get(1));
+            int cMaxFriends = getValue(config.get(2));
+            int cHubNumber = getValue(config.get(3));
+            String cNetwork = getStringValue(config.get(4));
+            boolean cDrawJung = getBoolValue(config.get(5));
+            boolean cDoFwf = getBoolValue(config.get(6));
+            String cLayout = getStringValue(config.get(7));
+
+
             JPanel panel = new JPanel();
             panel.setLayout(new GridLayout(10, 0));
-            JTextField numPeopleAnswer = new JTextField("100", 10);
-            JTextField minFriendsAnswer = new JTextField("2", 10);
-            JTextField hubNumberAnswer = new JTextField("0", 10);
-            JTextField maxFriendsAnswer = new JTextField("5", 10);
+            JTextField numPeopleAnswer = new JTextField("" + cNumPeople, 10);
+            JTextField minFriendsAnswer = new JTextField("" + cMinFriends, 10);
+            JTextField hubNumberAnswer = new JTextField("" + cHubNumber, 10);
+            JTextField maxFriendsAnswer = new JTextField("" + cMaxFriends, 10);
             String[] possibilities = {"Circle", "FR", "ISOM", "Spring"};
-            JComboBox layoutAnswer = new JComboBox(possibilities);
+            JComboBox possibilitiesBox = new JComboBox(possibilities);
+            possibilitiesBox.setSelectedItem(cLayout);
+            JComboBox layoutAnswer = possibilitiesBox;
             String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
-            JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
+            JComboBox possibilitiesNetworkBox = new JComboBox(possibilitiesNetwork);
+            possibilitiesNetworkBox.setSelectedItem(cNetwork);
+            JComboBox comboBoxNetwork = possibilitiesNetworkBox;
             JCheckBox checkBoxGraph = new JCheckBox();
+            checkBoxGraph.setSelected(cDrawJung);
             JCheckBox checkBoxFwF = new JCheckBox();
+            checkBoxFwF.setSelected(cDoFwf);
 
             panel.add(new JLabel("PEOPLE SETUP:"));
             panel.add(new JLabel("----------------------------------------------"));
@@ -188,6 +209,7 @@ public class ManyLinesAverageObject {
         int curfewDays = -1;
         ArrayList<Integer> vaccinatedPeople = new ArrayList<Integer>();
         ArrayList<Person> teens = new ArrayList<Person>();
+        final String[] filePath = {System.getProperty("user.dir")}; //Default filepath
         String fileName = "simResults";
         int runTimes = 0;
 
@@ -195,22 +217,36 @@ public class ManyLinesAverageObject {
 
         // Gets input from user after graph
         while (!done) {
+            //Get params from .config
+            int cGetWellDays = getValue(config.get(8));
+            int cPercentSick = getValue(config.get(9));
+            int cGetVac = getValue(config.get(10));
+            int cPercentTeenagers = getValue(config.get(11));
+            int cPercentCurfewed = getValue(config.get(12));
+            int cCurfewDays = getValue(config.get(13));
+            int cRunTimes = getValue(config.get(14));
+            String cFilePath = getStringValue(config.get(15));
+            String cFileName = getStringValue(config.get(16));
+
+
             JPanel panel2 = new JPanel();
             panel2.setLayout(new GridLayout(20, 0));
 
             Checkbox transmissionTestCheckbox = new Checkbox("", null, false);
-            JTextField getWellDaysAnswer = new JTextField("10", 10);
+            JTextField getWellDaysAnswer = new JTextField("" + cGetWellDays, 10);
             JTextField discoveryAnswer = new JTextField("10000", 10);
             JTextField newGetWellAnswer = new JTextField("5", 10);
             JTextField initiallySickAnswer = new JTextField("10", 10);
             JTextField vaccinatedPeopleAnswer = new JTextField("", 10);
-            JTextField percentSickAnswer = new JTextField("10", 10);
-            JTextField getVacAnswer = new JTextField("0", 10);
-            JTextField fileAnswer = new JTextField("simResults", 10);
-            JTextField runTimesAnswer = new JTextField("10", 10);
-            JTextField percentTeenagersAnswer = new JTextField("10", 10);
-            JTextField percentCurfewedAnswer = new JTextField("20", 10);
-            JTextField curfewDaysAnswer = new JTextField("10", 10);
+            JTextField percentSickAnswer = new JTextField("" + cPercentSick, 10);
+            JTextField getVacAnswer = new JTextField("" + cGetVac, 10);
+            JTextField fileAnswer = new JTextField("" + cFileName, 10);
+            JTextField runTimesAnswer = new JTextField("" + cRunTimes, 10);
+            JTextField percentTeenagersAnswer = new JTextField("" + cPercentTeenagers, 10);
+            JTextField percentCurfewedAnswer = new JTextField("" + cPercentCurfewed, 10);
+            JTextField curfewDaysAnswer = new JTextField("" + cCurfewDays, 10);
+            final JButton browse = new JButton("Browse...");
+            filePath[0] = cFilePath;
 
             panel2.add(new JLabel("INITIAL CONDITIONS SETUP:"));
             panel2.add(new JLabel("----------------------------------------------"));
@@ -253,8 +289,39 @@ public class ManyLinesAverageObject {
             panel2.add(new JLabel("----------------------------------------------"));
             panel2.add(new JLabel("How many times should the simulation run?"));
             panel2.add(runTimesAnswer);
+            panel2.add(new JLabel("Where should I save the graph? (If not in default directory)"));
+            panel2.add(browse);
             panel2.add(new JLabel("What should be the file-name of the output graph?"));
             panel2.add(fileAnswer);
+
+            //Listen for browse
+            browse.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent mouseEvent) {
+                    filePath[0] = getFilePath();
+                    browse.setLabel(filePath[0]);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent mouseEvent) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent mouseEvent) {
+
+                }
+            });
 
             int result = JOptionPane.showConfirmDialog(null, panel2, "After-Graph Configuration", JOptionPane.OK_CANCEL_OPTION);
 
@@ -368,17 +435,33 @@ public class ManyLinesAverageObject {
         }
 
 
+        //Record params into .config
+        params.add("numPeople`" + numPeople);
+        params.add("minFriends`" + minFriends);
+        params.add("maxFriends`" + maxFriends);
+        params.add("hubNumber`" + hubNumber);
+        params.add("networkSelectString`" + networkSelectString);
+        params.add("drawJung`" + drawJung);
+        params.add("dofWF`" + doFwF);
+        params.add("layoutString`" + layoutString);
+        params.add("getWellDays`" + getWellDays);
+        params.add("percentSick`" + percentSick);
+        params.add("getVac`" + getVac);
+        params.add("percentTeenagers`" + percentTeenagers);
+        params.add("percentCurfewed`" + percentCurfewed);
+        params.add("curfewDays`" + curfewDays);
+        params.add("runTimes`" + runTimes);
+        params.add("filePath`" + filePath[0]);
+        params.add("fileName`" + fileName);
 
 
-
+        createConfig(params);
 
 
         //Begin actual simulations
 
 
         //System.out.println(people);
-
-        System.out.println("TransmissionTest: " + transmissionTest);
 
         double estimatedTime = Math.floor(0.447 * runTimes + 2768.902);
 
@@ -389,111 +472,86 @@ public class ManyLinesAverageObject {
         }
 
         Long startTime = System.currentTimeMillis();
-
-        ArrayList<ArrayList<TransmissionTestInfoStorage>> transmissionTestResults = new ArrayList<ArrayList<TransmissionTestInfoStorage>>();
         ArrayList<ArrayList<InfoStorage>> results = new ArrayList<ArrayList<InfoStorage>>();
 
-        if (transmissionTest) {
-            transmissionTestResults = MoreMethods.transmissionTest(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed);
-        } else {
-            results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest); //Meh I don't know how to do it better
-        }
+        results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest); //Meh I don't know how to do it better
 
         Long endTime = System.currentTimeMillis();
 
         methods.alert("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.", "Complete!");
 
 
-
         //Begin analysis
 
-        //TODO: Turn this into a method
+        boolean display = false;
+        boolean displayAverages = false;
 
-        if (!transmissionTest) { //If it's a normal simulation
-            boolean display = false;
-            boolean displayAverages = false;
+        ArrayList<DayStat> days = new ArrayList<DayStat>();
 
-            ArrayList<DayStat> days = new ArrayList<DayStat>();
-
-            //Initialize daystat array
-            for (int k = 0; k < maxDays; k++) {
-                days.add(new DayStat(k, 0, 0, 0));
-            }
-
-            //Add totals for each day
-            for (int i = 0; i < runTimes; i++) {
-                for (int j = 0; j < maxDays; j++) {
-                    //System.out.println(results.get(i).size() + " " + j);
-                    if (results.get(i).size() > j + 1) { //If this day is existent
-                        days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
-                        days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
-                        days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
-                    } else {
-                        //Add 0 to numSick and cost, which is the same as doing nothing
-                    }
-                }
-            }
-
-            //Get averages for each day
-            for (DayStat dayStat : days) {
-                dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
-                dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
-                dayStat.setCost(dayStat.getCost() / runTimes);
-            }
-
-            if (display) {
-                for (ArrayList<InfoStorage> alis : results) {
-                    System.out.println("NEW RUNTIME_________________________________________________________________________");
-                    for (InfoStorage is : alis) {
-                        System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
-                    }
-                }
-            }
-
-            if (displayAverages) {
-                for (DayStat day : days) {
-                    System.out.println("Day " + day.getDay() + ". Sick: " + day.getCurrentSick() + ". Total sick: " + day.getTotalSick() + ". Cost: " + day.getCost() + ".");
-                }
-            }
-
-            //Make a graph
-
-            XYSeriesCollection dataset = new XYSeriesCollection();
-
-            XYSeries numSick = new XYSeries("Sick People");
-            XYSeries totalSick = new XYSeries("Total Sick People");
-            XYSeries cost = new XYSeries("Cost");
-
-            dataset.addSeries(numSick);
-            dataset.addSeries(totalSick);
-            dataset.addSeries(cost);
-
-            for (DayStat day : days) {
-                MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
-                MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
-                MoreMethods.addPoint(cost, day.getDay(), day.getCost());
-            }
-
-            MoreMethods.makeChart(dataset, fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
-        } else { //If it's a TransmissionTest simulation
-            DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-
-            for (int i = 0; i < runTimes; i++) {
-                for (int j = 0; j < transmissionTestResults.get(i).size(); j++) {
-                    System.out.println("At runtime " + i + ", with percentage " + transmissionTestResults.get(i).get(j).getPercentage() + ", the duration was " + transmissionTestResults.get(i).get(j).getDuration() + ".");
-                }
-            }
-
-//            for (TransmissionTestInfoStorage ttis : transmissionTestResults) {
-//                methods.addPoint(dataset, ttis.getDuration(), "Duration", ttis.getPercentage());
-//
-//                MoreMethods.makeChart(dataset, fileName, "Duration of disease vs. Percent Chance of Transmission - " + networkSelectString + " Network", "Percent chance of transmission", "Duration");
-//            }
+        //Initialize daystat array
+        for (int k = 0; k < maxDays; k++) {
+            days.add(new DayStat(k, 0, 0, 0));
         }
+
+        //Add totals for each day
+        for (int i = 0; i < runTimes; i++) {
+            for (int j = 0; j < maxDays; j++) {
+                //System.out.println(results.get(i).size() + " " + j);
+                if (results.get(i).size() > j + 1) { //If this day is existent
+                    days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
+                    days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
+                    days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
+                } else {
+                    //Add 0 to numSick and cost, which is the same as doing nothing
+                }
+            }
+        }
+
+        //Get averages for each day
+        for (DayStat dayStat : days) {
+            dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
+            dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
+            dayStat.setCost(dayStat.getCost() / runTimes);
+        }
+
+        if (display) {
+            for (ArrayList<InfoStorage> alis : results) {
+                System.out.println("NEW RUNTIME_________________________________________________________________________");
+                for (InfoStorage is : alis) {
+                    System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
+                }
+            }
+        }
+
+        if (displayAverages) {
+            for (DayStat day : days) {
+                System.out.println("Day " + day.getDay() + ". Sick: " + day.getCurrentSick() + ". Total sick: " + day.getTotalSick() + ". Cost: " + day.getCost() + ".");
+            }
+        }
+
+        //Make a graph
+
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        XYSeries numSick = new XYSeries("Sick People");
+        XYSeries totalSick = new XYSeries("Total Sick People");
+        XYSeries cost = new XYSeries("Cost");
+
+        dataset.addSeries(numSick);
+        dataset.addSeries(totalSick);
+        dataset.addSeries(cost);
+
+        for (DayStat day : days) {
+            MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
+            MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
+            MoreMethods.addPoint(cost, day.getDay(), day.getCost());
+        }
+
+        MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
 
 
         //Open graph image
-        File f = new File(fileName + ".png");
+        File f = new File(filePath[0] + "/" + fileName + ".png");
         Desktop dt = Desktop.getDesktop();
         dt.open(f);
 
@@ -510,5 +568,58 @@ public class ManyLinesAverageObject {
             run();
             System.exit(0);
         }
+    }
+
+    private String getFilePath() {
+        //Ask for graph-saving location
+        //Create a file chooser
+        final JFileChooser fc = new JFileChooser();
+
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        int returnVal = fc.showOpenDialog(new JLabel("Browse..."));
+
+        String filePath = "";
+
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fc.getSelectedFile();
+            filePath = file.getAbsolutePath();
+        }
+
+        return filePath;
+    }
+
+    protected void createConfig(ArrayList<String> contents) throws FileNotFoundException, UnsupportedEncodingException {
+        //Create configuration file
+        PrintWriter writer = new PrintWriter(".config", "UTF-8");
+        for (String content : contents) {
+            writer.println(content);
+        }
+        writer.close();
+    }
+
+    protected List<String> readFile(String path, Charset encoding) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(path), encoding);
+        return lines;
+    }
+
+    protected int getValue(String valueString) {
+        String[] parts = valueString.split("`");
+        String value = parts[1];
+        int valueInt = Integer.parseInt(value);
+        return valueInt;
+    }
+
+    protected boolean getBoolValue(String valueString) {
+        String[] parts = valueString.split("`");
+        String value = parts[1];
+        boolean valueBool = Boolean.parseBoolean(value);
+        return valueBool;
+    }
+
+    protected String getStringValue(String valueString) {
+        String[] parts = valueString.split("`");
+        String value = parts[1];
+        return value;
     }
 }
