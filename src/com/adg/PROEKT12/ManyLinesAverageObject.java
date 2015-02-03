@@ -247,6 +247,7 @@ public class ManyLinesAverageObject {
             JTextField curfewDaysAnswer = new JTextField("" + cCurfewDays, 10);
             final JButton browse = new JButton("Browse...");
             filePath[0] = cFilePath;
+            browse.setLabel(filePath[0]);
 
             panel2.add(new JLabel("INITIAL CONDITIONS SETUP:"));
             panel2.add(new JLabel("----------------------------------------------"));
@@ -547,7 +548,7 @@ public class ManyLinesAverageObject {
             MoreMethods.addPoint(cost, day.getDay(), day.getCost());
         }
 
-        MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+        MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People (out of " + numPeople + ")");
 
 
         //Open graph image

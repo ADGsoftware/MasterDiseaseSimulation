@@ -1,36 +1,21 @@
 package com.adg.PROEKT12;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 import javax.swing.*;
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 
 public class Main {
+    private static boolean music = Math.random() < 0.5; //Random chance of music!
+
     public static void main(String[] args) throws Exception {
-        /*
-        JPanel panel = new JPanel();
-		
-		String[] programs = {"ManyLinesAverage", "MasterManySims"};
-		JComboBox programChoice = new JComboBox(programs);
-		
-		panel.add(new JLabel("What program to run?"));
-		panel.add(programChoice);
-		
-		int result = JOptionPane.showConfirmDialog(null, panel, "Program Choice", JOptionPane.OK_CANCEL_OPTION);
+        //Play music
+        if (music) Audio.main(args);
 
-		if (result != JOptionPane.OK_OPTION) { // If user clicked something other than OK
-			System.exit(0);
-		}
-		
-		String programString = (String) programChoice.getSelectedItem();
-		
-		if (programString.equals("ManyLinesAverage")) {
-			ManyLinesAverageObject.run();
-		}
-		else {
-			MasterManySimsObject.run();
-		}
-		*/
 
-        //while (true) { // Uncomment to loop program
         Object[] options = {"MasterManySims", "ManyLinesAverage", "Analyze", "Draw Histograms", "Hospital Analysis"};
         int selection = JOptionPane.showOptionDialog(null, "What program to run?", "Program Choice", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 
