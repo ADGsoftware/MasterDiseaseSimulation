@@ -713,6 +713,8 @@ public class MoreMethods {
         pBar.setTitle("Running simulations...");
         pBar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        int averageDuration = 0;
+
         ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
         for (int runTime = 0; runTime < runTimes; runTime++) {
             int value = runTime * 100 / runTimes;
@@ -778,8 +780,10 @@ public class MoreMethods {
                 //System.out.println(people);
                 //System.out.println(getNumSickPeople(people));
             }
+            averageDuration += day;
+
             //For any other days, make totalSickPeople equal to the number of total sick people on the last day
-            while (day < ManyLinesAverageObject.maxDays + 1) {
+            while (day < ManyLinesAverageObject.daysLimit) {
                 day++;
                 //System.out.println("totalSickPeople.size() = " + totalSickPeople.size());
                 infoStorage.get(runTime).add(new InfoStorage(day, 0, totalSickPeople.size(), cost));
@@ -794,6 +798,9 @@ public class MoreMethods {
             people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
             // It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
         }
+
+        averageDuration /= runTimes;
+        ManyLinesAverageObject.maxDays = averageDuration;
 
         return infoStorage;
     }

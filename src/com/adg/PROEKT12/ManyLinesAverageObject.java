@@ -24,7 +24,8 @@ import java.util.List;
 import java.util.Random;
 
 public class ManyLinesAverageObject {
-    public static int maxDays = 100;
+    public static int daysLimit = 10000; //Never go above 10000 days
+    public static int maxDays = 100; //Default
 
     public void run() throws IOException {
         //.config
@@ -480,6 +481,9 @@ public class ManyLinesAverageObject {
         Long endTime = System.currentTimeMillis();
 
         methods.alert("Completed " + runTimes + " simulations in " + ((endTime - startTime)) + " milliseconds.", "Complete!");
+
+
+        System.out.println("maxDays = " + maxDays);
 
 
         //Begin analysis
