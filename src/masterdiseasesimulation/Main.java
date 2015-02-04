@@ -1,7 +1,9 @@
 package masterdiseasesimulation;
 
+/*
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+*/ // COMMENTED OUT FOR JAVA VERSION
 
 import javax.swing.*;
 import java.io.File;
@@ -12,8 +14,10 @@ public class Main {
 	private static boolean music = Math.random() < 0.5; //Random chance of music!
 
 	public static void main(String[] args) throws Exception {
+		/*
 		//Play music
-		if (music) Audio.main(args);
+		//if (music) Audio.main(args);
+		*/ // COMMENTED OUT FOR JAVA VERSION
 
 		Object[] options = {"MasterManySims", "ManyLinesAverage", "Analyze", "Draw Histograms", "Hospital Analysis"};
 		int selection = JOptionPane.showOptionDialog(null, "What program to run?", "Program Choice", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);

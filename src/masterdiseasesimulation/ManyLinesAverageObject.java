@@ -19,9 +19,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
 import java.nio.charset.Charset;
+/*
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+*/ // COMMENTED OUT FOR JAVA VERSION
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +35,8 @@ public class ManyLinesAverageObject {
 
 	public static void run() throws IOException {
 		//.config
-		List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8);
+		List<String> config = new ArrayList<String>();
+		//List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8); // COMMENTED OUT FOR JAVA VERSION
 		System.out.println(config);
 
 		ArrayList<String> params = new ArrayList<String>();
@@ -55,6 +58,7 @@ public class ManyLinesAverageObject {
 
 		// Gets input from user before graph
 		while (!done) {
+			/*
 			//Get params from .config
 			int cNumPeople = getValue(config.get(0));
 			int cMinFriends = getValue(config.get(1));
@@ -64,26 +68,24 @@ public class ManyLinesAverageObject {
 			boolean cDrawJung = getBoolValue(config.get(5));
 			boolean cDoFwf = getBoolValue(config.get(6));
 			String cLayout = getStringValue(config.get(7));
-
+			*/ // COMMENTED OUT FOR JAVA VERSION
 
 			JPanel panel = new JPanel();
 			panel.setLayout(new GridLayout(10, 0));
-			JTextField numPeopleAnswer = new JTextField("" + cNumPeople, 10);
-			JTextField minFriendsAnswer = new JTextField("" + cMinFriends, 10);
-			JTextField hubNumberAnswer = new JTextField("" + cHubNumber, 10);
-			JTextField maxFriendsAnswer = new JTextField("" + cMaxFriends, 10);
+			JTextField numPeopleAnswer = new JTextField("1000", 10);
+			JTextField minFriendsAnswer = new JTextField("3", 10);
+			JTextField hubNumberAnswer = new JTextField("0", 10);
+			JTextField maxFriendsAnswer = new JTextField("10", 10);
 			String[] possibilities = {"Circle", "FR", "ISOM", "Spring"};
-			JComboBox possibilitiesBox = new JComboBox(possibilities);
-			possibilitiesBox.setSelectedItem(cLayout);
-			JComboBox layoutAnswer = possibilitiesBox;
+			JComboBox layoutAnswer = new JComboBox(possibilities);
+			layoutAnswer.setSelectedItem("Circle");
 			String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
-			JComboBox possibilitiesNetworkBox = new JComboBox(possibilitiesNetwork);
-			possibilitiesNetworkBox.setSelectedItem(cNetwork);
-			JComboBox comboBoxNetwork = possibilitiesNetworkBox;
+			JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
+			comboBoxNetwork.setSelectedItem("Scale-Free");
 			JCheckBox checkBoxGraph = new JCheckBox();
-			checkBoxGraph.setSelected(cDrawJung);
+			checkBoxGraph.setSelected(false);
 			JCheckBox checkBoxFwF = new JCheckBox();
-			checkBoxFwF.setSelected(cDoFwf);
+			checkBoxFwF.setSelected(false);
 
 			panel.add(new JLabel("PEOPLE SETUP:"));
 			panel.add(new JLabel("----------------------------------------------"));
@@ -222,6 +224,7 @@ public class ManyLinesAverageObject {
 
 		// Gets input from user after graph
 		while (!done) {
+			/*
 			//Get params from .config
 			int cGetWellDays = getValue(config.get(8));
 			int cPercentSick = getValue(config.get(9));
@@ -232,25 +235,26 @@ public class ManyLinesAverageObject {
 			int cRunTimes = getValue(config.get(14));
 			String cFilePath = getStringValue(config.get(15));
 			String cFileName = getStringValue(config.get(16));
+			*/ // COMMENTED OUT FOR JAVA VERSION
 			
 			JPanel panel2 = new JPanel();
 			panel2.setLayout(new GridLayout(20, 0));
 
 			Checkbox transmissionTestCheckbox = new Checkbox("", null, false);
-			JTextField getWellDaysAnswer = new JTextField("" + cGetWellDays, 10);
+			JTextField getWellDaysAnswer = new JTextField("10", 10);
 			JTextField discoveryAnswer = new JTextField("10000", 10);
 			JTextField newGetWellAnswer = new JTextField("5", 10);
 			JTextField initiallySickAnswer = new JTextField("10", 10);
 			JTextField vaccinatedPeopleAnswer = new JTextField("", 10);
-			JTextField percentSickAnswer = new JTextField("" + cPercentSick, 10);
-			JTextField getVacAnswer = new JTextField("" + cGetVac, 10);
-			JTextField fileAnswer = new JTextField("" + cFileName, 10);
-			JTextField runTimesAnswer = new JTextField("" + cRunTimes, 10);
-			JTextField percentTeenagersAnswer = new JTextField("" + cPercentTeenagers, 10);
-			JTextField percentCurfewedAnswer = new JTextField("" + cPercentCurfewed, 10);
-			JTextField curfewDaysAnswer = new JTextField("" + cCurfewDays, 10);
+			JTextField percentSickAnswer = new JTextField("10", 10);
+			JTextField getVacAnswer = new JTextField("0", 10);
+			JTextField fileAnswer = new JTextField("simResults", 10);
+			JTextField runTimesAnswer = new JTextField("100", 10);
+			JTextField percentTeenagersAnswer = new JTextField("0", 10);
+			JTextField percentCurfewedAnswer = new JTextField("20", 10);
+			JTextField curfewDaysAnswer = new JTextField("50", 10);
 			final JButton browse = new JButton("Browse...");
-			filePath[0] = cFilePath;
+			filePath[0] = "C:\\Users\\Irochka\\workspace\\and\\PROEKT12";
 			browse.setText(filePath[0]);
 			//browse.setLabel(filePath[0]);
 
@@ -604,11 +608,13 @@ public class ManyLinesAverageObject {
 		}
 		writer.close();
 	}
-
+	
+	/*
 	protected List<String> readFile(String path, Charset encoding) throws IOException {
 		List<String> lines = File.readAllLines(Paths.get(path), encoding);
 		return lines;
 	}
+	*/ // COMMENTED OUT FOR JAVA VERSION
 
 	protected static int getValue(String valueString) {
 		String[] parts = valueString.split("`");
