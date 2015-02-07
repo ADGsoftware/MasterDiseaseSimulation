@@ -26,7 +26,7 @@ public class Audio implements Runnable {
 
         try {
             audioStream = AudioSystem.getAudioInputStream(soundFile);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }

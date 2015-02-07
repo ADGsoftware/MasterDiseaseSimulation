@@ -17,7 +17,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -57,9 +56,7 @@ public class MoreMethods {
     public void removeDuplicate(ArrayList<Integer> arlList) {// Removes duplicates from given ArrayList
         ArrayList<Integer> newList = new ArrayList<Integer>();
         for (Integer item : arlList) {
-            if (newList.contains(item)) {
-                //Do Nothing
-            } else {
+            if (!newList.contains(item)) {
                 newList.add(item);
             }
         }
@@ -106,9 +103,7 @@ public class MoreMethods {
     public static int randInt(int min, int max) {
         Random rand = new Random();
 
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-
-        return randomNum;
+        return rand.nextInt(max - min + 1) + min;
     }
 
     public static ArrayList<Long> getTime(long leftSec) { // This method returns an ArrayList with the number of hours, minutes, and seconds in a given number of seconds
@@ -342,7 +337,7 @@ public class MoreMethods {
         assignCapacities(people, minFriends, maxFriends, random);
         int numPeople = people.size();
         makeHubs(hubNumber, people, random);
-        boolean done = false;
+        boolean done;
         //Range Variable
         int halfRange;
 
@@ -469,21 +464,17 @@ public class MoreMethods {
 
     public Layout<Person, String> chooseLayout(UndirectedSparseMultigraph<Person, String> graph, String layoutString) { // Set layout type
         if (layoutString.equals("FR")) {
-            FRLayout<Person, String> layout = new FRLayout<Person, String>(graph);
-            return layout;
+            return new FRLayout<Person, String>(graph);
         } else if (layoutString.equals("ISOM")) {
-            ISOMLayout<Person, String> layout = new ISOMLayout<Person, String>(graph);
-            return layout;
+            return new ISOMLayout<Person, String>(graph);
         } else if (layoutString.equals("Spring")) {
-            SpringLayout<Person, String> layout = new SpringLayout<Person, String>(graph);
-            return layout;
+            return new SpringLayout<Person, String>(graph);
         } else if (layoutString.equals("Circle")) {
             CircleLayout<Person, String> layout = new CircleLayout<Person, String>(graph);
             layout.setVertexOrder(Person.orderByID);
             return layout;
         } else {
-            ISOMLayout<Person, String> layout = new ISOMLayout<Person, String>(graph); // Make it default (ISOM)
-            return layout;
+            return new ISOMLayout<Person, String>(graph);
         }
     }
 
@@ -504,7 +495,7 @@ public class MoreMethods {
             }
         }
         greenVertices(vv);
-        recolorHubs(g, vv, people);
+        recolorHubs(vv, people);
     }
 
     public void greenVertices(VisualizationViewer<Person, String> vv) { // Make all vertices green
@@ -517,7 +508,7 @@ public class MoreMethods {
         vv.getRenderContext().setVertexFillPaintTransformer(vertexColorGreen);
     }
 
-    public void recolorHubs(UndirectedSparseMultigraph<Person, String> g, VisualizationViewer<Person, String> vv, final ArrayList<Person> people) { // Color all hubs orange
+    public void recolorHubs(VisualizationViewer<Person, String> vv, final ArrayList<Person> people) { // Color all hubs orange
         Transformer<Person, Paint> vertexColorOrange = new Transformer<Person, Paint>() {
             @Override
             public Paint transform(Person i) {
@@ -539,8 +530,8 @@ public class MoreMethods {
     public void calculateConnectivityRatios(ArrayList<Person> people) {
         float numerator = 0;
         float denominator;
-        ArrayList<Person> friends = new ArrayList<Person>();
-        ArrayList<Person> friendsOfFriend = new ArrayList<Person>();
+        ArrayList<Person> friends;
+        ArrayList<Person> friendsOfFriend;
         for (Person person : people) {
             friends = person.getFriends();
             denominator = friends.size() * (friends.size() - 1) / 2;
@@ -609,76 +600,6 @@ public class MoreMethods {
             }
         }
         return totalSick;
-    }
-
-    public Integer[] simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int discovery, ArrayList<Integer> infectedPeople, int percentSick, int getVac, ArrayList<Integer> vaccinatedPeople, String filename, int runTimes, int percentCurfewed, int curfewDays) throws IOException {
-        boolean success = true;
-
-        int day = 0;
-
-        int numberOfSickPeople = infectedPeople.size();
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset(); //Create a new dataset to store all of the simulation data
-
-        while (numberOfSickPeople > 0) { // While there are sick people (This while loop goes every day)
-            day++;
-
-            addPoint(dataset, numberOfSickPeople, "Infected People", Integer.toString(day));
-
-            // First of all, check the people that are already sick.
-            for (Person person : people) {
-                if (person.isSick()) {
-                    person.incrementDaysSick();
-                }
-                if (person.getDaysSick() > getWellDays) {
-                    person.getWell();
-                }
-            }
-
-            // Now, curfew some random teenagers
-            for (Person teenager : teenagers) {
-                teenager.incrementCurfewedDays();
-                if (!teenager.isImmuneToCurfews()) {
-                    if (randInt(0, 10) == percentCurfewed) {
-                        teenager.setCurfewed(true);
-                    }
-                }
-                if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
-                    teenager.setCurfewed(false);
-                    teenager.setCurfewedDays(0);
-                    teenager.setImmuneToCurfews(true);
-                }
-            }
-
-            // For every person...
-            for (Person person : people) {
-                //System.out.println("At person " + person.getID());
-                ArrayList<Person> friends = person.getFriends();
-                for (Person friend : friends) {
-                    //System.out.println("At friend " + friend.getID());
-                    if (!(friend.isSick() || friend.isImmune() || friend.isCurfewed())) { // If they have a vulnerable friend
-                        if (randInt(0, 100 / percentSick) == 100 / percentSick) { // A random chance according to percentSick
-                            //System.out.println("Make him sick!");
-                            friend.setSick(true);
-                        }
-                    }
-                }
-            }
-
-            // Update the number of sick people
-            numberOfSickPeople = getNumSickPeople(people);
-        }
-
-        //System.out.println("Simulation complete after " + day + " days.");
-
-        people.get(2).setSick(true); // For now, make number 2 sick from the very beginning
-        people.get(2).setDaysSick(0);
-
-        int successful = success == true ? 1 : 0; // Convert boolean success to an integer (0 if true, 1 is false)
-
-        makeChart(dataset, filename, "Number of Sick People", "Days", "Infected People");
-
-        return new Integer[]{day, successful};
     }
 
     // Simulation for MasterManySims updated for ManyLinesAverage

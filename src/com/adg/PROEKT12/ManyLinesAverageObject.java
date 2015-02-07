@@ -27,9 +27,12 @@ public class ManyLinesAverageObject {
     public static int daysLimit = 10000; //Never go above 10000 days
     public static int maxDays = 100; //Default
 
+    /**
+     * @throws IOException
+     */
     public void run() throws IOException {
         //.config
-        List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8);
+        List<String> config = readFile("config.mms", StandardCharsets.UTF_8);
         System.out.println(config);
 
         ArrayList<String> params = new ArrayList<String>();
@@ -593,7 +596,7 @@ public class ManyLinesAverageObject {
 
     protected void createConfig(ArrayList<String> contents) throws FileNotFoundException, UnsupportedEncodingException {
         //Create configuration file
-        PrintWriter writer = new PrintWriter(".manyLinesAverageConfig", "UTF-8");
+        PrintWriter writer = new PrintWriter("config.mms", "UTF-8");
         for (String content : contents) {
             writer.println(content);
         }
