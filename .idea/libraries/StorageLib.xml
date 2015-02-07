@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="StorageLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/StorageLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

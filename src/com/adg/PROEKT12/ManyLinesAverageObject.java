@@ -1,5 +1,7 @@
 package com.adg.PROEKT12;
 
+import com.adg.StorageLib.DayStat;
+import com.adg.StorageLib.InfoStorage;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;

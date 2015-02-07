@@ -1,5 +1,7 @@
 package com.adg.PROEKT12;
 
+import com.adg.StorageLib.InfoStorage;
+import com.adg.StorageLib.TransmissionTestInfoStorage;
 import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
