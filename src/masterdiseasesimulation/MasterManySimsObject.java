@@ -146,12 +146,14 @@ public class MasterManySimsObject
 			JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(0);
 		}
+		/*
 		else if (totalRuns > 100000) {
 			int answer = JOptionPane.showConfirmDialog(null, "WARNING: Given parameters could exceed java heap space. Continue?", "Warning", JOptionPane.YES_NO_OPTION);
 			if (answer != JOptionPane.YES_OPTION) {
 				System.exit(0);
 			}
 		}
+		*/
 
 		int i = 1;
 		int progress = 1;
@@ -517,20 +519,6 @@ public class MasterManySimsObject
 			System.out.println(averages);
 			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
 			
-			LinkedHashMap<Integer, Double> sine = new LinkedHashMap<Integer, Double>();
-			sine.put(-1, -0.841);
-			sine.put(0, 0.0);
-			sine.put(1, 0.841);
-			sine.put(2, 0.909);
-			sine.put(3, 0.141);
-			sine.put(4, -0.757);
-			sine.put(5, -0.959);
-			sine.put(6, -0.279);
-			sine.put(7, 0.657);
-			sine.put(8, 0.989);
-			
-			//derivative = MoreMethods.getDerivative(sine);
-			
 			System.out.println(derivative);
 			for (Entry<Integer, Double> entry : derivative.entrySet()) {
 				key = entry.getKey();
@@ -552,9 +540,9 @@ public class MasterManySimsObject
 				status.setText("Opening graph...");
 				panel.remove(status);
 				panel.add(status);
-				
-				Desktop.getDesktop().open(lineChart);
+
 				Desktop.getDesktop().open(derivativeChart);
+				Desktop.getDesktop().open(lineChart);
 			}
 		}
 

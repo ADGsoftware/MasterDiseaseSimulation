@@ -1,4 +1,5 @@
 package masterdiseasesimulation;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -28,8 +29,8 @@ import javax.swing.JTextField;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import datacontainers.StringStorage;
 import moremethods.MoreMethods;
-
 import jxl.read.biff.BiffException;
 
 public class UserInterface {
@@ -730,7 +731,7 @@ public class UserInterface {
 	public static ArrayList<Object> getInput () {
 		ArrayList<Object> inputs = new ArrayList<Object>();
 
-		JPanel panel = new JPanel(new GridBagLayout());
+		final JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipadx = 0;
@@ -828,7 +829,7 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent evt) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				FileFilter filter = new FileNameExtensionFilter("TXT file", new String[] {"txt"});
+				FileFilter filter = new FileNameExtensionFilter("ADG file", new String[] {"adg"});
 				fileChooser.addChoosableFileFilter(filter);
 				fileChooser.setFileFilter(filter);
 				int result = fileChooser.showOpenDialog(new JFrame());
@@ -866,7 +867,7 @@ public class UserInterface {
 			public void actionPerformed(ActionEvent evt) {
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				FileFilter filter = new FileNameExtensionFilter("TXT file", new String[] {"txt"});
+				FileFilter filter = new FileNameExtensionFilter("ADG file", new String[] {"adg"});
 				fileChooser.addChoosableFileFilter(filter);
 				fileChooser.setFileFilter(filter);
 				int result = fileChooser.showSaveDialog(new JFrame());
@@ -874,8 +875,8 @@ public class UserInterface {
 					File selectedFile = fileChooser.getSelectedFile();
 					String path = selectedFile.getAbsolutePath();
 					//System.out.println(path);
-					if (!path.substring(path.length() - 4).equals(".txt")) {
-						path += ".txt";
+					if (!path.substring(path.length() - 4).equals(".adg")) {
+						path += ".adg";
 					}
 					PrintWriter writer;
 					try {
@@ -898,11 +899,95 @@ public class UserInterface {
 				}
 			}
 		});
+		
+		final StringStorage filePath = new StringStorage("results");
+		final JButton fileButton = new JButton("results");
+		fileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				JFileChooser fileChooser = new JFileChooser();
+				System.out.println(fileButton.getText());
+				fileChooser.setCurrentDirectory(new File(fileButton.getText()));
+				FileFilter filter = new FileNameExtensionFilter("XLS file", new String[] {"xls"});
+				fileChooser.addChoosableFileFilter(filter);
+				fileChooser.setFileFilter(filter);
+				int result = fileChooser.showSaveDialog(new JFrame());
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					String path = selectedFile.getAbsolutePath();
+					//System.out.println(path);
+					if (path.substring(path.length() - 4).equals(".xls")) {
+						path = path.substring(0, path.length() - 4);
+					}
+					
+					filePath.set(path);
+					
+					while (true) {
+						int index = path.indexOf('/');
+						System.out.println(index);
+						if (path.length() - index < 15) {
+							path = "..." + path.substring(index);
+							break;
+						}
+						else if (index == -1) {
+							path = "..." + path.substring(path.length() - 15);
+							break;
+						}
+						else {
+							path = path.substring(index + 1);
+						}
+					}
+					
+					fileButton.setText(path);
+				}
+			}
+		});
+		
+		final StringStorage graphFilePath = new StringStorage("graph");
+		final JButton graphFileButton = new JButton("graph");
+		graphFileButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				JFileChooser fileChooser = new JFileChooser();
+				System.out.println(graphFileButton.getText());
+				fileChooser.setCurrentDirectory(new File(graphFileButton.getText()));
+				FileFilter filter = new FileNameExtensionFilter("PNG file", new String[] {"png"});
+				fileChooser.addChoosableFileFilter(filter);
+				fileChooser.setFileFilter(filter);
+				int result = fileChooser.showSaveDialog(new JFrame());
+				if (result == JFileChooser.APPROVE_OPTION) {
+					File selectedFile = fileChooser.getSelectedFile();
+					String path = selectedFile.getAbsolutePath();
+					//System.out.println(path);
+					if (path.substring(path.length() - 4).equals(".png")) {
+						path = path.substring(0, path.length() - 4);
+					}
+					
+					graphFilePath.set(path);
+					
+					while (true) {
+						int index = path.indexOf('/');
+						System.out.println(index);
+						if (path.length() - index < 15) {
+							path = "..." + path.substring(index);
+							break;
+						}
+						else if (index == -1) {
+							path = "..." + path.substring(path.length() - 15);
+							break;
+						}
+						else {
+							path = path.substring(index + 1);
+						}
+					}
+					
+					graphFileButton.setText(path);
+				}
+			}
+		});
 
-		String[] xVars = {"numPeople", "minFriends", "maxFriends", "hubNumber", "getWellDays", "percentSick", "initiallySick", "initiallyVacc", "getVacc", "discovery", "newGetWellDays", "percentTeens", "curfewDays", "percentCurfew"};
-		JComboBox xAxisChoice = new JComboBox(xVars);
-		String[] yVars = {"Cost", "Days", "TotalSick"};
-		JComboBox yAxisChoice = new JComboBox(yVars);
+		final String[] xVars = {"numPeople", "minFriends", "maxFriends", "hubNumber", "getWellDays", "percentSick", "initiallySick", "initiallyVacc", "getVacc", "discovery", "newGetWellDays", "percentTeens", "curfewDays", "percentCurfew"};
+		final JComboBox xAxisChoice = new JComboBox(xVars);
+		final String[] yVars = {"Cost", "Days", "TotalSick"};
+		final JComboBox yAxisChoice = new JComboBox(yVars);
 		
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
@@ -1117,7 +1202,8 @@ public class UserInterface {
 		c.gridy += 1;
 		panel.add(new JLabel("fileName:"), c);
 		c.gridx = 1;
-		panel.add(fileName, c);
+		//panel.add(fileName, c);
+		panel.add(fileButton, c);
 		c.gridx = 2;
 		panel.add(saveResults, c);
 		c.gridx = 3;
@@ -1126,7 +1212,8 @@ public class UserInterface {
 		c.gridy += 1;
 		panel.add(new JLabel("graphFileName:"), c);
 		c.gridx = 1;
-		panel.add(graphFileName, c);
+		//panel.add(graphFileName, c);
+		panel.add(graphFileButton, c);
 		c.gridx = 2;
 		panel.add(saveGraph, c);
 		c.gridx = 3;
@@ -1163,10 +1250,77 @@ public class UserInterface {
 		header.add(new JLabel("            Max"), c);
 
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-
+		
+		int[] moveOver = {1, 1, 1, 1, 3, 1, 2, 1, 2, 2, 1, 2, 1, 1};
+		
+		final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
+		
+		c.gridx = 4;
+		c.gridy = 1;
+		for (int i = 1; i < fields.length; i += 3) {
+			final int iF = i;
+			final JCheckBox box = new JCheckBox();
+			checkBoxes.add(box);
+			box.setSelected(true);
+			box.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					if (!box.isSelected()) {
+						for (int j = iF; j < iF + 2; j++) {
+							fields[j].setBackground(Color.LIGHT_GRAY);
+							fields[j].setEditable(false);
+						}
+						fields[iF].setText("1");
+						fields[iF + 1].setText(fields[iF - 1].getText());
+					}
+					else {
+						for (int j = iF; j < iF + 2; j++) {
+							fields[j].setBackground(Color.WHITE);
+							fields[j].setEditable(true);
+						}
+						xAxisChoice.setSelectedItem(xVars[iF / 3]);
+					}
+				}
+			});
+			System.out.println(i);
+			c.gridy += moveOver[i / 3];
+			panel.add(box, c);
+		}
+		
+		final JCheckBox allBox = new JCheckBox();
+		allBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (allBox.isSelected()) {
+					for (JCheckBox box : checkBoxes) {
+						box.setSelected(true);
+						int i = checkBoxes.indexOf(box) * 3 + 1;
+						for (int j = i; j < i + 2; j++) {
+							fields[j].setBackground(Color.WHITE);
+							fields[j].setEditable(true);
+						}
+					}
+				}
+				else {
+					for (JCheckBox box : checkBoxes) {
+						box.setSelected(false);
+						int i = checkBoxes.indexOf(box) * 3 + 1;
+						for (int j = i; j < i + 2; j++) {
+							fields[j].setBackground(Color.LIGHT_GRAY);
+							fields[j].setEditable(false);
+						}
+						fields[i].setText("1");
+						fields[i + 1].setText(fields[i - 1].getText());
+					}
+				}
+			}
+		});
+		allBox.setSelected(true);
+		
+		c.gridy = 1;
+		panel.add(allBox, c);
+		
 		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
 		scrollPane.setBounds(0, 0, 500, 500);
-		scrollPane.setPreferredSize(new Dimension(660, maxOut((int)(screenSize.height / 1.6), 500))); //640
+		scrollPane.setPreferredSize(new Dimension(690, maxOut((int)(screenSize.height / 1.6), 500))); //640
 
 		c = new GridBagConstraints();
 		c.ipadx = 0;
@@ -1188,13 +1342,25 @@ public class UserInterface {
 			String text;
 			int integer;
 
-			for (JTextField field : fields) {
+			for (int i = 0; i < fields.length; i++) {
+				JTextField field = fields[i];
 				text = field.getText();
 				field.setText(text);
 				try {
-					integer = Integer.parseInt(text);
-					if (integer < 0) {
-						throw new NumberFormatException();
+					if (!field.isEditable() && (i + 2) % 3 == 0) {
+						integer = 1;
+					}
+					else if (!field.isEditable() && (i + 1) % 3 == 0) {
+						integer = Integer.parseInt(fields[i - 2].getText());
+						if (integer < 0) {
+							throw new NumberFormatException();
+						}
+					}
+					else {
+						integer = Integer.parseInt(text);
+						if (integer < 0) {
+							throw new NumberFormatException();
+						}
 					}
 					inputs.add(integer);
 				}
@@ -1203,9 +1369,11 @@ public class UserInterface {
 					field.setText("");
 				}
 			}
-
-			inputs.add(fileNameAnswer.getText());
-			inputs.add(graphFileNameAnswer.getText());
+			
+			inputs.add(filePath.get());
+			//inputs.add(fileNameAnswer.getText());
+			inputs.add(graphFilePath.get());
+			//inputs.add(graphFileNameAnswer.getText());
 			inputs.add(xAxisChoice.getSelectedItem());
 			inputs.add(yAxisChoice.getSelectedItem());
 			inputs.add(saveResultsBox.isSelected());
