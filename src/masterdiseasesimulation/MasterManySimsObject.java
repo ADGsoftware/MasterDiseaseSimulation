@@ -94,16 +94,18 @@ public class MasterManySimsObject
 		int percentCurfewStep = Integer.parseInt(inputs.get(40).toString());
 
 		String fileName = inputs.get(42).toString() + ".xls";
-		boolean saveResults = (Boolean)inputs.get(46);
-		boolean openResults = (Boolean)inputs.get(47);
+		boolean saveResults = (Boolean)inputs.get(48);
+		boolean openResults = (Boolean)inputs.get(49);
 		String graphFileName = inputs.get(43).toString();
-		boolean saveGraph = (Boolean)inputs.get(48);
-		boolean openGraph = (Boolean)inputs.get(49);
+		boolean saveGraph = (Boolean)inputs.get(50);
+		boolean openGraph = (Boolean)inputs.get(51);
 
 		String xAxis = inputs.get(44).toString();
-		String yAxis = inputs.get(45).toString();
-		
-		String networkType = inputs.get(50).toString();
+		boolean drawCost = (Boolean)inputs.get(45);
+		boolean drawDays = (Boolean)inputs.get(46);
+		boolean drawTotalSick = (Boolean)inputs.get(47);
+				
+		String networkType = inputs.get(52).toString();
 
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
 		//System.out.println(totalRuns);
@@ -190,9 +192,14 @@ public class MasterManySimsObject
 		}
 		
 		// Create data map
-		LinkedHashMap<Integer, Double> data = new LinkedHashMap<Integer, Double>();
 		HashMap<Integer, Double> runTimes = new HashMap<Integer, Double>();
-		int resultIndex = 0;
+		
+		LinkedHashMap<Integer, Double> dataCost = new LinkedHashMap<Integer, Double>();
+		
+		LinkedHashMap<Integer, Double> dataDays = new LinkedHashMap<Integer, Double>();
+		
+		LinkedHashMap<Integer, Double> dataTotalSick = new LinkedHashMap<Integer, Double>();
+
 		if (saveGraph) {
 			int init = 0;
 			int step = 0;
@@ -240,18 +247,16 @@ public class MasterManySimsObject
 				init = percentCurfew; step = percentCurfewStep; max = percentCurfewMax;
 			}
 			for (int j = init; j <= max; j += step) {
-				data.put(j, 0.0);
+				dataCost.put(j, 0.0);
 				runTimes.put(j, 0.0);
 			}
-
-			if (yAxis.equals("Cost")) {
-				resultIndex = 1;
+			for (int j = init; j <= max; j += step) {
+				dataDays.put(j, 0.0);
+				runTimes.put(j, 0.0);
 			}
-			else if (yAxis.equals("Days")) {
-				resultIndex = 0;
-			}
-			else if (yAxis.equals("TotalSick")) {
-				resultIndex = 2;
+			for (int j = init; j <= max; j += step) {
+				dataTotalSick.put(j, 0.0);
+				runTimes.put(j, 0.0);
 			}
 		}
 
@@ -331,59 +336,87 @@ public class MasterManySimsObject
 																	// Add value to graph
 																	if (saveGraph) {
 																		if (xAxis.equals("numPeople")) {
-																			data.put(numPeopleI, data.get(numPeopleI) + results.get(resultIndex));
+																			dataCost.put(numPeopleI, dataCost.get(numPeopleI) + results.get(1));
+																			dataDays.put(numPeopleI, dataDays.get(numPeopleI) + results.get(0));
+																			dataTotalSick.put(numPeopleI, dataTotalSick.get(numPeopleI) + results.get(2));
 																			runTimes.put(numPeopleI, runTimes.get(numPeopleI) + 1);
 																		}
 																		else if (xAxis.equals("minFriends")) {
-																			data.put(minFriendsI, data.get(minFriendsI) + results.get(resultIndex));
+																			dataCost.put(minFriendsI, dataCost.get(minFriendsI) + results.get(1));
+																			dataDays.put(minFriendsI, dataDays.get(minFriendsI) + results.get(0));
+																			dataTotalSick.put(minFriendsI, dataTotalSick.get(minFriendsI) + results.get(2));
 																			runTimes.put(minFriendsI, runTimes.get(minFriendsI) + 1);
 																		}
 																		else if (xAxis.equals("maxFriends")) {
-																			data.put(maxFriendsI, data.get(maxFriends) + results.get(resultIndex));
+																			dataCost.put(maxFriendsI, dataCost.get(maxFriendsI) + results.get(1));
+																			dataDays.put(maxFriendsI, dataDays.get(maxFriendsI) + results.get(0));
+																			dataTotalSick.put(maxFriendsI, dataTotalSick.get(maxFriendsI) + results.get(2));
 																			runTimes.put(maxFriends, runTimes.get(maxFriends) + 1);
 																		}
 																		else if (xAxis.equals("hubNumber")) {
-																			data.put(hubNumberI, data.get(hubNumberI) + results.get(resultIndex));
+																			dataCost.put(hubNumberI, dataCost.get(hubNumberI) + results.get(1));
+																			dataDays.put(hubNumberI, dataDays.get(hubNumberI) + results.get(0));
+																			dataTotalSick.put(hubNumberI, dataTotalSick.get(hubNumberI) + results.get(2));
 																			runTimes.put(hubNumberI, runTimes.get(hubNumberI) + 1);
 																		}
 																		else if (xAxis.equals("getWellDays")) {
-																			data.put(getWellDaysI, data.get(getWellDaysI) + results.get(resultIndex));
+																			dataCost.put(getWellDaysI, dataCost.get(getWellDaysI) + results.get(1));
+																			dataDays.put(getWellDaysI, dataDays.get(getWellDaysI) + results.get(0));
+																			dataTotalSick.put(getWellDaysI, dataTotalSick.get(getWellDaysI) + results.get(2));
 																			runTimes.put(getWellDaysI, runTimes.get(getWellDaysI) + 1);
 																		}
 																		else if (xAxis.equals("percentSick")) {
-																			data.put(percentSickI, data.get(percentSickI) + results.get(resultIndex));
+																			dataCost.put(percentSickI, dataCost.get(percentSickI) + results.get(1));
+																			dataDays.put(percentSickI, dataDays.get(percentSickI) + results.get(0));
+																			dataTotalSick.put(percentSickI, dataTotalSick.get(percentSickI) + results.get(2));
 																			runTimes.put(percentSickI, runTimes.get(percentSickI) + 1);
 																		}
 																		else if (xAxis.equals("initiallySick")) {
-																			data.put(initiallySickI, data.get(initiallySickI) + results.get(resultIndex));
+																			dataCost.put(initiallySickI, dataCost.get(initiallySickI) + results.get(1));
+																			dataDays.put(initiallySickI, dataDays.get(initiallySickI) + results.get(0));
+																			dataTotalSick.put(initiallySickI, dataTotalSick.get(initiallySickI) + results.get(2));
 																			runTimes.put(initiallySickI, runTimes.get(initiallySickI) + 1);
 																		}
 																		else if (xAxis.equals("initiallyVacc")) {
-																			data.put(initiallyVaccI, data.get(initiallyVaccI) + results.get(resultIndex));
+																			dataCost.put(initiallyVaccI, dataCost.get(initiallyVaccI) + results.get(1));
+																			dataDays.put(initiallyVaccI, dataDays.get(initiallyVaccI) + results.get(0));
+																			dataTotalSick.put(initiallyVaccI, dataTotalSick.get(initiallyVaccI) + results.get(2));
 																			runTimes.put(initiallyVaccI, runTimes.get(initiallyVaccI) + 1);
 																		}
 																		else if (xAxis.equals("getVacc")) {
-																			data.put(getVacI, data.get(getVacI) + results.get(resultIndex));
+																			dataCost.put(getVacI, dataCost.get(getVacI) + results.get(1));
+																			dataDays.put(getVacI, dataDays.get(getVacI) + results.get(0));
+																			dataTotalSick.put(getVacI, dataTotalSick.get(getVacI) + results.get(2));
 																			runTimes.put(getVacI, runTimes.get(getVacI) + 1);
 																		}
 																		else if (xAxis.equals("discovery")) {
-																			data.put(discoveryI, data.get(getVacI) + results.get(resultIndex));
+																			dataCost.put(discoveryI, dataCost.get(discoveryI) + results.get(1));
+																			dataDays.put(discoveryI, dataDays.get(discoveryI) + results.get(0));
+																			dataTotalSick.put(discoveryI, dataTotalSick.get(discoveryI) + results.get(2));
 																			runTimes.put(getVacI, runTimes.get(getVacI) + 1);
 																		}
 																		else if (xAxis.equals("newGetWellDays")) {
-																			data.put(newGetWellDaysI, data.get(newGetWellDaysI) + results.get(resultIndex));
+																			dataCost.put(newGetWellDaysI, dataCost.get(newGetWellDaysI) + results.get(1));
+																			dataDays.put(newGetWellDaysI, dataDays.get(newGetWellDaysI) + results.get(0));
+																			dataTotalSick.put(newGetWellDaysI, dataTotalSick.get(newGetWellDaysI) + results.get(2));
 																			runTimes.put(newGetWellDaysI, runTimes.get(newGetWellDaysI) + 1);
 																		}
 																		else if (xAxis.equals("percentTeens")) {
-																			data.put(percentTeensI, data.get(percentTeensI) + results.get(resultIndex));
+																			dataCost.put(percentTeensI, dataCost.get(percentTeensI) + results.get(1));
+																			dataDays.put(percentTeensI, dataDays.get(percentTeensI) + results.get(0));
+																			dataTotalSick.put(percentTeensI, dataTotalSick.get(percentTeensI) + results.get(2));
 																			runTimes.put(percentTeensI, runTimes.get(percentTeensI) + 1);
 																		}
 																		else if (xAxis.equals("curfewDays")) {
-																			data.put(curfewDaysI, data.get(percentTeensI) + results.get(resultIndex));
+																			dataCost.put(curfewDaysI, dataCost.get(curfewDaysI) + results.get(1));
+																			dataDays.put(curfewDaysI, dataDays.get(curfewDaysI) + results.get(0));
+																			dataTotalSick.put(curfewDaysI, dataTotalSick.get(curfewDaysI) + results.get(2));
 																			runTimes.put(percentTeensI, runTimes.get(percentTeensI) + 1);
 																		}
 																		else if (xAxis.equals("percentCurfew")) {
-																			data.put(percentCurfewI, data.get(percentCurfewI) + results.get(resultIndex));
+																			dataCost.put(percentCurfewI, dataCost.get(percentCurfewI) + results.get(1));
+																			dataDays.put(percentCurfewI, dataDays.get(percentCurfewI) + results.get(0));
+																			dataTotalSick.put(percentCurfewI, dataTotalSick.get(percentCurfewI) + results.get(2));
 																			runTimes.put(percentCurfewI, runTimes.get(percentCurfewI) + 1);
 																		}
 																	}
@@ -511,10 +544,18 @@ public class MasterManySimsObject
 			//DefaultCategoryDataset derivativeData = new DefaultCategoryDataset();
 			//DefaultCategoryDataset secondDerivativeData = new DefaultCategoryDataset();
 			LinkedHashMap<Integer, Double> averages = new LinkedHashMap<Integer, Double>();
-			for (Entry<Integer, Double> entry : data.entrySet()) {
+			for (Entry<Integer, Double> entry : dataCost.entrySet()) {
 				key = entry.getKey();
-				dataset.addValue((1.0 * data.get(key)) / runTimes.get(key), xAxis, Integer.toString(key));
-				averages.put(key, (1.0 * data.get(key)) / runTimes.get(key));
+				if (drawCost) {
+					dataset.addValue((1.0 * dataCost.get(key)) / runTimes.get(key), "Cost", Integer.toString(key));
+				}
+				if (drawDays) {
+					dataset.addValue((1.0 * dataDays.get(key)) / runTimes.get(key), "Days", Integer.toString(key));
+				}
+				if (drawTotalSick) {
+					dataset.addValue((1.0 * dataTotalSick.get(key)) / runTimes.get(key), "TotalSick", Integer.toString(key));
+				}
+				averages.put(key, (1.0 * dataCost.get(key)) / runTimes.get(key));
 			}
 			System.out.println(averages);
 			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
@@ -533,8 +574,8 @@ public class MasterManySimsObject
 				derivatives.addValue(value, "2nd Derivative", Integer.toString(key));
 			}
 
-			File lineChart = MoreMethods.makeChart(dataset, graphFileName, yAxis + " vs. " + xAxis, xAxis, yAxis);
-			File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", yAxis + " vs. " + xAxis, xAxis, yAxis);
+			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
+			File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
 			
 			if (openGraph) {
 				status.setText("Opening graph...");

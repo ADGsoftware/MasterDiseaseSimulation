@@ -793,34 +793,6 @@ public class UserInterface {
 		JTextField percentCurfewStepAnswer = new JTextField("1", 5);
 		JTextField percentCurfewMaxAnswer = new JTextField("30", 5);
 		
-		JPanel fileName = new JPanel(new GridLayout(1, 2));
-		JTextField fileNameAnswer = new JTextField("results", 5);
-		fileName.add(fileNameAnswer);
-		fileName.add(new JLabel(".xls"));
-		JPanel saveResults = new JPanel(new GridLayout(1, 2));
-		JCheckBox saveResultsBox = new JCheckBox();
-		saveResultsBox.setSelected(true);
-		saveResults.add(new JLabel("Save: "));
-		saveResults.add(saveResultsBox);
-		JPanel openResults = new JPanel(new GridLayout(1, 2));
-		JCheckBox openResultsBox = new JCheckBox();
-		openResults.add(new JLabel("Open: "));
-		openResults.add(openResultsBox);
-		
-		JPanel graphFileName = new JPanel(new GridLayout(1, 2));
-		JTextField graphFileNameAnswer = new JTextField("graph", 5);
-		graphFileName.add(graphFileNameAnswer);
-		graphFileName.add(new JLabel(".png"));
-		JPanel saveGraph = new JPanel(new GridLayout(1, 2));
-		JCheckBox saveGraphBox = new JCheckBox();
-		saveGraphBox.setSelected(true);
-		saveGraph.add(new JLabel("Save: "));
-		saveGraph.add(saveGraphBox);
-		JPanel openGraph = new JPanel(new GridLayout(1, 2));
-		JCheckBox openGraphBox = new JCheckBox();
-		openGraph.add(new JLabel("Open: "));
-		openGraph.add(openGraphBox);
-		
 		JPanel contentPane = new JPanel(new GridBagLayout());
 		final JTextField[] fields = {numPeopleMinAnswer, numPeopleStepAnswer, numPeopleMaxAnswer, minFriendsMinAnswer, minFriendsStepAnswer, minFriendsMaxAnswer, maxFriendsMinAnswer, maxFriendsStepAnswer, maxFriendsMaxAnswer, hubNumberMinAnswer, hubNumberStepAnswer, hubNumberMaxAnswer, getWellDaysMinAnswer, getWellDaysStepAnswer, getWellDaysMaxAnswer, percentSickMinAnswer, percentSickStepAnswer, percentSickMaxAnswer, initiallySickMinAnswer, initiallySickStepAnswer, initiallySickMaxAnswer, initiallyVaccMinAnswer, initiallyVaccStepAnswer, initiallyVaccMaxAnswer, getVaccMinAnswer, getVaccStepAnswer, getVaccMaxAnswer, discoveryMinAnswer, discoveryStepAnswer, discoveryMaxAnswer, newGetWellDaysMinAnswer, newGetWellDaysStepAnswer, newGetWellDaysMaxAnswer, curfewDaysMinAnswer, curfewDaysStepAnswer, curfewDaysMaxAnswer, percentTeensMinAnswer, percentTeensStepAnswer, percentTeensMaxAnswer, percentCurfewMinAnswer, percentCurfewStepAnswer, percentCurfewMaxAnswer};
 		
@@ -986,8 +958,101 @@ public class UserInterface {
 
 		final String[] xVars = {"numPeople", "minFriends", "maxFriends", "hubNumber", "getWellDays", "percentSick", "initiallySick", "initiallyVacc", "getVacc", "discovery", "newGetWellDays", "percentTeens", "curfewDays", "percentCurfew"};
 		final JComboBox xAxisChoice = new JComboBox(xVars);
-		final String[] yVars = {"Cost", "Days", "TotalSick"};
-		final JComboBox yAxisChoice = new JComboBox(yVars);
+		JPanel costPanel = new JPanel(new GridLayout(1, 2));
+		final JCheckBox costBox = new JCheckBox();
+		costBox.setSelected(true);
+		costPanel.add(new JLabel("Cost: "));
+		costPanel.add(costBox);
+		JPanel daysPanel = new JPanel(new GridLayout(1, 2));
+		final JCheckBox daysBox = new JCheckBox();
+		daysBox.setSelected(true);
+		daysPanel.add(new JLabel("Days: "));
+		daysPanel.add(daysBox);
+		JPanel totalSickPanel = new JPanel(new GridLayout(1, 2));
+		final JCheckBox totalSickBox = new JCheckBox();
+		totalSickBox.setSelected(true);
+		totalSickPanel.add(new JLabel("TotalSick: "));
+		totalSickPanel.add(totalSickBox);
+		final JCheckBox allY = new JCheckBox();
+		allY.setSelected(true);
+		allY.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (allY.isSelected()) {
+					costBox.setSelected(true);
+					daysBox.setSelected(true);
+					totalSickBox.setSelected(true);
+				}
+				else {
+					costBox.setSelected(false);
+					daysBox.setSelected(false);
+					totalSickBox.setSelected(false);
+				}
+			}
+		});
+		
+		JPanel fileName = new JPanel(new GridLayout(1, 2));
+		JTextField fileNameAnswer = new JTextField("results", 5);
+		fileName.add(fileNameAnswer);
+		fileName.add(new JLabel(".xls"));
+		JPanel saveResults = new JPanel(new GridLayout(1, 2));
+		final JCheckBox saveResultsBox = new JCheckBox();
+		final JCheckBox openResultsBox = new JCheckBox();
+		saveResultsBox.setSelected(true);
+		saveResultsBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (saveResultsBox.isSelected()) {
+					openResultsBox.setEnabled(true);
+				}
+				else {
+					openResultsBox.setEnabled(false);
+					openResultsBox.setSelected(false);
+				}
+			}
+		});
+		saveResults.add(new JLabel("Save: "));
+		saveResults.add(saveResultsBox);
+		JPanel openResults = new JPanel(new GridLayout(1, 2));
+		openResults.add(new JLabel("Open: "));
+		openResults.add(openResultsBox);
+		
+		JPanel graphFileName = new JPanel(new GridLayout(1, 2));
+		JTextField graphFileNameAnswer = new JTextField("graph", 5);
+		graphFileName.add(graphFileNameAnswer);
+		graphFileName.add(new JLabel(".png"));
+		JPanel saveGraph = new JPanel(new GridLayout(1, 2));
+		final JCheckBox saveGraphBox = new JCheckBox();
+		final JCheckBox openGraphBox = new JCheckBox();
+		saveGraphBox.setSelected(true);
+		saveGraphBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (saveGraphBox.isSelected()) {
+					costBox.setEnabled(true);
+					daysBox.setEnabled(true);
+					totalSickBox.setEnabled(true);
+					allY.setEnabled(true);
+					openGraphBox.setEnabled(true);
+					xAxisChoice.setEnabled(true);
+				}
+				else {
+					costBox.setEnabled(false);
+					costBox.setSelected(false);
+					daysBox.setEnabled(false);
+					daysBox.setSelected(false);
+					totalSickBox.setEnabled(false);
+					totalSickBox.setSelected(false);
+					allY.setEnabled(false);
+					allY.setSelected(false);
+					openGraphBox.setEnabled(false);
+					openGraphBox.setSelected(false);
+					xAxisChoice.setEnabled(false);
+				}
+			}
+		});
+		saveGraph.add(new JLabel("Save: "));
+		saveGraph.add(saveGraphBox);
+		JPanel openGraph = new JPanel(new GridLayout(1, 2));
+		openGraph.add(new JLabel("Open: "));
+		openGraph.add(openGraphBox);
 		
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
@@ -1227,7 +1292,14 @@ public class UserInterface {
 		c.gridy += 1;
 		panel.add(new JLabel("y-axis:"), c);
 		c.gridx = 1;
-		panel.add(yAxisChoice, c);
+		//panel.add(yAxisChoice, c);
+		panel.add(costPanel, c);
+		c.gridx = 2;
+		panel.add(daysPanel, c);
+		c.gridx = 3;
+		panel.add(totalSickPanel, c);
+		c.gridx = 4;
+		panel.add(allY, c);
 		c.gridx = 0;
 		c.gridy += 1;
 		panel.add(new JLabel("Restore config:"), c);
@@ -1267,7 +1339,7 @@ public class UserInterface {
 					if (!box.isSelected()) {
 						for (int j = iF; j < iF + 2; j++) {
 							fields[j].setBackground(Color.LIGHT_GRAY);
-							fields[j].setEditable(false);
+							fields[j].setEnabled(false);
 						}
 						fields[iF].setText("1");
 						fields[iF + 1].setText(fields[iF - 1].getText());
@@ -1275,7 +1347,7 @@ public class UserInterface {
 					else {
 						for (int j = iF; j < iF + 2; j++) {
 							fields[j].setBackground(Color.WHITE);
-							fields[j].setEditable(true);
+							fields[j].setEnabled(true);
 						}
 						xAxisChoice.setSelectedItem(xVars[iF / 3]);
 					}
@@ -1295,7 +1367,7 @@ public class UserInterface {
 						int i = checkBoxes.indexOf(box) * 3 + 1;
 						for (int j = i; j < i + 2; j++) {
 							fields[j].setBackground(Color.WHITE);
-							fields[j].setEditable(true);
+							fields[j].setEnabled(true);
 						}
 					}
 				}
@@ -1305,7 +1377,7 @@ public class UserInterface {
 						int i = checkBoxes.indexOf(box) * 3 + 1;
 						for (int j = i; j < i + 2; j++) {
 							fields[j].setBackground(Color.LIGHT_GRAY);
-							fields[j].setEditable(false);
+							fields[j].setEnabled(false);
 						}
 						fields[i].setText("1");
 						fields[i + 1].setText(fields[i - 1].getText());
@@ -1375,7 +1447,9 @@ public class UserInterface {
 			inputs.add(graphFilePath.get());
 			//inputs.add(graphFileNameAnswer.getText());
 			inputs.add(xAxisChoice.getSelectedItem());
-			inputs.add(yAxisChoice.getSelectedItem());
+			inputs.add(costBox.isSelected());
+			inputs.add(daysBox.isSelected());
+			inputs.add(totalSickBox.isSelected());
 			inputs.add(saveResultsBox.isSelected());
 			inputs.add(openResultsBox.isSelected());
 			inputs.add(saveGraphBox.isSelected());
