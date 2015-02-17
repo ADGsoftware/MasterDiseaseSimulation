@@ -23,7 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-*/ // COMMENTED OUT FOR JAVA VERSION
+*/
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -444,8 +444,6 @@ public class ManyLinesAverageObject {
 		for (int i : vaccinatedPeople) {
 			people.get(i - 1).setImmune(true);
 		}
-
-
 		//Record params into .config
 		params.add("numPeople`" + numPeople);
 		params.add("minFriends`" + minFriends);
@@ -465,14 +463,8 @@ public class ManyLinesAverageObject {
 		params.add("filePath`" + filePath[0]);
 		params.add("fileName`" + fileName);
 
-
 		createConfig(params);
-
-
 		//Begin actual simulations
-
-
-		//System.out.println(people);
 
 		double estimatedTime = Math.floor(0.447 * runTimes + 2768.902);
 

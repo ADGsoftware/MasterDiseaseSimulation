@@ -283,7 +283,7 @@ public class UserInterface {
 				field.setText(text);
 				try {
 					list = MoreMethods.commaListToArrayList(text);
-					System.out.println(list);
+					//System.out.println(list);
 					input.add(list);
 				}
 				catch (NumberFormatException e) {
@@ -662,7 +662,7 @@ public class UserInterface {
 							}
 						}
 						 */
-						System.out.println(list);
+						//System.out.println(list);
 						input.add(list);
 					}
 				}
@@ -877,7 +877,7 @@ public class UserInterface {
 		fileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				JFileChooser fileChooser = new JFileChooser();
-				System.out.println(fileButton.getText());
+				//System.out.println(fileButton.getText());
 				fileChooser.setCurrentDirectory(new File(fileButton.getText()));
 				FileFilter filter = new FileNameExtensionFilter("XLS file", new String[] {"xls"});
 				fileChooser.addChoosableFileFilter(filter);
@@ -895,7 +895,7 @@ public class UserInterface {
 					
 					while (true) {
 						int index = path.indexOf('/');
-						System.out.println(index);
+						//System.out.println(index);
 						if (path.length() - index < 15) {
 							path = "..." + path.substring(index);
 							break;
@@ -919,7 +919,7 @@ public class UserInterface {
 		graphFileButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				JFileChooser fileChooser = new JFileChooser();
-				System.out.println(graphFileButton.getText());
+				//System.out.println(graphFileButton.getText());
 				fileChooser.setCurrentDirectory(new File(graphFileButton.getText()));
 				FileFilter filter = new FileNameExtensionFilter("PNG file", new String[] {"png"});
 				fileChooser.addChoosableFileFilter(filter);
@@ -937,7 +937,7 @@ public class UserInterface {
 					
 					while (true) {
 						int index = path.indexOf('/');
-						System.out.println(index);
+						//System.out.println(index);
 						if (path.length() - index < 15) {
 							path = "..." + path.substring(index);
 							break;
@@ -1353,7 +1353,7 @@ public class UserInterface {
 					}
 				}
 			});
-			System.out.println(i);
+			//System.out.println(i);
 			c.gridy += moveOver[i / 3];
 			panel.add(box, c);
 		}
@@ -1403,6 +1403,30 @@ public class UserInterface {
 		c.gridy = 1;
 		contentPane.add(scrollPane, c);
 
+		// Restore previous configuration from previousConfig.adg
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("previousConfig.adg"));
+
+			try {
+				String restoredStr = reader.readLine();
+				reader.close();
+
+				ArrayList<Integer> restored = MoreMethods.commaListToArrayList(restoredStr);
+
+				for (int i = 0; i < fields.length; i++) {
+					fields[i].setText(Integer.toString(restored.get(i)));
+				}
+			}
+			catch (IOException e) {
+				// Do nothing
+			}
+
+		}
+		catch (FileNotFoundException e) {
+			// Do Nothing
+		}
+
+
 		boolean error = false;
 		while (true) {
 			int result = JOptionPane.showConfirmDialog(null, contentPane, "Configuration", JOptionPane.OK_CANCEL_OPTION);
@@ -1413,7 +1437,7 @@ public class UserInterface {
 
 			String text;
 			int integer;
-
+			
 			for (int i = 0; i < fields.length; i++) {
 				JTextField field = fields[i];
 				text = field.getText();
@@ -1462,6 +1486,24 @@ public class UserInterface {
 				error = false;
 			}
 			else {
+				// Save inputs into previousConfig.adg file
+				try {
+					PrintWriter writer = new PrintWriter("previousConfig.adg", "UTF-8");
+					
+					String toSave = fields[0].getText();
+					for (int i = 1; i < fields.length; i++) {
+						toSave += ", " + fields[i].getText();
+					}
+					writer.print(toSave);
+					writer.close();
+				}
+				catch (FileNotFoundException e) {
+					// Do nothing
+				}
+				catch (UnsupportedEncodingException e) {
+					// Do nothing
+				}
+				
 				return inputs;
 			}
 		}
