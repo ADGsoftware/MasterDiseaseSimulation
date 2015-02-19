@@ -1,17 +1,10 @@
 package masterdiseasesimulation;
 
-/*
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-*/
-
 import javax.swing.*;
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 
 public class Main {
-	private static boolean music = Math.random() < 0.5; //Random chance of music!
+	private static boolean music = Math.random() < 1; //Random chance of music!
 
 	public static void main(String[] args) throws Exception {
 		//Play music
@@ -41,6 +34,5 @@ public class Main {
 		} else {
 			System.exit(0);
 		}
-		//}
 	}
 }

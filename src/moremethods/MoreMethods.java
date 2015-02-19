@@ -693,7 +693,8 @@ public class MoreMethods {
 		//System.out.println("RunTimes: " + runTimes);
 
 		ArrayList<ArrayList<InfoStorage>> infoStorage = new ArrayList<ArrayList<InfoStorage>>();
-
+		
+		/*
 		// Make progress bar
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(1, 0));
@@ -716,11 +717,13 @@ public class MoreMethods {
 		pBar.setVisible(true);
 		pBar.setTitle("Running simulations...");
 		pBar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		*/
 
 		int averageDuration = 0;
 
 		ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
 		for (int runTime = 0; runTime < runTimes; runTime++) {
+			/*
 			int value = runTime * 100 / runTimes;
 			progressBar.setValue(value);
 			if (runTime == Math.floor(runTimes / 4)) {
@@ -732,8 +735,10 @@ public class MoreMethods {
 			if (runTime == Math.floor(runTimes * 0.75)) {
 				pBar.setTitle("Running simulations... 75%");
 			}
+			*/
 			infoStorage.add(new ArrayList<InfoStorage>());
 			//System.out.println(runTime);
+			System.out.println(getNumSickPeople(people));
 			while (getNumSickPeople(people) > 0) {
 				//int numberSickOnDay = 0;
 				for (Person person : people) {
@@ -746,8 +751,8 @@ public class MoreMethods {
 						}
 						if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
 							teenager.setCurfewed(false);
-						teenager.setCurfewedDays(0);
-						teenager.setImmuneToCurfews(true);
+							teenager.setCurfewedDays(0);
+							teenager.setImmuneToCurfews(true);
 						}
 					}
 					if (person.isImmune()) {
@@ -871,8 +876,8 @@ public class MoreMethods {
 							}
 							if (teenager.getCurfewedDays() > curfewDays) { // If he finished his curfew, reset him
 								teenager.setCurfewed(false);
-							teenager.setCurfewedDays(0);
-							teenager.setImmuneToCurfews(true);
+								teenager.setCurfewedDays(0);
+								teenager.setImmuneToCurfews(true);
 							}
 						}
 						if (person.isImmune()) {
@@ -1035,7 +1040,7 @@ public class MoreMethods {
 		dataset.addValue(yValue, lineLabel, newXValue);
 	}
 
-	public static void addPoint(XYSeries series, int xValue, float yValue) {
+	public static void addPoint(XYSeries series, int xValue, double yValue) {
 		series.add(xValue, yValue);
 	}
 
@@ -1071,5 +1076,34 @@ public class MoreMethods {
 	//Data mining
 	public static int getColumnByType(int type) {
 		return type + 3;
+	}
+
+	//InfoStorageStuffForCompatabilityLongCommentSos
+	public InfoStorage averageInfostorage(ArrayList<ArrayList<InfoStorage>> simOutput){
+		ArrayList<Double> costs = new ArrayList<Double>();
+		ArrayList<Double> days = new ArrayList<Double>();
+		ArrayList<Double> totalSick = new ArrayList<Double>();
+
+		//Add to arrayLists
+		for (ArrayList<InfoStorage> runtimeList: simOutput) {
+			InfoStorage lastInfoStorage = runtimeList.get(runtimeList.size() - 1); //Aka 
+			costs.add(lastInfoStorage.getCost());
+			days.add(lastInfoStorage.getDay());
+			totalSick.add(lastInfoStorage.getTotalSick());
+		}
+		double avgCost = findAverage(costs);
+		double avgDays = findAverage(days);
+		double avgTotalSick = findAverage(totalSick);
+
+		InfoStorage avgInfoStorage = new InfoStorage((double) avgDays, (double)0, (double)avgTotalSick, (double)avgCost);
+
+		return avgInfoStorage;
+	}
+	public double findAverage(ArrayList<Double> numbers){
+		double result = 0;
+		for(double i : numbers){
+			result = result + i;
+		}
+		return result/numbers.size();
 	}
 }

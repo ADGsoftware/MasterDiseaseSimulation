@@ -1,47 +1,47 @@
 package datacontainers;
 
 public class InfoStorage {
-    private int day;
-    private int numSick;
-    private int totalSick;
-    private int cost;
+	private double day;
+	private double numSick;
+	private double totalSick;
+	private double cost;
 
-    public InfoStorage(int day, int numSick, int totalSick, int cost) {
-        this.day = day;
-        this.numSick = numSick;
-        this.totalSick = totalSick;
-        this.cost = cost;
-    }
+	public InfoStorage(double day, double numSick, double totalSick, double cost) {
+		this.day = day;
+		this.numSick = numSick;
+		this.totalSick = totalSick;
+		this.cost = cost;
+	}
 
-    public void setDay(int day) {
-        this.day = day;
-    }
+	public void setDay(double day) {
+		this.day = day;
+	}
 
-    public void setNumSick(int numSick) {
-        this.numSick = numSick;
-    }
+	public void setNumSick(double numSick) {
+		this.numSick = numSick;
+	}
 
-    public void setCost(int cost) {
-        this.cost = cost;
-    }
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 
-    public void setTotalSick(int totalSick) {
-        this.totalSick = totalSick;
-    }
+	public void setTotalSick(double totalSick) {
+		this.totalSick = totalSick;
+	}
 
-    public int getDay() {
-        return day;
-    }
+	public double getDay() {
+		return day;
+	}
 
-    public int getNumSick() {
-        return numSick;
-    }
+	public double getNumSick() {
+		return numSick;
+	}
 
-    public int getCost() {
-        return cost;
-    }
+	public double getCost() {
+		return cost;
+	}
 
-    public int getTotalSick() {
-        return totalSick;
-    }
+	public double getTotalSick() {
+		return totalSick;
+	}
 }

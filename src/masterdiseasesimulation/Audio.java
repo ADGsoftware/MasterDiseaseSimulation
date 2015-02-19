@@ -22,7 +22,7 @@ public class Audio implements Runnable {
     private SourceDataLine sourceLine;
 
     public void playAudio() {
-        soundFile = new File(System.getProperty("user.dir") + "\\music\\dott.wav");
+        soundFile = new File(System.getProperty("user.dir") + "\\music\\dott.mp3");
 
         try {
             audioStream = AudioSystem.getAudioInputStream(soundFile);

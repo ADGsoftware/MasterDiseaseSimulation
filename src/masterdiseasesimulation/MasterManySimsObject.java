@@ -20,6 +20,7 @@ import moremethods.MoreMethods;
 
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import datacontainers.InfoStorage;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
@@ -32,10 +33,10 @@ public class MasterManySimsObject
 	public static void run () throws java.io.IOException, jxl.write.WriteException, BiffException {    	
 		MoreMethods methods = new MoreMethods();
 		Random random = new Random();
-		
+
 		ArrayList<Object> inputs = UserInterface.getInput(); // Get inputs from user
 		System.out.println(inputs);
-		
+
 		// Separate input into variables
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
 		int numPeopleMax = Integer.parseInt(inputs.get(2).toString());
@@ -104,7 +105,7 @@ public class MasterManySimsObject
 		boolean drawCost = (Boolean)inputs.get(45);
 		boolean drawDays = (Boolean)inputs.get(46);
 		boolean drawTotalSick = (Boolean)inputs.get(47);
-				
+
 		String networkType = inputs.get(52).toString();
 
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
@@ -155,13 +156,14 @@ public class MasterManySimsObject
 				System.exit(0);
 			}
 		}
-		*/
+		 */
 
 		int i = 1;
 		int progress = 1;
-		ArrayList<Integer> results;
+		//ArrayList<Integer> results;
+		InfoStorage results;
 		ArrayList<Person> people = new ArrayList<Person>();
-		
+
 		// Initialize spreadsheet
 		File file = new File(fileName);
 		WritableWorkbook workbook = Workbook.createWorkbook(file);
@@ -190,14 +192,14 @@ public class MasterManySimsObject
 			sheet.addCell(new Label(16, 0, "cost"));
 			sheet.addCell(new Label(17, 0, "totalSick"));
 		}
-		
+
 		// Create data map
 		HashMap<Integer, Double> runTimes = new HashMap<Integer, Double>();
-		
+
 		LinkedHashMap<Integer, Double> dataCost = new LinkedHashMap<Integer, Double>();
-		
+
 		LinkedHashMap<Integer, Double> dataDays = new LinkedHashMap<Integer, Double>();
-		
+
 		LinkedHashMap<Integer, Double> dataTotalSick = new LinkedHashMap<Integer, Double>();
 
 		if (saveGraph) {
@@ -280,13 +282,13 @@ public class MasterManySimsObject
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		// Start timer
 		double startTime = System.currentTimeMillis();
 		double execTime = 0;
 		double endTime = startTime;
 		String estDisplay = "";
-		
+
 		for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep){
 			for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep){
 				for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep){
@@ -324,11 +326,121 @@ public class MasterManySimsObject
 																	//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
 																	//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
 																	//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
-																	
+
+																	ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeensI);
+
 																	methods.infectRandom(people, initiallySickI);
 																	methods.vaccRandom(people, initiallyVaccI);
 																	methods.getAndSetTeenagers(people, percentTeensI);
-																	
+
+																	results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false));
+																	//System.out.println(numPeopleI + " " + minFriendsI  + " " +  maxFriendsI + " " + hubNumberI + " " + getWellDaysI + " " + discoveryI + " " + newGetWellDaysI + " " + initiallySickI + " " + initiallyVaccI + " " + percentSickI + " " + getVacI);
+																	//System.out.println(results);
+
+																	// Add value to graph
+																	if (saveGraph) {
+																		if (xAxis.equals("numPeople")) {
+																			addValues(numPeopleI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("minFriends")) {
+																			addValues(minFriendsI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("maxFriends")) {
+																			addValues(maxFriendsI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("hubNumber")) {
+																			addValues(hubNumberI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("getWellDays")) {
+																			addValues(getWellDaysI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("percentSick")) {
+																			addValues(percentSickI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("initiallySick")) {
+																			addValues(initiallySickI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("initiallyVacc")) {
+																			addValues(initiallyVaccI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("getVacc")) {
+																			addValues(getVacI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("discovery")) {
+																			addValues(discoveryI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("newGetWellDays")) {
+																			addValues(newGetWellDaysI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("percentTeens")) {
+																			addValues(percentTeensI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("curfewDays")) {
+																			addValues(curfewDaysI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																		else if (xAxis.equals("percentCurfew")) {
+																			addValues(percentCurfewI, dataCost, dataDays, dataTotalSick, runTimes, results);
+																		}
+																	}
+																	if (saveResults) {
+																		try {
+																			sheet.insertRow(i);
+																			sheet.addCell(new Label(0, i, Integer.toString(numPeopleI)));
+																		}
+																		catch (jxl.write.biff.RowsExceededException e) {
+																			sheetIndex++;
+																			i = 1;
+																			workbook.createSheet("Sheet" + sheetIndex, sheetIndex);
+																			sheet = workbook.getSheet(sheetIndex);
+
+																			sheet.insertRow(0);
+																			sheet.insertColumn(0);
+																			sheet.addCell(new Label(0, 0, "numPeople"));
+																			sheet.addCell(new Label(1, 0, "minFriends"));
+																			sheet.addCell(new Label(2, 0, "maxFriends"));
+																			sheet.addCell(new Label(3, 0, "hubNumber"));
+																			sheet.addCell(new Label(4, 0, "getWellDays"));
+																			sheet.addCell(new Label(5, 0, "discovery"));
+																			sheet.addCell(new Label(6, 0, "newGetWellDays"));
+																			sheet.addCell(new Label(7, 0, "initiallySick"));
+																			sheet.addCell(new Label(8, 0, "initiallyVacc"));
+																			sheet.addCell(new Label(9, 0, "percentSick"));
+																			sheet.addCell(new Label(10, 0, "getVac"));
+																			sheet.addCell(new Label(11, 0, "curfewDays"));
+																			sheet.addCell(new Label(12, 0, "percentTeens"));
+																			sheet.addCell(new Label(13, 0, "percentCurfew"));
+																			sheet.addCell(new Label(14, 0, ""));
+																			sheet.addCell(new Label(15, 0, "days"));
+																			sheet.addCell(new Label(16, 0, "cost"));
+																			sheet.addCell(new Label(17, 0, "totalSick"));
+
+																			sheet.addCell(new Label(0, i, Integer.toString(numPeopleI)));
+																		}
+																		sheet.addCell(new Label(1, i, Integer.toString(minFriendsI)));
+																		sheet.addCell(new Label(2, i, Integer.toString(maxFriendsI)));
+																		sheet.addCell(new Label(3, i, Integer.toString(hubNumberI)));
+																		sheet.addCell(new Label(4, i, Integer.toString(getWellDaysI)));
+																		sheet.addCell(new Label(5, i, Integer.toString(discoveryI)));
+																		sheet.addCell(new Label(6, i, Integer.toString(newGetWellDaysI)));
+																		sheet.addCell(new Label(7, i, Integer.toString(initiallySickI)));
+																		sheet.addCell(new Label(8, i, Integer.toString(initiallyVaccI)));
+																		sheet.addCell(new Label(9, i, Integer.toString(percentSickI)));
+																		sheet.addCell(new Label(10, i, Integer.toString(getVacI)));
+																		sheet.addCell(new Label(11, i, Integer.toString(curfewDaysI)));
+																		sheet.addCell(new Label(12, i, Integer.toString(percentTeensI)));
+																		sheet.addCell(new Label(13, i, Integer.toString(percentCurfewI)));
+																		sheet.addCell(new Label(14, i, ""));
+																		sheet.addCell(new Label(15, i, Double.toString(results.getDay())));
+																		sheet.addCell(new Label(16, i, Double.toString(results.getCost())));
+																		sheet.addCell(new Label(17, i, Double.toString(results.getTotalSick())));
+																	}
+
+																	/*
+
+																	methods.infectRandom(people, initiallySickI);
+																	methods.vaccRandom(people, initiallyVaccI);
+																	methods.getAndSetTeenagers(people, percentTeensI);
+
 																	results = methods.simulate(people, getWellDaysI, initiallySickI, initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 10);
 																	//System.out.println(numPeopleI + " " + minFriendsI  + " " +  maxFriendsI + " " + hubNumberI + " " + getWellDaysI + " " + discoveryI + " " + newGetWellDaysI + " " + initiallySickI + " " + initiallyVaccI + " " + percentSickI + " " + getVacI);
 																	//System.out.println(results);
@@ -472,6 +584,7 @@ public class MasterManySimsObject
 																		sheet.addCell(new Label(16, i, Integer.toString(results.get(1))));
 																		sheet.addCell(new Label(17, i, Integer.toString(results.get(2))));
 																	}
+																	 */
 
 																	// Update progress bar
 																	if (execTime + 500.0 < System.currentTimeMillis() - startTime){
@@ -501,7 +614,7 @@ public class MasterManySimsObject
 				}
 			}
 		}
-		
+
 		// Display total execution time
 		frame.dispose();
 		endTime = System.currentTimeMillis();
@@ -509,7 +622,7 @@ public class MasterManySimsObject
 		double estTime = execTime / 1000.0;
 		estDisplay = "Total execution time:\n" + MoreMethods.timeString(estTime);
 		//UserInterface.displayMessage(estDisplay);
-		
+
 		// Create progress bar
 		// Make progress bar
 		panel = new JPanel();
@@ -536,7 +649,7 @@ public class MasterManySimsObject
 			status.setText("Saving graph...");
 			panel.remove(status);
 			panel.add(status);
-			
+
 			int key;
 			double value;
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -559,7 +672,7 @@ public class MasterManySimsObject
 			}
 			System.out.println(averages);
 			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
-			
+
 			System.out.println(derivative);
 			for (Entry<Integer, Double> entry : derivative.entrySet()) {
 				key = entry.getKey();
@@ -576,7 +689,7 @@ public class MasterManySimsObject
 
 			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
 			File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
-			
+
 			if (openGraph) {
 				status.setText("Opening graph...");
 				panel.remove(status);
@@ -592,7 +705,7 @@ public class MasterManySimsObject
 			status.setText("Saving results spreadsheet...");
 			panel.remove(status);
 			panel.add(status);
-			
+
 			try {
 				workbook.write();
 			}
@@ -601,24 +714,24 @@ public class MasterManySimsObject
 				System.exit(0);
 			}
 			workbook.close();
-			
+
 			if (openResults) {
 				status.setText("Opening results...");
 				panel.remove(status);
 				panel.add(status);
-				
+
 				Desktop.getDesktop().open(file);
 			}
 		}
 		else {
 			file.delete();
 		}
-		
+
 		status.setText("Cleaning up...");
 		panel.remove(status);
 		panel.add(status);
 		frame.dispose();
-		
+
 		while (true) {
 			ArrayList<Integer> best = UserInterface.analyze(inputs);
 			if (best == null) {
@@ -628,5 +741,12 @@ public class MasterManySimsObject
 				UserInterface.displayMessage("The best option for the entered input is: " + best + "\nnumPeople: " + best.get(0) + "\nminFriends: " + best.get(1) + "\nmaxFriends: " + best.get(2) + "\nhubNumber: " + best.get(3) + "\ngetWellDays: " + best.get(4) + "\ndiscovery: " + best.get(5) + "\nnewGetWellDays: " + best.get(6) + "\ninitiallySick: " + best.get(7) + "\ninitiallyVacc: " + best.get(8) + "\npercentSick: " + best.get(9) + "\ngetVac: " + best.get(10) + "\ncurfewDays: " + best.get(11) + "\npercentTeens: " + best.get(12) + "\npercentCurfew: " + best.get(13) + "\n\ndays: " + best.get(14) + "\ncost: " + best.get(15) + "\ntotalSick: " + best.get(16));
 			}
 		}
+	}
+
+	public static void addValues(int var, LinkedHashMap<Integer, Double> dataCost, LinkedHashMap<Integer, Double> dataDays, LinkedHashMap<Integer, Double> dataTotalSick, HashMap<Integer, Double> runTimes, InfoStorage results){
+		dataCost.put(var, dataCost.get(var) + results.getCost());
+		dataDays.put(var, dataDays.get(var) + results.getDay());
+		dataTotalSick.put(var, dataTotalSick.get(var) + results.getTotalSick());
+		runTimes.put(var, runTimes.get(var) + 1);
 	}
 }

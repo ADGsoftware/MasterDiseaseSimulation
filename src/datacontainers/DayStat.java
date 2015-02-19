@@ -2,11 +2,11 @@ package datacontainers;
 
 public class DayStat {
     private int day;
-    private float currentSick;
-    private float totalSick;
-    private float cost;
+    private double currentSick;
+    private double totalSick;
+    private double cost;
 
-    public DayStat(int day, float currentSick, float totalSick, float cost) {
+    public DayStat(int day, double currentSick, double totalSick, double cost) {
         this.day = day;
         this.currentSick = currentSick;
         this.totalSick = totalSick;
@@ -18,15 +18,15 @@ public class DayStat {
         return day;
     }
 
-    public float getCurrentSick() {
+    public double getCurrentSick() {
         return currentSick;
     }
 
-    public float getTotalSick() {
+    public double getTotalSick() {
         return totalSick;
     }
 
-    public float getCost() {
+    public double getCost() {
         return cost;
     }
 
@@ -35,15 +35,15 @@ public class DayStat {
         this.day = day;
     }
 
-    public void setCurrentSick(float currentSick) {
+    public void setCurrentSick(double currentSick) {
         this.currentSick = currentSick;
     }
 
-    public void setTotalSick(float totalSick) {
+    public void setTotalSick(double totalSick) {
         this.totalSick = totalSick;
     }
 
-    public void setCost(float cost) {
+    public void setCost(double cost) {
         this.cost = cost;
     }
 }

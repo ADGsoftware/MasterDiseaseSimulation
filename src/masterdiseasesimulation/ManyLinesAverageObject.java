@@ -18,8 +18,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.*;
-import java.nio.charset.Charset;
 /*
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,7 +37,7 @@ public class ManyLinesAverageObject {
 		//.config
 		List<String> config = new ArrayList<String>();
 		//List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8); // COMMENTED OUT FOR JAVA VERSION
-		System.out.println(config);
+		//System.out.println(config);
 
 		ArrayList<String> params = new ArrayList<String>();
 
