@@ -12,7 +12,6 @@ public class InfoStorage {
 		this.totalSick = totalSick;
 		this.cost = cost;
 	}
-
 	public void setDay(double day) {
 		this.day = day;
 	}

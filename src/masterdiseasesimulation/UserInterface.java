@@ -24,8 +24,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -997,7 +1000,6 @@ public class UserInterface {
 		JPanel saveResults = new JPanel(new GridLayout(1, 2));
 		final JCheckBox saveResultsBox = new JCheckBox();
 		final JCheckBox openResultsBox = new JCheckBox();
-		saveResultsBox.setSelected(true);
 		saveResultsBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (saveResultsBox.isSelected()) {
@@ -1023,6 +1025,7 @@ public class UserInterface {
 		final JCheckBox saveGraphBox = new JCheckBox();
 		final JCheckBox openGraphBox = new JCheckBox();
 		saveGraphBox.setSelected(true);
+		openGraphBox.setSelected(true);
 		saveGraphBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (saveGraphBox.isSelected()) {
@@ -1053,7 +1056,25 @@ public class UserInterface {
 		JPanel openGraph = new JPanel(new GridLayout(1, 2));
 		openGraph.add(new JLabel("Open: "));
 		openGraph.add(openGraphBox);
-		
+
+		JCheckBox drawJung = new JCheckBox();
+		drawJung.setSelected(true);
+		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
+		drawJungPanel.add(drawJung);
+		final JLabel delayLabel = new JLabel("Delay: 500");
+		drawJungPanel.add(delayLabel);
+		final JSlider delay = new JSlider(JSlider.HORIZONTAL, 0, 3000, 500);
+		delay.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				delayLabel.setText("Delay: " + delay.getValue());
+			}
+		});
+		//Turn on labels at major tick marks.
+		delay.setMajorTickSpacing(500);
+		delay.setMinorTickSpacing(100);
+		delay.setPaintTicks(true);
+		delay.setPaintLabels(true);
+
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
 
@@ -1302,6 +1323,16 @@ public class UserInterface {
 		panel.add(allY, c);
 		c.gridx = 0;
 		c.gridy += 1;
+		panel.add(new JLabel("Run Jung?"), c);
+		c.gridx = 1;
+		//panel.add(yAxisChoice, c);
+		panel.add(drawJungPanel, c);
+		c.gridx = 2;
+		c.gridwidth = 2;
+		panel.add(delay, c);
+		c.gridwidth = 1;
+		c.gridx = 0;
+		c.gridy += 1;
 		panel.add(new JLabel("Restore config:"), c);
 		c.gridx = 1;
 		panel.add(saveButton, c);
@@ -1479,6 +1510,8 @@ public class UserInterface {
 			inputs.add(saveGraphBox.isSelected());
 			inputs.add(openGraphBox.isSelected());
 			inputs.add(comboBoxNetwork.getSelectedItem());
+			inputs.add(drawJung.isSelected());
+			inputs.add(delay.getValue());
 
 			if (error) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.", "Input Error", JOptionPane.ERROR_MESSAGE);

@@ -1,13 +1,16 @@
 package masterdiseasesimulation;
 
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Paint;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -16,26 +19,34 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EmptyBorder;
 
-import moremethods.MoreMethods;
-
-import org.jfree.data.category.DefaultCategoryDataset;
-
-import datacontainers.InfoStorage;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
+import moremethods.MoreMethods;
+
+import org.apache.commons.collections15.Transformer;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import datacontainers.InfoStorage;
+import datacontainers.JungStorage;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
+import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
 public class MasterManySimsObject
 {
 	@SuppressWarnings("static-access")
-	public static void run () throws java.io.IOException, jxl.write.WriteException, BiffException {    	
+	public static void run () throws java.io.IOException, jxl.write.WriteException, BiffException, InterruptedException {    	
 		MoreMethods methods = new MoreMethods();
 		Random random = new Random();
 
 		ArrayList<Object> inputs = UserInterface.getInput(); // Get inputs from user
-		System.out.println(inputs);
+		//System.out.println(inputs);
 
 		// Separate input into variables
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
@@ -107,6 +118,9 @@ public class MasterManySimsObject
 		boolean drawTotalSick = (Boolean)inputs.get(47);
 
 		String networkType = inputs.get(52).toString();
+		
+		boolean drawJung = (Boolean)inputs.get(53);
+		int delay = Integer.parseInt(inputs.get(54).toString());
 
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
 		//System.out.println(totalRuns);
@@ -146,8 +160,8 @@ public class MasterManySimsObject
 			}
 		}
 		if (totalRuns <= 0) {
-			JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
-			System.exit(0);
+			JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...\nIt's strange, because this SHOULD be working right now, but Alik's part seems to be broken...", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
+			//System.exit(0);
 		}
 		/*
 		else if (totalRuns > 100000) {
@@ -161,7 +175,6 @@ public class MasterManySimsObject
 		int i = 1;
 		int progress = 1;
 		//ArrayList<Integer> results;
-		InfoStorage results;
 		ArrayList<Person> people = new ArrayList<Person>();
 
 		// Initialize spreadsheet
@@ -281,7 +294,7 @@ public class MasterManySimsObject
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// Start timer
 		double startTime = System.currentTimeMillis();
@@ -309,34 +322,47 @@ public class MasterManySimsObject
 																else {
 																	i++;
 																	progress++;
-																	people = methods.getPeople(numPeople);
-																	if (networkType.equals("Small World")) {
-																		methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
-																	}
-																	else if (networkType.equals("Random")) {
-																		methods.befriendRandom(people, minFriendsI, maxFriendsI, random, hubNumberI);
-																	}
-																	else if (networkType.equals("Scale-Free")) {
-																		methods.befriendScaleFree(people, minFriendsI, maxFriendsI, random);
-																	}
-																	else {
-																		JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
-																		System.exit(0);
-																	}
-																	//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
-																	//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
-																	//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
 
-																	ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeensI);
+																	int runs = 100;
+																	ArrayList<Double> daysList  = new ArrayList<Double>();
+																	ArrayList<Double> totalSickList  = new ArrayList<Double>();
+																	ArrayList<Double> costList  = new ArrayList<Double>();
+																	InfoStorage results;
+																	for (int runTime = 0; runTime < runs; runTime++) {
+																		people = methods.getPeople(numPeople);
+																		if (networkType.equals("Small World")) {
+																			methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																		}
+																		else if (networkType.equals("Random")) {
+																			methods.befriendRandom(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																		}
+																		else if (networkType.equals("Scale-Free")) {
+																			methods.befriendScaleFree(people, minFriendsI, maxFriendsI, random);
+																		}
+																		else {
+																			JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
+																			//System.exit(0);
+																		}
+																		//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
+																		//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
+																		//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
 
-																	methods.infectRandom(people, initiallySickI);
-																	methods.vaccRandom(people, initiallyVaccI);
-																	methods.getAndSetTeenagers(people, percentTeensI);
+																		ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeensI);
 
-																	results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false));
+																		methods.infectRandom(people, initiallySickI);
+																		methods.vaccRandom(people, initiallyVaccI);
+
+																		results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false).getInfoStorages());
+																		daysList.add(results.getDay());
+																		totalSickList.add(results.getTotalSick());
+																		costList.add(results.getCost());
+																	}
 																	//System.out.println(numPeopleI + " " + minFriendsI  + " " +  maxFriendsI + " " + hubNumberI + " " + getWellDaysI + " " + discoveryI + " " + newGetWellDaysI + " " + initiallySickI + " " + initiallyVaccI + " " + percentSickI + " " + getVacI);
-																	//System.out.println(results);
-
+																	//xSystem.out.println(results);
+																	
+																	results = new InfoStorage(methods.sum(daysList) / runs, 0.0, methods.sum(totalSickList) / runs, methods.sum(costList) / runs);
+										
+																	//System.out.println("Cost: $" + results.getCost() + " Total Sick:" + results.getTotalSick() + " Days:" + results.getDay() + ". Thank you very much.");
 																	// Add value to graph
 																	if (saveGraph) {
 																		if (xAxis.equals("numPeople")) {
@@ -642,7 +668,7 @@ public class MasterManySimsObject
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		// Graph
 		if (saveGraph) {
@@ -670,17 +696,17 @@ public class MasterManySimsObject
 				}
 				averages.put(key, (1.0 * dataCost.get(key)) / runTimes.get(key));
 			}
-			System.out.println(averages);
+			//System.out.println(averages);
 			LinkedHashMap<Integer, Double> derivative = MoreMethods.getDerivative(averages);
 
-			System.out.println(derivative);
+			//System.out.println(derivative);
 			for (Entry<Integer, Double> entry : derivative.entrySet()) {
 				key = entry.getKey();
 				value = entry.getValue();
 				derivatives.addValue(value, "Derivative", Integer.toString(key));
 			}
 			LinkedHashMap<Integer, Double> secondDerivative = MoreMethods.getDerivative(derivative);
-			System.out.println(secondDerivative);
+			//System.out.println(secondDerivative);
 			for (Entry<Integer, Double> entry : secondDerivative.entrySet()) {
 				key = entry.getKey();
 				value = entry.getValue();
@@ -688,15 +714,106 @@ public class MasterManySimsObject
 			}
 
 			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
-			File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
+			//File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
 
 			if (openGraph) {
 				status.setText("Opening graph...");
 				panel.remove(status);
 				panel.add(status);
 
-				Desktop.getDesktop().open(derivativeChart);
+				//Desktop.getDesktop().open(derivativeChart);
 				Desktop.getDesktop().open(lineChart);
+			}
+			
+			//JUNG
+			if (drawJung) {
+				status.setText("Drawing Jung Diagram...");
+				//System.out.println("Ready to draw jung.");
+				Thread.sleep(1000);
+				people = methods.getPeople(numPeople);
+				if (networkType.equals("Small World")) {
+					methods.befriendSmallWorld(people, minFriends, maxFriends, random, hubNumber);
+				}
+				else if (networkType.equals("Random")) {
+					methods.befriendRandom(people, minFriends, maxFriends, random, hubNumber);
+				}
+				else if (networkType.equals("Scale-Free")) {
+					methods.befriendScaleFree(people, minFriends, maxFriends, random);
+				}
+				else {
+					JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
+					//System.exit(0);
+				}
+				//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
+				//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
+				//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
+
+				ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeens);
+
+				methods.infectRandom(people, initiallySick);
+				methods.vaccRandom(people, initiallyVacc);
+				
+				ArrayList<JungStorage> jungStorage = methods.simulate(people, teenagers, getWellDays, initiallySick,  initiallyVacc, discovery, newGetWellDays, percentSick, getVac, curfewDays, 1, percentCurfew, false).getJungStorage();
+				
+				// Creating the graph, vertices and jungDiagramFrame
+				UndirectedSparseMultigraph<Person, String> graph = new UndirectedSparseMultigraph<Person, String>();
+				methods.drawVerticies(graph, people);
+
+				// Create vv and layout
+				int xDim = 1000;
+				int yDim = 600;
+				String layoutString = "Circle";
+				//LAYOUT STUFF THAT SHOULD WORK BUT PROBABLY WON"T
+				Layout<Person, String> layout = methods.chooseLayout(graph, layoutString);
+				layout.setSize(new Dimension(xDim, yDim));
+				VisualizationViewer<Person, String> vv = new VisualizationViewer<Person, String>(layout);
+				vv.setPreferredSize(new Dimension(xDim + 50, yDim + 50));
+				vv.getRenderContext().setVertexLabelTransformer(Person.labelByID);//Makes Labels on Vertices/
+				vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
+	
+			    // Graph Mouse
+				DefaultModalGraphMouse<Object, Object> mouse = new DefaultModalGraphMouse<Object, Object>();
+				mouse.setMode(ModalGraphMouse.Mode.PICKING);
+				vv.addKeyListener(mouse.getModeKeyListener());
+				vv.setGraphMouse(mouse);
+				//DrawJung
+				methods.drawJung(graph, vv, people);
+
+				JFrame jungDiagramFrame = new JFrame();
+				PauseResume pauseButton = new PauseResume(jungDiagramFrame);
+				jungDiagramFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				jungDiagramFrame.add(vv);
+				jungDiagramFrame.pack();
+				jungDiagramFrame.setVisible(true);
+				pauseButton.allowPause();
+				status.setText("Displaying simulation...");
+				for(JungStorage storage : jungStorage){
+					final JungStorage storageF = storage;
+					pauseButton.allowPause();
+					//System.out.println("Next step...");
+					Thread.sleep(1000);
+					Transformer<Person, Paint> recolorVertices = new Transformer<Person,Paint>() {
+						public Paint transform(Person p) {
+							if(storageF.getVaccPeople().contains(p)){
+								return Color.BLUE;
+							}
+							if(storageF.getSickPeople().contains(p)){
+								return Color.RED;
+							}
+							return Color.GREEN;
+						}
+					};
+					pauseButton.allowPause();
+					vv.getRenderContext().setVertexFillPaintTransformer(recolorVertices);
+					pauseButton.allowPause();
+					jungDiagramFrame.repaint();
+					pauseButton.allowPause();
+					jungDiagramFrame.setTitle("Day: " + storage.getDay());
+					//System.out.println("Next step...");
+					pauseButton.allowPause();
+					Thread.sleep(delay);
+					pauseButton.allowPause();
+				}
 			}
 		}
 
@@ -711,7 +828,7 @@ public class MasterManySimsObject
 			}
 			catch (java.lang.OutOfMemoryError e) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Java heap space exceeded. Please try again with smaller parameters.", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
-				System.exit(0);
+				//System.exit(0);
 			}
 			workbook.close();
 
@@ -731,16 +848,18 @@ public class MasterManySimsObject
 		panel.remove(status);
 		panel.add(status);
 		frame.dispose();
-
+		
+		/*
 		while (true) {
 			ArrayList<Integer> best = UserInterface.analyze(inputs);
 			if (best == null) {
-				JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid solution found. Please try again valid input.", "No Solution Error", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid solution found. Please try again valid input. Alik broke something.", "No Solution Error", JOptionPane.ERROR_MESSAGE);
 			}
 			else {
 				UserInterface.displayMessage("The best option for the entered input is: " + best + "\nnumPeople: " + best.get(0) + "\nminFriends: " + best.get(1) + "\nmaxFriends: " + best.get(2) + "\nhubNumber: " + best.get(3) + "\ngetWellDays: " + best.get(4) + "\ndiscovery: " + best.get(5) + "\nnewGetWellDays: " + best.get(6) + "\ninitiallySick: " + best.get(7) + "\ninitiallyVacc: " + best.get(8) + "\npercentSick: " + best.get(9) + "\ngetVac: " + best.get(10) + "\ncurfewDays: " + best.get(11) + "\npercentTeens: " + best.get(12) + "\npercentCurfew: " + best.get(13) + "\n\ndays: " + best.get(14) + "\ncost: " + best.get(15) + "\ntotalSick: " + best.get(16));
 			}
 		}
+		*/
 	}
 
 	public static void addValues(int var, LinkedHashMap<Integer, Double> dataCost, LinkedHashMap<Integer, Double> dataDays, LinkedHashMap<Integer, Double> dataTotalSick, HashMap<Integer, Double> runTimes, InfoStorage results){

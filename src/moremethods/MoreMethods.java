@@ -1,6 +1,8 @@
 package moremethods;
 
+import datacontainers.InfoJungStorage;
 import datacontainers.InfoStorage;
+import datacontainers.JungStorage;
 import edu.uci.ics.jung.algorithms.layout.*;
 import edu.uci.ics.jung.algorithms.layout.SpringLayout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
@@ -24,6 +26,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -69,6 +72,14 @@ public class MoreMethods {
 		}
 		arlList.clear();
 		arlList.addAll(newList);
+	}
+	
+	public double sum (ArrayList<Double> list) {
+		double sum = 0.0;
+		for (double i : list) {
+			sum += i;
+		}
+		return sum;
 	}
 
 	/**
@@ -686,7 +697,8 @@ public class MoreMethods {
 	}
 
 	// Simulation for MasterManySims updated for ManyLinesAverage
-	public static ArrayList<ArrayList<InfoStorage>> simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
+	public static InfoJungStorage simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
+		ArrayList<JungStorage> jungStorage = new ArrayList<JungStorage>();
 		int day = 0;
 		int cost = origVacc;
 
@@ -738,7 +750,7 @@ public class MoreMethods {
 			*/
 			infoStorage.add(new ArrayList<InfoStorage>());
 			//System.out.println(runTime);
-			System.out.println(getNumSickPeople(people));
+			//System.out.println(getNumSickPeople(people));
 			while (getNumSickPeople(people) > 0) {
 				//int numberSickOnDay = 0;
 				for (Person person : people) {
@@ -779,11 +791,32 @@ public class MoreMethods {
 						}
 					}
 					//System.out.println(person.getDaysSick());
-					if (person.getDaysSick() == getWellDays && !person.isImmune()) {
+					if (person.getDaysSick() >= getWellDays) { // && !person.isImmune()
 						person.getWell();
 					}
 				}
 				day++;
+				if (runTime == 0) {
+					ArrayList<Person> vaccPeople = new ArrayList<Person>();
+					ArrayList<Person> sickPeople = new ArrayList<Person>();
+					for (Person p : people) {
+						if (p.isImmune()) {
+							vaccPeople.add(p);
+						}
+						if (p.isSick()) {
+							sickPeople.add(p);
+						}
+					}
+					
+					jungStorage.add(new JungStorage(vaccPeople, sickPeople, day));
+				}
+				//System.out.println("Day is : " + day);
+				//System.out.println(getNumSickPeople(people));
+				for(Person p : people){
+					if(p.isSick()){
+						//System.out.println("The Sick Annoying Person is: " + p);	
+					}	
+				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
 				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost));
 				//System.out.println(people);
@@ -804,14 +837,16 @@ public class MoreMethods {
 			totalSickPeople.clear();
 
 			resetAll(people);
-			people.get(2).setSick(true); //Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
+			people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
 			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
 		}
 
 		averageDuration /= runTimes;
 		ManyLinesAverageObject.maxDays = averageDuration;
 
-		return infoStorage;
+		
+		InfoJungStorage infoJungStorage = new InfoJungStorage(infoStorage, jungStorage);
+		return infoJungStorage;
 	}
 
 	public static ArrayList<ArrayList<TransmissionTestInfoStorage>> transmissionTest(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed) {
@@ -1085,11 +1120,15 @@ public class MoreMethods {
 		ArrayList<Double> totalSick = new ArrayList<Double>();
 
 		//Add to arrayLists
-		for (ArrayList<InfoStorage> runtimeList: simOutput) {
-			InfoStorage lastInfoStorage = runtimeList.get(runtimeList.size() - 1); //Aka 
+		for (ArrayList<InfoStorage> runtimeList : simOutput) {
+			System.out.println("Runtime size = " + runtimeList.size());
+			InfoStorage lastInfoStorage = runtimeList.get(runtimeList.size() - 1); //Aka the last info storage
 			costs.add(lastInfoStorage.getCost());
+			System.out.println("Get Cost = " + lastInfoStorage.getDay());
 			days.add(lastInfoStorage.getDay());
+			System.out.println("Get day = " + lastInfoStorage.getDay());
 			totalSick.add(lastInfoStorage.getTotalSick());
+			System.out.println("Get totalSick = " + lastInfoStorage.getTotalSick());
 		}
 		double avgCost = findAverage(costs);
 		double avgDays = findAverage(days);
@@ -1099,6 +1138,7 @@ public class MoreMethods {
 
 		return avgInfoStorage;
 	}
+	
 	public double findAverage(ArrayList<Double> numbers){
 		double result = 0;
 		for(double i : numbers){
