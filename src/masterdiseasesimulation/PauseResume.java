@@ -1,17 +1,20 @@
 package masterdiseasesimulation;
 
 //Imports
-import java.awt.Frame;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
 public class PauseResume {
-	public PauseResume(Frame frame) {
+	public PauseResume(JPanel panel, GridBagConstraints c) {
 		counter.start();
 		button.addActionListener(pauseResume);
+		button.setPreferredSize(new Dimension(100, 20));
 
-		frame.add(button, java.awt.BorderLayout.NORTH);
-		frame.pack();
-		frame.setVisible(true);
+		panel.add(button, c);
+		//panel.setVisible(true);
 	}
 
 	private JButton button = new JButton("Start");
@@ -53,7 +56,9 @@ public class PauseResume {
 		@Override
 		public void actionPerformed(java.awt.event.ActionEvent e) {
 			paused = !paused;
-			button.setText(paused ? "Resume" : "Pause");
+			if (button.isEnabled()) {
+				button.setText(paused ? "Resume" : "Pause");
+			}
 			synchronized (lock) {
 				lock.notifyAll();
 			}
@@ -69,7 +74,14 @@ public class PauseResume {
 	}
 
 	private void done() {
-		button.setText("Pause");
+		if (button.isEnabled()) {
+			button.setText("Pause");
+		}
 		paused = false;
+	}
+	
+	public void disable() {
+		button.setText("Done");
+		button.setEnabled(false);
 	}
 }

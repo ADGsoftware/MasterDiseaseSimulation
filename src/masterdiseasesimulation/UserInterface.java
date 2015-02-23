@@ -24,11 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -796,8 +793,13 @@ public class UserInterface {
 		JTextField percentCurfewStepAnswer = new JTextField("1", 5);
 		JTextField percentCurfewMaxAnswer = new JTextField("30", 5);
 		
+		JTextField runTimesAnswer = new JTextField("100", 5);
+		
 		JPanel contentPane = new JPanel(new GridBagLayout());
 		final JTextField[] fields = {numPeopleMinAnswer, numPeopleStepAnswer, numPeopleMaxAnswer, minFriendsMinAnswer, minFriendsStepAnswer, minFriendsMaxAnswer, maxFriendsMinAnswer, maxFriendsStepAnswer, maxFriendsMaxAnswer, hubNumberMinAnswer, hubNumberStepAnswer, hubNumberMaxAnswer, getWellDaysMinAnswer, getWellDaysStepAnswer, getWellDaysMaxAnswer, percentSickMinAnswer, percentSickStepAnswer, percentSickMaxAnswer, initiallySickMinAnswer, initiallySickStepAnswer, initiallySickMaxAnswer, initiallyVaccMinAnswer, initiallyVaccStepAnswer, initiallyVaccMaxAnswer, getVaccMinAnswer, getVaccStepAnswer, getVaccMaxAnswer, discoveryMinAnswer, discoveryStepAnswer, discoveryMaxAnswer, newGetWellDaysMinAnswer, newGetWellDaysStepAnswer, newGetWellDaysMaxAnswer, curfewDaysMinAnswer, curfewDaysStepAnswer, curfewDaysMaxAnswer, percentTeensMinAnswer, percentTeensStepAnswer, percentTeensMaxAnswer, percentCurfewMinAnswer, percentCurfewStepAnswer, percentCurfewMaxAnswer};
+		
+		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
+		final JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
 		
 		JButton openButton = new JButton("Open config...");
 		openButton.addActionListener(new ActionListener() {
@@ -821,6 +823,7 @@ public class UserInterface {
 					String restoredStr;
 					try {
 						restoredStr = reader.readLine();
+						comboBoxNetwork.setSelectedItem(reader.readLine());
 						reader.close();
 					}
 					catch (IOException e) {
@@ -868,6 +871,7 @@ public class UserInterface {
 					for (int i = 1; i < fields.length; i++) {
 						toSave += ", " + fields[i].getText();
 					}
+					toSave += "\n" + comboBoxNetwork.getSelectedItem().toString();
 					//System.out.println(toSave);
 					writer.print(toSave);
 					writer.close();
@@ -1000,6 +1004,7 @@ public class UserInterface {
 		JPanel saveResults = new JPanel(new GridLayout(1, 2));
 		final JCheckBox saveResultsBox = new JCheckBox();
 		final JCheckBox openResultsBox = new JCheckBox();
+		openResultsBox.setEnabled(false);
 		saveResultsBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (saveResultsBox.isSelected()) {
@@ -1057,8 +1062,27 @@ public class UserInterface {
 		openGraph.add(new JLabel("Open: "));
 		openGraph.add(openGraphBox);
 
-		JCheckBox drawJung = new JCheckBox();
+		final JCheckBox drawJung = new JCheckBox();
 		drawJung.setSelected(true);
+		String[] layoutChoices = {"Circle", "ISOM", "FR"};
+		final JComboBox comboBoxLayout = new JComboBox(layoutChoices);
+		
+		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
+		drawJungPanel.add(drawJung);
+		final JLabel layoutLabel = new JLabel("Layout:");
+		drawJungPanel.add(layoutLabel);
+		drawJung.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (drawJung.isSelected()) {
+					comboBoxLayout.setEnabled(true);
+				}
+				else {
+					comboBoxLayout.setEnabled(false);
+				}
+			}
+		});
+		
+		/*
 		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
 		drawJungPanel.add(drawJung);
 		final JLabel delayLabel = new JLabel("Delay: 500");
@@ -1074,9 +1098,7 @@ public class UserInterface {
 		delay.setMinorTickSpacing(100);
 		delay.setPaintTicks(true);
 		delay.setPaintLabels(true);
-
-		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
-		JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
+		*/
 
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1269,6 +1291,11 @@ public class UserInterface {
 		panel.add(percentCurfewStepAnswer, c);
 		c.gridx = 3;
 		panel.add(percentCurfewMaxAnswer, c);
+		c.gridx = 0;
+		c.gridy += 1;
+		panel.add(new JLabel("runTimes:"), c);
+		c.gridx = 1;
+		panel.add(runTimesAnswer, c);
 		
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1328,9 +1355,7 @@ public class UserInterface {
 		//panel.add(yAxisChoice, c);
 		panel.add(drawJungPanel, c);
 		c.gridx = 2;
-		c.gridwidth = 2;
-		panel.add(delay, c);
-		c.gridwidth = 1;
+		panel.add(comboBoxLayout, c);
 		c.gridx = 0;
 		c.gridy += 1;
 		panel.add(new JLabel("Restore config:"), c);
@@ -1338,20 +1363,7 @@ public class UserInterface {
 		panel.add(saveButton, c);
 		c.gridx = 2;
 		panel.add(openButton, c);
-
-		JPanel header = new JPanel (new GridBagLayout());
-		c = new GridBagConstraints();
-		c.ipady = 5;
-		c.gridx = 0;
-		c.gridy = 0;
-		header.add(new JLabel("                                             "), c);
-		c.gridx = 1;
-		header.add(new JLabel("Min               |"), c);
-		c.gridx = 2;
-		header.add(new JLabel("           Step              |"), c);
-		c.gridx = 3;
-		header.add(new JLabel("            Max"), c);
-
+		
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 		
 		int[] moveOver = {1, 1, 1, 1, 3, 1, 2, 1, 2, 2, 1, 2, 1, 1};
@@ -1417,9 +1429,27 @@ public class UserInterface {
 			}
 		});
 		allBox.setSelected(true);
-		
 		c.gridy = 1;
 		panel.add(allBox, c);
+		
+		JPanel header = new JPanel (new GridBagLayout());
+		c = new GridBagConstraints();
+		c.ipady = 5;
+		c.gridx = 0;
+		c.gridy = 0;
+		c.fill = GridBagConstraints.BOTH;
+		c.anchor = GridBagConstraints.CENTER;
+		header.add(new JLabel("                                                                  "), c);
+		c.gridx = 1;
+		header.add(new JLabel("Min               |"), c);
+		c.gridx = 2;
+		header.add(new JLabel("           Step              |"), c);
+		c.gridx = 3;
+		header.add(new JLabel("            Max               "), c);
+		
+		c.gridy = 0;
+		c.gridx = 4;
+		header.add(allBox, c);
 		
 		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
 		scrollPane.setBounds(0, 0, 500, 500);
@@ -1433,13 +1463,14 @@ public class UserInterface {
 		contentPane.add(header, c);
 		c.gridy = 1;
 		contentPane.add(scrollPane, c);
-
+		
 		// Restore previous configuration from previousConfig.adg
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("previousConfig.adg"));
 
 			try {
 				String restoredStr = reader.readLine();
+				comboBoxNetwork.setSelectedItem(reader.readLine());
 				reader.close();
 
 				ArrayList<Integer> restored = MoreMethods.commaListToArrayList(restoredStr);
@@ -1497,6 +1528,21 @@ public class UserInterface {
 				}
 			}
 			
+			int runTimes = 100;
+			try {
+				String runTimesStr = runTimesAnswer.getText();
+				
+				runTimes = Integer.parseInt(runTimesStr);
+				
+				if (runTimes < 1) {
+					throw new NumberFormatException();
+				}
+			}
+			catch (NumberFormatException e) {
+				error = true;
+				runTimesAnswer.setText("");
+			}
+			
 			inputs.add(filePath.get());
 			//inputs.add(fileNameAnswer.getText());
 			inputs.add(graphFilePath.get());
@@ -1511,7 +1557,8 @@ public class UserInterface {
 			inputs.add(openGraphBox.isSelected());
 			inputs.add(comboBoxNetwork.getSelectedItem());
 			inputs.add(drawJung.isSelected());
-			inputs.add(delay.getValue());
+			inputs.add(comboBoxLayout.getSelectedItem());
+			inputs.add(runTimes);
 
 			if (error) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -1527,6 +1574,7 @@ public class UserInterface {
 					for (int i = 1; i < fields.length; i++) {
 						toSave += ", " + fields[i].getText();
 					}
+					toSave += "\n" + comboBoxNetwork.getSelectedItem().toString();
 					writer.print(toSave);
 					writer.close();
 				}

@@ -1121,14 +1121,14 @@ public class MoreMethods {
 
 		//Add to arrayLists
 		for (ArrayList<InfoStorage> runtimeList : simOutput) {
-			System.out.println("Runtime size = " + runtimeList.size());
+			//System.out.println("Runtime size = " + runtimeList.size());
 			InfoStorage lastInfoStorage = runtimeList.get(runtimeList.size() - 1); //Aka the last info storage
 			costs.add(lastInfoStorage.getCost());
-			System.out.println("Get Cost = " + lastInfoStorage.getDay());
+			//System.out.println("Get Cost = " + lastInfoStorage.getDay());
 			days.add(lastInfoStorage.getDay());
-			System.out.println("Get day = " + lastInfoStorage.getDay());
+			//System.out.println("Get day = " + lastInfoStorage.getDay());
 			totalSick.add(lastInfoStorage.getTotalSick());
-			System.out.println("Get totalSick = " + lastInfoStorage.getTotalSick());
+			//System.out.println("Get totalSick = " + lastInfoStorage.getTotalSick());
 		}
 		double avgCost = findAverage(costs);
 		double avgDays = findAverage(days);

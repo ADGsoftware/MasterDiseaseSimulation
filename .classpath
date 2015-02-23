@@ -13,8 +13,6 @@
 	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-graph-impl-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-visualization-2.0.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="/Users/student/Desktop/jre8-2015-02-16.zip"/>
 	<classpathentry kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jxl.jar"/>
-	<classpathentry kind="lib" path="/Users/student/Desktop/Try These/jfxrt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
