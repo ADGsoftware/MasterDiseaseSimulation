@@ -1505,10 +1505,10 @@ public class UserInterface {
 				text = field.getText();
 				field.setText(text);
 				try {
-					if (!field.isEditable() && (i + 2) % 3 == 0) {
+					if (!field.isEnabled() && (i + 2) % 3 == 0) {
 						integer = 1;
 					}
-					else if (!field.isEditable() && (i + 1) % 3 == 0) {
+					else if (!field.isEnabled() && (i + 1) % 3 == 0) {
 						integer = Integer.parseInt(fields[i - 2].getText());
 						if (integer < 0) {
 							throw new NumberFormatException();
@@ -1570,9 +1570,9 @@ public class UserInterface {
 				try {
 					PrintWriter writer = new PrintWriter("previousConfig.adg", "UTF-8");
 					
-					String toSave = fields[0].getText();
+					String toSave = Integer.toString((Integer)inputs.get(0));
 					for (int i = 1; i < fields.length; i++) {
-						toSave += ", " + fields[i].getText();
+						toSave += ", " + Integer.toString((Integer)inputs.get(i));
 					}
 					toSave += "\n" + comboBoxNetwork.getSelectedItem().toString();
 					writer.print(toSave);

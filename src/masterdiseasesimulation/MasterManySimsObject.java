@@ -53,7 +53,7 @@ public class MasterManySimsObject
 		Random random = new Random();
 
 		ArrayList<Object> inputs = UserInterface.getInput(); // Get inputs from user
-		//System.out.println(inputs);
+		System.out.println(inputs);
 
 		// Separate input into variables
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
@@ -169,7 +169,7 @@ public class MasterManySimsObject
 			}
 		}
 		if (totalRuns <= 0) {
-			JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...\nIt's strange, because this SHOULD be working right now, but Alik's part seems to be broken...", "Heap Space Exceeded Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "ERROR: No valid runs detected. Please try again with valid parameters. Exiting program...\nIt's strange, because this SHOULD be working right now, but Alik's part seems to be broken...", "No Runs Detected Error", JOptionPane.ERROR_MESSAGE);
 			//System.exit(0);
 		}
 		/*
