@@ -21,8 +21,6 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	private boolean immuneToCurfews;
 	int friendCapacity = 0;
 	private float connectivityAroundPerson = 0;
-	private Household household;
-	private boolean isOwner;
 
 	//The constructor
 	public Person(int ID) {
@@ -37,14 +35,6 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	// Curfew ------------------------------------------------------------------
 	public void setCurfewed(boolean curfewed) {
 		this.curfewed = curfewed;
-	}
-	
-	public void setHousehold(Household household) {
-		this.household = household;
-	}
-	
-	public Household getHousehold() {
-		return household;
 	}
 
 	/*
@@ -145,12 +135,6 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	public void addFriend(Person newFriend) {
 		this.friends.add(newFriend);
 	}
-	
-	public Person addReflexiveFriend(Person newFriend) {
-		this.friends.add(newFriend);
-		newFriend.addFriend(this);
-		return this;
-	}
 
 	public void clearFriends() {
 		friends.clear();
@@ -180,9 +164,6 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 
 	public void setCapacity(int newValue) {
 		this.friendCapacity = newValue;
-	}
-	public void isOwner(){
-		this.isOwner = true;
 	}
 
 	public void getWell() {

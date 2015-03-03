@@ -17,8 +17,6 @@ import java.util.List;
 public class DataSearch {
     MoreMethods methods = new MoreMethods();
     HashMap<Integer, Integer> numberOfHouseholdsBasedOnPeople = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> ownersAndAges = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> agesAndPrecentages = new HashMap<Integer, Integer>();
     ArrayList<Household> households = new ArrayList<Household>();
 
     //Used for timing
@@ -44,27 +42,14 @@ public class DataSearch {
         stamp("Reading and saving CSV...");
 
         CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTH2.csv"));
-        CSVReader reader1 = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTP1_with_ann.csv"));
-        
+
         List<String[]> rows = reader.readAll();
-        List<String[]> rows1 = reader1.readAll();
 
         for (int i = 1; i < 8; i++) {
             int number = Integer.parseInt(rows.get(1)[getColumnByPeoplePerHousehold(i)]);
             numberOfHouseholdsBasedOnPeople.put(i, number);
         }
-        
-        for(int i = 15; i < 7; i = i + 10) {
-        	int number = Integer.parseInt(rows.get(1)[getColumnByOwnerAge(i)]);
-        	ownersAndAges.put(i, number);
-        }
-        //ALSO NEW FOR LOOP FOR THE SECOND DOCUMENT
-        
-        for(int i = 15; i < 7; i = i + 10) {
-        	int number = Integer.parseInt(rows1.get(1)[getColumnAge(i)]);
-        	ownersAndAges.put(i, number);
-        }
-        
+
         getOperationTime();
         stamp("Creating households...");
 
@@ -110,7 +95,6 @@ public class DataSearch {
 
         for (Person person : people) {
             System.out.println("Hello! I am person " + person.getID() + ". I live in household " + person.getHousehold().getID() + ". My household size is " + person.getHousehold().getResidents().size() + ". Currently, I do not know anybody except for my family, so I have " + person.getFriends().size() + " friends.");
-            System.out.println("Hello! I am Alik and I have no friends.");
         }
 
         getOperationTime();
@@ -195,9 +179,7 @@ public class DataSearch {
     private int getColumnByPeoplePerHousehold(int peoplePerHousehold) {
         return 2 * peoplePerHousehold + 11;
     }
-    private int getColumnByOwnerAge(int ownerAge) {
-    	return 3*ownerAge + 46;
-    }
+
     private ArrayList<Person> createPeople(String typeArg) {
         ArrayList<Person> people = new ArrayList<Person>();
         String[] parts = typeArg.split(":");
@@ -242,15 +224,5 @@ public class DataSearch {
                 }
             }
         }
-    }
-    // Age Distribution
-    private void ageDistribute(Household h){
-    	ArrayList<Person> residents = h.getResidents();
-    	Person owner = residents.get(0);
-    	owner.isOwner();
-    	Random random = new Random();
-    	int randomOwnerNum = random.nextInt(100);
-    	//FIGURE OUT MATH HERE AFTER FIGURE OUT CSV
-    	
     }
 }
