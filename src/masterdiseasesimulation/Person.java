@@ -23,6 +23,8 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	private float connectivityAroundPerson = 0;
 	private Household household;
 	private boolean isOwner;
+	private int age;
+	
 
 	//The constructor
 	public Person(int ID) {
@@ -75,6 +77,12 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 
 	public boolean isImmuneToCurfews() {
 		return this.immuneToCurfews;
+	}
+	public int getAge(){
+		return age;
+	}
+	public void setAge(int a){
+		age = a;
 	}
 
 
@@ -184,7 +192,9 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	public void isOwner(){
 		this.isOwner = true;
 	}
-
+	public boolean getIsOwner(){
+		return isOwner;
+	}
 	public void getWell() {
 		this.daysSick = 0;
 		this.vacc = true;

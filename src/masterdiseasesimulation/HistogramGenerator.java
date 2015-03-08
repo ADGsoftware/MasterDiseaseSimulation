@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Random;
 
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -46,11 +47,12 @@ public class HistogramGenerator {
 		int numRepeats = 0;
 		Boolean average = false;
 		Boolean open = false;
+		String analysisChoice = null;
 		
 		while(!done){
 			//Interface SHtuff
 			
-			JPanel panel = new JPanel(new GridLayout(10, 0));
+			JPanel panel = new JPanel(new GridLayout(11, 0));
 			JTextField numPeopleField = new JTextField("100", 10);
 			JTextField minFriendsField = new JTextField("2", 10);
 			JTextField maxFriendsField = new JTextField("5", 10);
@@ -61,6 +63,8 @@ public class HistogramGenerator {
 			JCheckBox checkBoxSF = new JCheckBox();
 			JCheckBox checkBoxAverage = new JCheckBox();
 			JCheckBox checkBoxOpen = new JCheckBox();
+			String[] analysisTypeChoices = {"Friends", "Ages"};
+			final JComboBox comboBoxAnalysisType = new JComboBox(analysisTypeChoices);
 			
 			panel.add(new JLabel("How many people should this run for?"));
 			panel.add(numPeopleField);
@@ -82,6 +86,8 @@ public class HistogramGenerator {
 			panel.add(checkBoxAverage);
 			panel.add(new JLabel("Open file?"));
 			panel.add(checkBoxOpen);
+			panel.add(new JLabel("Which type of analysis would you like to preform?"));
+			panel.add(comboBoxAnalysisType);
 			
 			int result = JOptionPane.showConfirmDialog(null, panel, "UI", JOptionPane.OK_CANCEL_OPTION);
 	
@@ -128,6 +134,7 @@ public class HistogramGenerator {
 					open = true;
 				}
 				done = true;
+				analysisChoice = (String) comboBoxAnalysisType.getSelectedItem();
 			}
 			catch(NumberFormatException e){
 				if (result == JOptionPane.OK_OPTION) {
@@ -137,34 +144,39 @@ public class HistogramGenerator {
 				}
 			}
 		}
-		if(!average){
-			for(int x = 0; x < numPeople; x++){
-				Person person = new Person(x + 1);
-				people.add(person);
+		if(analysisChoice.equals("Friends")){
+			if(!average){
+				for(int x = 0; x < numPeople; x++){
+					Person person = new Person(x + 1);
+					people.add(person);
+				}
+				for(String networkType : networks){
+					if(networkType == "SW"){
+						methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
+					}
+					if(networkType == "Rand"){
+						methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
+					}
+					if(networkType == "SF"){
+						methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
+					}
+					makeHistogram(people, numPeople + networkType);
+					for(Person person : people){
+						person.clearFriends();
+					}
+				}
 			}
-			for(String networkType : networks){
-				if(networkType == "SW"){
-					methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
-				}
-				if(networkType == "Rand"){
-					methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
-				}
-				if(networkType == "SF"){
-					methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
-				}
-				makeHistogram(people, numPeople + networkType);
-				for(Person person : people){
-					person.clearFriends();
+			else{
+				for(String networkType : networks){
+					File histogram = makeHistogramAverage(networkType, numPeople, minFriends, maxFriends, hubNumber, numRepeats, open);
+					if(open){
+						Desktop.getDesktop().open(histogram);
+					}
 				}
 			}
 		}
 		else{
-			for(String networkType : networks){
-				File histogram = makeHistogramAverage(networkType, numPeople, minFriends, maxFriends, hubNumber, numRepeats, open);
-				if(open){
-					Desktop.getDesktop().open(histogram);
-				}
-			}
+			
 		}
 	}
 //-----------------------------------------------------------------------MAKE HISTOGRAM METHODS--------------------------------------------------------------------------------------------------

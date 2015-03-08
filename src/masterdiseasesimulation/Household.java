@@ -8,6 +8,7 @@ import java.util.Comparator;
 public class Household implements Transformer<Household, String>, Comparator<Household> {
     private int ID;
     private ArrayList<Person> residents;
+    private boolean hasOwner = false;
 
     public Household(int ID, ArrayList<Person> residents) {
         this.ID = ID;
@@ -21,6 +22,13 @@ public class Household implements Transformer<Household, String>, Comparator<Hou
 
     public ArrayList<Person> getResidents() {
         return residents;
+    }
+    public boolean getHasOwner(){
+    	return hasOwner;
+    }
+    //Setters
+    public void newOwner(){
+    	hasOwner = true;
     }
 
 

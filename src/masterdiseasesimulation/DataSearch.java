@@ -17,8 +17,8 @@ import java.util.List;
 public class DataSearch {
     MoreMethods methods = new MoreMethods();
     HashMap<Integer, Integer> numberOfHouseholdsBasedOnPeople = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> ownersAndAges = new HashMap<Integer, Integer>();
-    HashMap<Integer, Integer> agesAndPrecentages = new HashMap<Integer, Integer>();
+    HashMap<Integer, Float> ownersAndAges = new HashMap<Integer, Float>();
+    HashMap<Integer, Float> agesAndPrecentages = new HashMap<Integer, Float>();
     ArrayList<Household> households = new ArrayList<Household>();
 
     //Used for timing
@@ -43,26 +43,29 @@ public class DataSearch {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         stamp("Reading and saving CSV...");
 
-        CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTH2.csv"));
-        CSVReader reader1 = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTP1_with_ann.csv"));
+        CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTH2_with_ann.csv"));
+        CSVReader reader1 = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTP1.csv"));
         
         List<String[]> rows = reader.readAll();
         List<String[]> rows1 = reader1.readAll();
 
         for (int i = 1; i < 8; i++) {
-            int number = Integer.parseInt(rows.get(1)[getColumnByPeoplePerHousehold(i)]);
+            int number = Integer.parseInt(rows.get(2)[getColumnByPeoplePerHousehold(i)]);
             numberOfHouseholdsBasedOnPeople.put(i, number);
+            System.out.println("People: " + i + " number: " + number);
         }
         
-        for(int i = 15; i < 7; i = i + 10) {
-        	int number = Integer.parseInt(rows.get(1)[getColumnByOwnerAge(i)]);
-        	ownersAndAges.put(i, number);
+        for(int i = 1; i < 9; i++) {
+        	float number = Float.parseFloat(rows.get(2)[getColumnByOwnerAge(i)]);
+        	ownersAndAges.put(10*i + 5, number);
+        	System.out.println("OwnerAge: " + 10*i+5 + " Percent: " + number);
         }
         //ALSO NEW FOR LOOP FOR THE SECOND DOCUMENT
         
-        for(int i = 15; i < 7; i = i + 10) {
-        	int number = Integer.parseInt(rows1.get(1)[getColumnAge(i)]);
-        	ownersAndAges.put(i, number);
+        for(int i = 0; i < 19; i++) {
+        	float number = Float.parseFloat(rows1.get(1)[getColumnAge(i)]);
+        	agesAndPrecentages.put(i*5, number);
+        	System.out.println("Age: " + i*5 + " Percent: " + number);
         }
         
         getOperationTime();
@@ -107,11 +110,11 @@ public class DataSearch {
         getOperationTime();
         stamp("Printing results...");
 
-
+/*
         for (Person person : people) {
             System.out.println("Hello! I am person " + person.getID() + ". I live in household " + person.getHousehold().getID() + ". My household size is " + person.getHousehold().getResidents().size() + ". Currently, I do not know anybody except for my family, so I have " + person.getFriends().size() + " friends.");
             System.out.println("Hello! I am Alik and I have no friends.");
-        }
+        }*/
 
         getOperationTime();
 
@@ -196,7 +199,15 @@ public class DataSearch {
         return 2 * peoplePerHousehold + 11;
     }
     private int getColumnByOwnerAge(int ownerAge) {
-    	return 3*ownerAge + 46;
+    	if(ownerAge >= 6){
+    		return 2*ownerAge + 46;
+    	}
+    	else{
+    	return 2*ownerAge + 44;
+    	}
+    }
+    private int getColumnAge(int age){
+    	return 7*age + 13;
     }
     private ArrayList<Person> createPeople(String typeArg) {
         ArrayList<Person> people = new ArrayList<Person>();
@@ -244,13 +255,58 @@ public class DataSearch {
         }
     }
     // Age Distribution
-    private void ageDistribute(Household h){
-    	ArrayList<Person> residents = h.getResidents();
-    	Person owner = residents.get(0);
-    	owner.isOwner();
-    	Random random = new Random();
-    	int randomOwnerNum = random.nextInt(100);
-    	//FIGURE OUT MATH HERE AFTER FIGURE OUT CSV
+    private HashMap<Integer, Float> rewritePercentMap(HashMap<Integer, Float> oldMap){
+    	HashMap<Integer, Float> newMap = new HashMap<Integer, Float>();
+    	float counter = 0;
+    	for(Map.Entry<Integer, Float> entry : oldMap.entrySet()){
+    		counter = entry.getValue() + counter;
+    		newMap.put(entry.getKey(), counter);
+    	}
+    	return newMap;
+    }
+    private void distributeAgesAndOwner(Household household, HashMap<Integer, Float> ownersAndAges, HashMap<Integer, Float> agesAndPrecentages){
+    	ArrayList<Person> residents = household.getResidents();
     	
+    	//OwnerStuffs
+    	residents.get(1).isOwner();
+    	household.newOwner();
+    	
+    	//Owner Age
+    	Random r = new Random();
+    	float ageFloat = 100*r.nextFloat();
+    	Boolean doneOwnerAgeDist = false;;
+    	for(Map.Entry<Integer, Float> entry : ownersAndAges.entrySet()){
+    		if(entry.getValue() < ageFloat){
+    			continue;
+    		}
+    		else{
+    			residents.get(1).setAge(entry.getKey() - r.nextInt(10));
+    			doneOwnerAgeDist = true;
+    			break;
+    		}
+    	}
+    	if(!doneOwnerAgeDist){
+    		residents.get(1).setAge(90 + r.nextInt(10));
+    	}
+    	//Other Residents Age
+    	for(Person resident : residents){
+	    	if(!resident.getIsOwner()){
+	    		ageFloat = r.nextFloat()*100;
+	    		Boolean doneResidentAgeDist = false;
+	    		for(Map.Entry<Integer, Float> entry : ownersAndAges.entrySet()){
+	        		if(entry.getValue() < ageFloat){
+	        			continue;
+	        		}
+	        		else{
+	        			resident.setAge(entry.getKey() - r.nextInt(5));
+	        			doneResidentAgeDist = true;
+	        			break;
+	        		}
+	        	}
+	    		if(!doneOwnerAgeDist){
+	        		resident.setAge(65 + r.nextInt(35));
+	        	}
+	    	}
+    	}
     }
 }
