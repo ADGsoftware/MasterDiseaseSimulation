@@ -14,11 +14,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class DataSearch {
+public class ModelTownSim {
     MoreMethods methods = new MoreMethods();
-    HashMap<Integer, Integer> numberOfHouseholdsBasedOnPeople = new HashMap<Integer, Integer>();
-    HashMap<Integer, Float> ownersAndAges = new HashMap<Integer, Float>();
-    HashMap<Integer, Float> agesAndPrecentages = new HashMap<Integer, Float>();
+    LinkedHashMap<Integer, Integer> numberOfHouseholdsBasedOnPeople = new LinkedHashMap<Integer, Integer>();
+    LinkedHashMap<Integer, Float> ownersAndAges = new LinkedHashMap<Integer, Float>();
+    LinkedHashMap<Integer, Float> agesAndPrecentages = new LinkedHashMap<Integer, Float>();
     ArrayList<Household> households = new ArrayList<Household>();
 
     //Used for timing
@@ -29,7 +29,7 @@ public class DataSearch {
     private JFrame frame = new JFrame();
     private JPanel panel = new JPanel();
     private JTextArea status = new JTextArea("PROGRAM STATUS");
-
+    
     public void run() throws IOException, InterruptedException {
         status.setColumns(89);
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
@@ -58,16 +58,16 @@ public class DataSearch {
         for(int i = 1; i < 9; i++) {
         	float number = Float.parseFloat(rows.get(2)[getColumnByOwnerAge(i)]);
         	ownersAndAges.put(10*i + 5, number);
-        	System.out.println("OwnerAge: " + 10*i+5 + " Percent: " + number);
+        	System.out.println("OwnerAge: " + (10*i+5) + " Percent: " + number);
         }
         //ALSO NEW FOR LOOP FOR THE SECOND DOCUMENT
         
-        for(int i = 0; i < 19; i++) {
-        	float number = Float.parseFloat(rows1.get(1)[getColumnAge(i)]);
+        for(int i = 1; i < 20; i++) {
+        	float number = Float.parseFloat(rows1.get(1)[getColumnAge(i-1)]);
         	agesAndPrecentages.put(i*5, number);
         	System.out.println("Age: " + i*5 + " Percent: " + number);
         }
-        
+
         getOperationTime();
         stamp("Creating households...");
 
@@ -84,8 +84,7 @@ public class DataSearch {
         getOperationTime();
 
         System.out.println(households.size() + " households created.");
-
-
+        
         //Simulation____________________________________________________________________________________________________
 
 
@@ -106,7 +105,16 @@ public class DataSearch {
         for (Household household : households) {
             befriend(household, "reflexive");
         }
-
+        //AGES STUFF-----------
+        ownersAndAges = rewritePercentMap(ownersAndAges);
+        agesAndPrecentages = rewritePercentMap(agesAndPrecentages);
+        System.out.println(ownersAndAges);
+        System.out.println(agesAndPrecentages);
+        
+        for(Household household : households){
+        	distributeAgesAndOwner(household, ownersAndAges, agesAndPrecentages);
+        }
+        //------------------------
         getOperationTime();
         stamp("Printing results...");
 
@@ -117,7 +125,15 @@ public class DataSearch {
         }*/
 
         getOperationTime();
-
+        
+        //Hist
+        for(Household h: households){
+        	for(Person p: h.getResidents()){
+        		System.out.println(p.getAge());
+        	}
+        }
+        HistogramGenerator hist = new HistogramGenerator();   
+        hist.makeHistAges(people, "AgesHistogram");
 
         //Simulation method_____
 
@@ -255,8 +271,8 @@ public class DataSearch {
         }
     }
     // Age Distribution
-    private HashMap<Integer, Float> rewritePercentMap(HashMap<Integer, Float> oldMap){
-    	HashMap<Integer, Float> newMap = new HashMap<Integer, Float>();
+    private LinkedHashMap<Integer, Float> rewritePercentMap(LinkedHashMap<Integer, Float> oldMap){
+    	LinkedHashMap<Integer, Float> newMap = new LinkedHashMap<Integer, Float>();
     	float counter = 0;
     	for(Map.Entry<Integer, Float> entry : oldMap.entrySet()){
     		counter = entry.getValue() + counter;
@@ -264,47 +280,45 @@ public class DataSearch {
     	}
     	return newMap;
     }
-    private void distributeAgesAndOwner(Household household, HashMap<Integer, Float> ownersAndAges, HashMap<Integer, Float> agesAndPrecentages){
+    private void distributeAgesAndOwner(Household household, LinkedHashMap<Integer, Float> ownersAndAges, LinkedHashMap<Integer, Float> agesAndPrecentages){
     	ArrayList<Person> residents = household.getResidents();
     	
     	//OwnerStuffs
-    	residents.get(1).isOwner();
+    	residents.get(0).isOwner();
     	household.newOwner();
     	
     	//Owner Age
     	Random r = new Random();
     	float ageFloat = 100*r.nextFloat();
-    	Boolean doneOwnerAgeDist = false;;
+    	Boolean doneOwnerAgeDist = false;
     	for(Map.Entry<Integer, Float> entry : ownersAndAges.entrySet()){
     		if(entry.getValue() < ageFloat){
     			continue;
     		}
     		else{
-    			residents.get(1).setAge(entry.getKey() - r.nextInt(10));
+    			residents.get(0).setAge(entry.getKey() - r.nextInt(10));
     			doneOwnerAgeDist = true;
     			break;
     		}
     	}
     	if(!doneOwnerAgeDist){
-    		residents.get(1).setAge(90 + r.nextInt(10));
+    		residents.get(0).setAge(90 + r.nextInt(10));
     	}
     	//Other Residents Age
     	for(Person resident : residents){
 	    	if(!resident.getIsOwner()){
 	    		ageFloat = r.nextFloat()*100;
 	    		Boolean doneResidentAgeDist = false;
-	    		for(Map.Entry<Integer, Float> entry : ownersAndAges.entrySet()){
-	        		if(entry.getValue() < ageFloat){
-	        			continue;
-	        		}
-	        		else{
+	    		for(Map.Entry<Integer, Float> entry : agesAndPrecentages.entrySet()){
+	        		if(entry.getValue() >= ageFloat){
 	        			resident.setAge(entry.getKey() - r.nextInt(5));
 	        			doneResidentAgeDist = true;
 	        			break;
 	        		}
 	        	}
-	    		if(!doneOwnerAgeDist){
-	        		resident.setAge(65 + r.nextInt(35));
+	    		if(!doneResidentAgeDist){
+	    			System.out.println("I AM HERE");
+	        		resident.setAge(95 + r.nextInt(5));
 	        	}
 	    	}
     	}

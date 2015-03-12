@@ -29,6 +29,9 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
 import org.jfree.chart.renderer.category.StatisticalBarRenderer;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 
@@ -275,6 +278,52 @@ public class HistogramGenerator {
     	
     	return histogram;
     }
+    public static void makeHistAges(ArrayList<Person> people, String filename) throws IOException{
+    	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+    	ArrayList<Integer> ages = new ArrayList<Integer>();
+    	ArrayList<Integer> agesNoRepeat = new ArrayList<Integer>();
+    	ArrayList<ArrayList<Integer>> agesTable = new ArrayList<ArrayList<Integer>>();
+    	for(Person p : people){
+    		ages.add(p.getAge());
+    	}
+    	for(int age : ages){
+    		if(!agesNoRepeat.contains(age)){
+    			agesNoRepeat.add(age);
+    		}
+    	}
+    	Collections.sort(agesNoRepeat);
+    	for(int age : agesNoRepeat){
+    		ArrayList<Integer> newRow = new ArrayList<Integer>();
+    		newRow.add(age);
+    		newRow.add(Collections.frequency(ages, age));
+    		agesTable.add(newRow);
+    	}
+    	for(ArrayList<Integer> row : agesTable){
+    		dataset.addValue(row.get(1), "Series 1", Integer.toString(row.get(0)));
+    	}
+    	
+    	BarRenderer renderer = new BarRenderer();
+    	
+    	CategoryAxis xAxis = new CategoryAxis("Ages");
+    	xAxis.setLowerMargin(0d); // percentage of space before first bar
+        xAxis.setUpperMargin(0d); // percentage of space after last bar
+        xAxis.setCategoryMargin(0.04d); // percentage of space between categories
+        ValueAxis yAxis = new NumberAxis("Number of People");
+        
+        CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
+        
+        JFreeChart chart = new JFreeChart("Ages Distribution Graph", plot);
+
+    	//JFreeChart chart = ChartFactory.createBarChart(networkType + numPeople + "AVG", "FriendNumbers", "Amount of People", dataset);
+    	
+    	int width = 1280;
+        int height = 1000;
+        
+    	File histogram = new File("Ages.png");
+    	ChartUtilities.saveChartAsPNG(histogram, chart, width, height);
+    }
+    	
+    	
     //---------------------------------------------------------------------------------------------------------------------------------------STATITSTICS MATH METHODS-------------------------------------------------------------------------------------------------------------------------------------------------
     public static float mean(ArrayList<Integer> numbers){
 		float result = 0;
