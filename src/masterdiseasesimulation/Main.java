@@ -10,8 +10,12 @@ public class Main {
 		//Play music
 		//if (music) Audio.main(args);
 
-		Object[] options = {"Simulate", "Analyze", "Draw Histograms",};
+		Object[] options = {"Simulate", "Analyze", "Draw Histograms", "DataSearch"};
 		int selection = JOptionPane.showOptionDialog(null, "What program to run?", "Program Choice", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
+
+		if (selection == 3) {
+			new ModelTownSim().run();
+		}
 		if (selection == 2) {
 			HistogramGenerator.run();
 		} else if (selection == 1) {

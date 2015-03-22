@@ -1,12 +1,9 @@
 package masterdiseasesimulation;
 
+import com.opencsv.CSVReader;
 import datacontainers.InfoStorage;
 import moremethods.MoreMethods;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,13 +14,12 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-public class ModelTown {
+public class ModelTownSim {
     MoreMethods methods = new MoreMethods();
     LinkedHashMap<Integer, Integer> numberOfHouseholdsBasedOnPeople = new LinkedHashMap<Integer, Integer>();
     LinkedHashMap<Integer, Float> ownersAndAges = new LinkedHashMap<Integer, Float>();
     LinkedHashMap<Integer, Float> agesAndPrecentages = new LinkedHashMap<Integer, Float>();
     ArrayList<Household> households = new ArrayList<Household>();
-    private ArrayList<Person> people = new ArrayList<Person>();
 
     //Used for timing
     private long timeStamp;
@@ -34,9 +30,7 @@ public class ModelTown {
     private JPanel panel = new JPanel();
     private JTextArea status = new JTextArea("PROGRAM STATUS");
     
-    //HUMONGOUS COUNSTRUCTOR THAT DYUSHKA WILL KILL ME FOR
-    public ModelTown(String networkType, int minFriends, int maxFriends, int hubNumber, Random random) throws IOException, InterruptedException {
-    	
+    public void run() throws IOException, InterruptedException {
         status.setColumns(89);
         panel.setBorder(new EmptyBorder(5, 10, 5, 10));
         panel.add(status);
@@ -54,7 +48,7 @@ public class ModelTown {
         
         List<String[]> rows = reader.readAll();
         List<String[]> rows1 = reader1.readAll();
-        //Reading CSV
+
         for (int i = 1; i < 8; i++) {
             int number = Integer.parseInt(rows.get(2)[getColumnByPeoplePerHousehold(i)]);
             numberOfHouseholdsBasedOnPeople.put(i, number);
@@ -66,6 +60,7 @@ public class ModelTown {
         	ownersAndAges.put(10*i + 5, number);
         	System.out.println("OwnerAge: " + (10*i+5) + " Percent: " + number);
         }
+        //ALSO NEW FOR LOOP FOR THE SECOND DOCUMENT
         
         for(int i = 1; i < 20; i++) {
         	float number = Float.parseFloat(rows1.get(1)[getColumnAge(i-1)]);
@@ -90,57 +85,56 @@ public class ModelTown {
 
         System.out.println(households.size() + " households created.");
         
+        //Simulation____________________________________________________________________________________________________
+
+
         stamp("Generating network...");
 
-       int cpID = 0; //Universal identification number for each person
+        ArrayList<Person> people = new ArrayList<Person>();
+
+        int cpID = 0; //Universal identification number for each person
         for (Household household : households) {
             for (Person person : household.getResidents()) {
                 person.setID(cpID);
                 person.setHousehold(household);
-                this.people.add(person);
+                people.add(person);
                 cpID++;
             }
         }
-        //Befriending Methods
+
         for (Household household : households) {
             befriend(household, "reflexive");
         }
-        if (networkType.equals("Small World")) {
-            methods.befriendSmallWorld(this.people, minFriends, maxFriends, random, hubNumber);
-        } else if (networkType.equals("Random")) {
-            methods.befriendRandom(this.people, minFriends, maxFriends, random, hubNumber);
-        } else if (networkType.equals("Scale-Free")) {
-            methods.befriendScaleFree(this.people, minFriends, maxFriends, random);
-        } else {
-            JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
-            //System.exit(0);
-        }
-        for(Household h : households){
-        	for(Person p : h.getResidents()){
-        		System.out.println(p.getFriends().size() + " : Many Friends");
-        	}
-        }
-        
         //AGES STUFF-----------
         ownersAndAges = rewritePercentMap(ownersAndAges);
         agesAndPrecentages = rewritePercentMap(agesAndPrecentages);
-       
+        System.out.println(ownersAndAges);
+        System.out.println(agesAndPrecentages);
+        
         for(Household household : households){
         	distributeAgesAndOwner(household, ownersAndAges, agesAndPrecentages);
         }
         //------------------------
-        
         getOperationTime();
         stamp("Printing results...");
+
+/*
+        for (Person person : people) {
+            System.out.println("Hello! I am person " + person.getID() + ". I live in household " + person.getHousehold().getID() + ". My household size is " + person.getHousehold().getResidents().size() + ". Currently, I do not know anybody except for my family, so I have " + person.getFriends().size() + " friends.");
+            System.out.println("Hello! I am Alik and I have no friends.");
+        }*/
 
         getOperationTime();
         
         //Hist
+        for(Household h: households){
+        	for(Person p: h.getResidents()){
+        		System.out.println(p.getAge());
+        	}
+        }
         HistogramGenerator hist = new HistogramGenerator();   
         hist.makeHistAges(people, "AgesHistogram");
-        
-        
-/*
+
         //Simulation method_____
 
         stamp("Running simulations...");
@@ -205,7 +199,7 @@ public class ModelTown {
         getOperationTime();
         stamp("Saving graph...");
 
-        modelTownGraph(results);
+        //TODO: Save graph
 
         getOperationTime();
         stamp("Opening graph...");
@@ -214,7 +208,7 @@ public class ModelTown {
 
         getOperationTime();
 
-        Thread.sleep(1000000000);*/
+        Thread.sleep(1000000000);
     }
 
     private int getColumnByPeoplePerHousehold(int peoplePerHousehold) {
@@ -327,40 +321,6 @@ public class ModelTown {
 	        		resident.setAge(95 + r.nextInt(5));
 	        	}
 	    	}
-    	}
-    }
-    public ArrayList<Household> getHouseholds(){
-    	return households;
-    }
-    public ArrayList<Person> getPeople(){
-    	return people;
-    }
-    public ArrayList<Person> getTeenagers(){
-    	ArrayList<Person> teens = new ArrayList<Person>();
-    	for(Person p : people){
-    		if(p.getAge() < 20 && p.getAge() > 12 ){
-    			teens.add(p);
-    		}
-    	}
-    	return teens;
-    }
-    private void setSucaptablies(ArrayList<Person> people){
-    	for(Person p : people){
-    		if(p.getAge() >=0 && p.getAge() <=4){
-    			p.setSuceptability(66.4/14.5);
-    		}
-    		if(p.getAge() >=5 && p.getAge() <=17){
-    			p.setSuceptability(14.5/14.5);
-    		}
-    		if(p.getAge() >=18 && p.getAge() <=49){
-    			p.setSuceptability(16.2/14.5);
-    		}
-    		if(p.getAge() >=50 && p.getAge() <=64){
-    			p.setSuceptability(41.3/14.5);
-    		}
-    		if(p.getAge() >=65){
-    			p.setSuceptability(192.4/14.5);
-    		}
     	}
     }
 }
