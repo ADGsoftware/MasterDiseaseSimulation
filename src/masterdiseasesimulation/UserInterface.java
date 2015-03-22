@@ -37,7 +37,7 @@ public class UserInterface {
 	/**
 	 * INPUT METHODS
 	 */
-	
+
 	public static ArrayList<Integer> analyze () throws BiffException, IOException {
 		JPanel panel = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -60,12 +60,12 @@ public class UserInterface {
 		JTextField percentTeensAnswer = new JTextField(5);
 		JTextField percentCurfewAnswer = new JTextField(5);
 		JTextField fileNameAnswer = new JTextField("results", 5);
-		
+
 		File file2 = new File("results.xls");
 		if (file2.exists()) {
 			ArrayList<ArrayList<Integer>> data = MoreMethods.getAllData("results.xls");
 			ArrayList<Integer> row1 = data.get(0);
-			
+
 			numPeopleAnswer.setText(Integer.toString(row1.get(0)));
 			minFriendsAnswer.setText(Integer.toString(row1.get(1)));
 			maxFriendsAnswer.setText(Integer.toString(row1.get(2)));
@@ -258,6 +258,7 @@ public class UserInterface {
 		String dependent;
 		String fileName;
 		boolean error = false;
+
 		while (true) {
 			int result = JOptionPane.showConfirmDialog(null, contentPane, "Configuration", JOptionPane.OK_CANCEL_OPTION);
 			dependent = (String)minimize.getSelectedItem();
@@ -346,7 +347,7 @@ public class UserInterface {
 		return best;
 	}
 
-	
+
 	@SuppressWarnings("unchecked")
 	public static ArrayList<Integer> analyze (ArrayList<Object> inputs) throws BiffException, IOException {
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
@@ -656,11 +657,11 @@ public class UserInterface {
 					}
 					else {
 						/*
-						for (int item : list) {
-							if (!((ArrayList<Integer>)lists[j]).contains(item)) {
-								throw new NumberFormatException();
-							}
-						}
+	for (int item : list) {
+	if (!((ArrayList<Integer>)lists[j]).contains(item)) {
+	throw new NumberFormatException();
+	}
+	}
 						 */
 						//System.out.println(list);
 						input.add(list);
@@ -792,15 +793,17 @@ public class UserInterface {
 		JTextField percentCurfewMinAnswer = new JTextField("30", 5);
 		JTextField percentCurfewStepAnswer = new JTextField("1", 5);
 		JTextField percentCurfewMaxAnswer = new JTextField("30", 5);
-		
+
 		JTextField runTimesAnswer = new JTextField("100", 5);
-		
+
 		JPanel contentPane = new JPanel(new GridBagLayout());
 		final JTextField[] fields = {numPeopleMinAnswer, numPeopleStepAnswer, numPeopleMaxAnswer, minFriendsMinAnswer, minFriendsStepAnswer, minFriendsMaxAnswer, maxFriendsMinAnswer, maxFriendsStepAnswer, maxFriendsMaxAnswer, hubNumberMinAnswer, hubNumberStepAnswer, hubNumberMaxAnswer, getWellDaysMinAnswer, getWellDaysStepAnswer, getWellDaysMaxAnswer, percentSickMinAnswer, percentSickStepAnswer, percentSickMaxAnswer, initiallySickMinAnswer, initiallySickStepAnswer, initiallySickMaxAnswer, initiallyVaccMinAnswer, initiallyVaccStepAnswer, initiallyVaccMaxAnswer, getVaccMinAnswer, getVaccStepAnswer, getVaccMaxAnswer, discoveryMinAnswer, discoveryStepAnswer, discoveryMaxAnswer, newGetWellDaysMinAnswer, newGetWellDaysStepAnswer, newGetWellDaysMaxAnswer, curfewDaysMinAnswer, curfewDaysStepAnswer, curfewDaysMaxAnswer, percentTeensMinAnswer, percentTeensStepAnswer, percentTeensMaxAnswer, percentCurfewMinAnswer, percentCurfewStepAnswer, percentCurfewMaxAnswer};
-		
+
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		final JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
-		
+
+		JCheckBox modelTownSimBox = new JCheckBox();
+
 		JButton openButton = new JButton("Open config...");
 		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -832,14 +835,14 @@ public class UserInterface {
 					//System.out.println(restoredStr);
 					ArrayList<Integer> restored = MoreMethods.commaListToArrayList(restoredStr);
 					//System.out.println(restored);
-					
+
 					for (int i = 0; i < fields.length; i++) {
 						fields[i].setText(Integer.toString(restored.get(i)));
 					}
 				}
 			}
 		});
-		
+
 		JButton saveButton = new JButton("Save config...");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -866,7 +869,7 @@ public class UserInterface {
 					catch (UnsupportedEncodingException e) {
 						return;
 					}
-					
+
 					String toSave = fields[0].getText();
 					for (int i = 1; i < fields.length; i++) {
 						toSave += ", " + fields[i].getText();
@@ -878,7 +881,7 @@ public class UserInterface {
 				}
 			}
 		});
-		
+
 		final StringStorage filePath = new StringStorage("results");
 		final JButton fileButton = new JButton("results");
 		fileButton.addActionListener(new ActionListener() {
@@ -897,9 +900,9 @@ public class UserInterface {
 					if (path.substring(path.length() - 4).equals(".xls")) {
 						path = path.substring(0, path.length() - 4);
 					}
-					
+
 					filePath.set(path);
-					
+
 					while (true) {
 						int index = path.indexOf('/');
 						//System.out.println(index);
@@ -915,12 +918,12 @@ public class UserInterface {
 							path = path.substring(index + 1);
 						}
 					}
-					
+
 					fileButton.setText(path);
 				}
 			}
 		});
-		
+
 		final StringStorage graphFilePath = new StringStorage("graph");
 		final JButton graphFileButton = new JButton("graph");
 		graphFileButton.addActionListener(new ActionListener() {
@@ -939,9 +942,9 @@ public class UserInterface {
 					if (path.substring(path.length() - 4).equals(".png")) {
 						path = path.substring(0, path.length() - 4);
 					}
-					
+
 					graphFilePath.set(path);
-					
+
 					while (true) {
 						int index = path.indexOf('/');
 						//System.out.println(index);
@@ -957,7 +960,7 @@ public class UserInterface {
 							path = path.substring(index + 1);
 						}
 					}
-					
+
 					graphFileButton.setText(path);
 				}
 			}
@@ -996,7 +999,7 @@ public class UserInterface {
 				}
 			}
 		});
-		
+
 		JPanel fileName = new JPanel(new GridLayout(1, 2));
 		JTextField fileNameAnswer = new JTextField("results", 5);
 		fileName.add(fileNameAnswer);
@@ -1021,7 +1024,7 @@ public class UserInterface {
 		JPanel openResults = new JPanel(new GridLayout(1, 2));
 		openResults.add(new JLabel("Open: "));
 		openResults.add(openResultsBox);
-		
+
 		JPanel graphFileName = new JPanel(new GridLayout(1, 2));
 		JTextField graphFileNameAnswer = new JTextField("graph", 5);
 		graphFileName.add(graphFileNameAnswer);
@@ -1066,7 +1069,7 @@ public class UserInterface {
 		drawJung.setSelected(true);
 		String[] layoutChoices = {"Circle", "ISOM", "FR"};
 		final JComboBox comboBoxLayout = new JComboBox(layoutChoices);
-		
+
 		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
 		drawJungPanel.add(drawJung);
 		final JLabel layoutLabel = new JLabel("Layout:");
@@ -1081,24 +1084,24 @@ public class UserInterface {
 				}
 			}
 		});
-		
+
 		/*
-		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
-		drawJungPanel.add(drawJung);
-		final JLabel delayLabel = new JLabel("Delay: 500");
-		drawJungPanel.add(delayLabel);
-		final JSlider delay = new JSlider(JSlider.HORIZONTAL, 0, 3000, 500);
-		delay.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent arg0) {
-				delayLabel.setText("Delay: " + delay.getValue());
-			}
-		});
-		//Turn on labels at major tick marks.
-		delay.setMajorTickSpacing(500);
-		delay.setMinorTickSpacing(100);
-		delay.setPaintTicks(true);
-		delay.setPaintLabels(true);
-		*/
+	JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
+	drawJungPanel.add(drawJung);
+	final JLabel delayLabel = new JLabel("Delay: 500");
+	drawJungPanel.add(delayLabel);
+	final JSlider delay = new JSlider(JSlider.HORIZONTAL, 0, 3000, 500);
+	delay.addChangeListener(new ChangeListener() {
+	public void stateChanged(ChangeEvent arg0) {
+	delayLabel.setText("Delay: " + delay.getValue());
+	}
+	});
+	//Turn on labels at major tick marks.
+	delay.setMajorTickSpacing(500);
+	delay.setMinorTickSpacing(100);
+	delay.setPaintTicks(true);
+	delay.setPaintLabels(true);
+		 */
 
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1151,6 +1154,11 @@ public class UserInterface {
 		panel.add(new JLabel("networkType:"), c);
 		c.gridx = 1;
 		panel.add(comboBoxNetwork, c);
+		c.gridx = 0;
+		c.gridy += 1;
+		panel.add(new JLabel("Lex Sim:"), c);
+		c.gridx = 1;
+		panel.add(modelTownSimBox, c);
 
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1296,12 +1304,12 @@ public class UserInterface {
 		panel.add(new JLabel("runTimes:"), c);
 		c.gridx = 1;
 		panel.add(runTimesAnswer, c);
-		
+
 		c.ipady = padding;
 		c.gridx = 0;
 		c.gridy += 1;
 		panel.add(new JLabel(""), c);
-		
+
 		c.ipady = padding;
 		c.gridx = 0;
 		c.gridy += 1;
@@ -1363,13 +1371,13 @@ public class UserInterface {
 		panel.add(saveButton, c);
 		c.gridx = 2;
 		panel.add(openButton, c);
-		
+
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		int[] moveOver = {1, 1, 1, 1, 3, 1, 2, 1, 2, 2, 1, 2, 1, 1};
-		
+
 		final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
-		
+
 		c.gridx = 4;
 		c.gridy = 1;
 		for (int i = 1; i < fields.length; i += 3) {
@@ -1400,7 +1408,7 @@ public class UserInterface {
 			c.gridy += moveOver[i / 3];
 			panel.add(box, c);
 		}
-		
+
 		final JCheckBox allBox = new JCheckBox();
 		allBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -1431,7 +1439,7 @@ public class UserInterface {
 		allBox.setSelected(true);
 		c.gridy = 1;
 		panel.add(allBox, c);
-		
+
 		JPanel header = new JPanel (new GridBagLayout());
 		c = new GridBagConstraints();
 		c.ipady = 5;
@@ -1446,11 +1454,11 @@ public class UserInterface {
 		header.add(new JLabel("           Step              |"), c);
 		c.gridx = 3;
 		header.add(new JLabel("            Max               "), c);
-		
+
 		c.gridy = 0;
 		c.gridx = 4;
 		header.add(allBox, c);
-		
+
 		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
 		scrollPane.setBounds(0, 0, 500, 500);
 		scrollPane.setPreferredSize(new Dimension(690, maxOut((int)(screenSize.height / 1.6), 500))); //640
@@ -1463,7 +1471,7 @@ public class UserInterface {
 		contentPane.add(header, c);
 		c.gridy = 1;
 		contentPane.add(scrollPane, c);
-		
+
 		// Restore previous configuration from previousConfig.adg
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("previousConfig.adg"));
@@ -1499,7 +1507,7 @@ public class UserInterface {
 
 			String text;
 			int integer;
-			
+
 			for (int i = 0; i < fields.length; i++) {
 				JTextField field = fields[i];
 				text = field.getText();
@@ -1527,13 +1535,13 @@ public class UserInterface {
 					field.setText("");
 				}
 			}
-			
+
 			int runTimes = 100;
 			try {
 				String runTimesStr = runTimesAnswer.getText();
-				
+
 				runTimes = Integer.parseInt(runTimesStr);
-				
+
 				if (runTimes < 1) {
 					throw new NumberFormatException();
 				}
@@ -1542,7 +1550,7 @@ public class UserInterface {
 				error = true;
 				runTimesAnswer.setText("");
 			}
-			
+
 			inputs.add(filePath.get());
 			//inputs.add(fileNameAnswer.getText());
 			inputs.add(graphFilePath.get());
@@ -1559,6 +1567,7 @@ public class UserInterface {
 			inputs.add(drawJung.isSelected());
 			inputs.add(comboBoxLayout.getSelectedItem());
 			inputs.add(runTimes);
+			inputs.add(modelTownSimBox.isSelected());
 
 			if (error) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -1569,7 +1578,7 @@ public class UserInterface {
 				// Save inputs into previousConfig.adg file
 				try {
 					PrintWriter writer = new PrintWriter("previousConfig.adg", "UTF-8");
-					
+
 					String toSave = Integer.toString((Integer)inputs.get(0));
 					for (int i = 1; i < fields.length; i++) {
 						toSave += ", " + Integer.toString((Integer)inputs.get(i));
@@ -1584,7 +1593,7 @@ public class UserInterface {
 				catch (UnsupportedEncodingException e) {
 					// Do nothing
 				}
-				
+
 				return inputs;
 			}
 		}
@@ -1595,18 +1604,18 @@ public class UserInterface {
 		//label.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 11));
 		return label;
 	}
-	
+
 	private static int maxOut (int largeNum, int max) {
 		if (largeNum > max) {
 			return max;
 		}
 		return largeNum;
 	}
-	
+
 	/**
 	 * OUTPUT METHODS
 	 */
-	
+
 	public static void displayMessage (String message) { // Displays message to user
 		JTextArea outputMessage = new JTextArea(message);
 		outputMessage.setLineWrap(true);

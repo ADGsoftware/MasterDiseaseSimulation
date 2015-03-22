@@ -31,6 +31,6 @@
 	<classpathentry kind="lib" path="K:/grisha/JAVA/jfreechart-1.0.19/lib/orsonpdf-1.6-eval.jar"/>
 	<classpathentry kind="lib" path="K:/grisha/JAVA/jfreechart-1.0.19/lib/servlet.jar"/>
 	<classpathentry kind="lib" path="K:/grisha/JAVA/jfreechart-1.0.19/lib/swtgraphics2d.jar"/>
-	<classpathentry kind="lib" path="K:/grisha/JAVA/GitHub/MasterDiseaseSimulation/csv/opencsv-3.2.jar"/>
+	<classpathentry kind="lib" path="K:/grisha/JAVA/GitHub/MasterDiseaseSimulation/csv/opencsv-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

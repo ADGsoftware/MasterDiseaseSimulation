@@ -697,7 +697,8 @@ public class MoreMethods {
 	}
 
 	// Simulation for MasterManySims updated for ManyLinesAverage
-	public static InfoJungStorage simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest) {
+	public static InfoJungStorage simulate(ArrayList<Person> people, ArrayList<Person> teenagers, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int getVac, int curfewDays, int runTimes, int percentCurfewed, boolean transmissionTest, boolean modelTownSim) {
+		System.out.println(people.size());
 		ArrayList<JungStorage> jungStorage = new ArrayList<JungStorage>();
 		int day = 0;
 		int cost = origVacc;
@@ -748,12 +749,15 @@ public class MoreMethods {
 				pBar.setTitle("Running simulations... 75%");
 			}
 			*/
+			System.out.println("'Ello Bro!1");
 			infoStorage.add(new ArrayList<InfoStorage>());
 			//System.out.println(runTime);
 			//System.out.println(getNumSickPeople(people));
 			while (getNumSickPeople(people) > 0) {
+				System.out.println("'Ello Bro!2");
 				//int numberSickOnDay = 0;
 				for (Person person : people) {
+					System.out.println("'Ello Bro!3");
 					for (Person teenager : teenagers) {
 						teenager.incrementCurfewedDays();
 						if (!teenager.isImmuneToCurfews()) {
@@ -774,8 +778,15 @@ public class MoreMethods {
 					} else {
 						ArrayList<Person> friends = person.getFriends();
 						for (Person friend : friends) {
+							System.out.println("'Ello Bro!4");
 							if (friend.getDaysSick() > 0 && friend.isSick()) {
-								boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
+								boolean getSick;
+								if(modelTownSim){
+									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability();
+								}
+								else{
+									getSick = (new Random().nextInt(99) + 1) < percentSick;
+								}
 								boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
 								if (getSick) {
 									person.setSick(true);
@@ -790,6 +801,7 @@ public class MoreMethods {
 							}
 						}
 					}
+					System.out.println("'Ello Bro!6");
 					//System.out.println(person.getDaysSick());
 					if (person.getDaysSick() >= getWellDays) { // && !person.isImmune()
 						person.getWell();
@@ -797,9 +809,11 @@ public class MoreMethods {
 				}
 				day++;
 				if (runTime == 0) {
+					System.out.println("'Ello Bro!7");
 					ArrayList<Person> vaccPeople = new ArrayList<Person>();
 					ArrayList<Person> sickPeople = new ArrayList<Person>();
 					for (Person p : people) {
+						System.out.println("'Ello Bro!8");
 						if (p.isImmune()) {
 							vaccPeople.add(p);
 						}
@@ -807,21 +821,22 @@ public class MoreMethods {
 							sickPeople.add(p);
 						}
 					}
-					
+					System.out.println("'Ello Bro!9");
 					jungStorage.add(new JungStorage(vaccPeople, sickPeople, day));
+				}
+				for(Person p : people){
+					if(p.isSick()){
+						System.out.println(p + " iS THE OBNOXIOUS _______ who is not getting better");
+					}
 				}
 				//System.out.println("Day is : " + day);
 				//System.out.println(getNumSickPeople(people));
-				for(Person p : people){
-					if(p.isSick()){
-						//System.out.println("The Sick Annoying Person is: " + p);	
-					}	
-				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
 				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost));
 				//System.out.println(people);
 				//System.out.println(getNumSickPeople(people));
 			}
+			System.out.println("'Ello Bro!10");
 			averageDuration += day;
 
 			//For any other days, make totalSickPeople equal to the number of total sick people on the last day
@@ -844,7 +859,7 @@ public class MoreMethods {
 		averageDuration /= runTimes;
 		ManyLinesAverageObject.maxDays = averageDuration;
 
-		
+		System.out.println("'Ello Bro!11");
 		InfoJungStorage infoJungStorage = new InfoJungStorage(infoStorage, jungStorage);
 		return infoJungStorage;
 	}

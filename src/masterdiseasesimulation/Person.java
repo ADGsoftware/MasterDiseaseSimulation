@@ -24,6 +24,7 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 	private Household household;
 	private boolean isOwner;
 	private int age;
+	private double suceptability;
 	
 
 	//The constructor
@@ -231,7 +232,13 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 			return 0; // Program will never get to here
 		}
 	};
-
+	// SUCEPTABILITY STUFF
+	public double getSuceptability(){
+		return suceptability;
+	}
+	public void setSuceptability(double f){
+		suceptability = f;
+	}
 	public static Transformer<Person, String> labelByID = new Transformer<Person, String>() {
 		@Override
 		public String transform(Person person) {

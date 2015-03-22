@@ -130,7 +130,7 @@ public class MasterManySimsObject
 		String layoutString = inputs.get(54).toString();
 		
 		int runs = Integer.parseInt(inputs.get(55).toString());
-
+		boolean modelTownSim = (Boolean)inputs.get(56);
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
 		//System.out.println(totalRuns);
 
@@ -337,24 +337,29 @@ public class MasterManySimsObject
 																	ArrayList<Double> costList  = new ArrayList<Double>();
 																	InfoStorage results;
 																	
-																	people = methods.getPeople(numPeople);
-																	if (networkType.equals("Small World")) {
-																		methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																	ArrayList<Person> teenagers = new ArrayList<Person>();
+																	if(modelTownSim){
+																		ModelTown lexington = new ModelTown(networkType, minFriendsI, maxFriendsI, hubNumberI, random);
+																		people = lexington.getPeople();
+																		teenagers = lexington.getTeenagers();
 																	}
-																	else if (networkType.equals("Random")) {
-																		methods.befriendRandom(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																	else{	
+																		people = methods.getPeople(numPeople);
+																		if (networkType.equals("Small World")) {
+																			methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																		}
+																		else if (networkType.equals("Random")) {
+																			methods.befriendRandom(people, minFriendsI, maxFriendsI, random, hubNumberI);
+																		}
+																		else if (networkType.equals("Scale-Free")) {
+																			methods.befriendScaleFree(people, minFriendsI, maxFriendsI, random);
+																		}
+																		else {
+																			JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
+																			//System.exit(0);	
+																		}
+																		teenagers = methods.getAndSetTeenagers(people, percentTeensI);
 																	}
-																	else if (networkType.equals("Scale-Free")) {
-																		methods.befriendScaleFree(people, minFriendsI, maxFriendsI, random);
-																	}
-																	else {
-																		JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
-																		//System.exit(0);
-																	}
-																	
-
-																	ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeensI);
-
 																	methods.infectRandom(people, initiallySickI);
 																	methods.vaccRandom(people, initiallyVaccI);
 																	
@@ -363,8 +368,8 @@ public class MasterManySimsObject
 																		//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
 																		//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
 
-
-																		results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false).getInfoStorages());
+																		results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false, modelTownSim).getInfoStorages());
+																		
 																		daysList.add(results.getDay());
 																		totalSickList.add(results.getTotalSick());
 																		costList.add(results.getCost());
@@ -744,7 +749,12 @@ public class MasterManySimsObject
 				status.setText("Drawing Jung Diagram...");
 				//System.out.println("Ready to draw jung.");
 				Thread.sleep(1000);
-				people = methods.getPeople(numPeople);
+				if(modelTownSim){
+					people = new ModelTown(networkType,  minFriends,  maxFriends,  hubNumber, random).getPeople();
+				}
+				else{
+					people = methods.getPeople(numPeople);
+				}
 				if (networkType.equals("Small World")) {
 					methods.befriendSmallWorld(people, minFriends, maxFriends, random, hubNumber);
 				}
@@ -767,7 +777,7 @@ public class MasterManySimsObject
 				methods.infectRandom(people, initiallySick);
 				methods.vaccRandom(people, initiallyVacc);
 				
-				ArrayList<JungStorage> jungStorage = methods.simulate(people, teenagers, getWellDays, initiallySick,  initiallyVacc, discovery, newGetWellDays, percentSick, getVac, curfewDays, 1, percentCurfew, false).getJungStorage();
+				ArrayList<JungStorage> jungStorage = methods.simulate(people, teenagers, getWellDays, initiallySick,  initiallyVacc, discovery, newGetWellDays, percentSick, getVac, curfewDays, 1, percentCurfew, false, modelTownSim).getJungStorage();
 				
 				// Creating the graph, vertices and jungDiagramFrame
 				UndirectedSparseMultigraph<Person, String> graph = new UndirectedSparseMultigraph<Person, String>();
