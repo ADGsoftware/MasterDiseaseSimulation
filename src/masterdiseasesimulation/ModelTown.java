@@ -76,7 +76,7 @@ public class ModelTown {
         getOperationTime();
         stamp("Creating households...");
 
-        int id = 0;
+        int id = 1;
         for (int i = 1; i < 8; i++) {
             System.out.println("There are " + numberOfHouseholdsBasedOnPeople.get(i) + " households with " + i + " people in them in Lexington, MA.");
             for (int j = 0; j < numberOfHouseholdsBasedOnPeople.get(i); j++) {
