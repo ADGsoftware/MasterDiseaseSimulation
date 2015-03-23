@@ -30,10 +30,9 @@ public class Household implements Transformer<Household, String>, Comparator<Hou
     public void newOwner(){
     	hasOwner = true;
     }
-
-
-
-
+    public String toString(){
+    	return ("Household: " + ID);
+    }
 
     //Order by ID
     public static final Comparator<Household> orderByID = new Comparator<Household>() {

@@ -85,14 +85,14 @@ public class ModelTown {
                 id++;
             }
         }
-
+        System.out.println(households);
         getOperationTime();
 
         System.out.println(households.size() + " households created.");
         
         stamp("Generating network...");
 
-       int cpID = 0; //Universal identification number for each person
+       int cpID = 1; //Universal identification number for each person
         for (Household household : households) {
             for (Person person : household.getResidents()) {
                 person.setID(cpID);

@@ -352,6 +352,88 @@ public class MoreMethods {
 		}
 	}
 
+//	public void befriendSmallWorld(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
+//		int randomPersonForHub;
+//		assignCapacities(people, minFriends, maxFriends, random);
+//		int numPeople = people.size();
+//		makeHubs(hubNumber, people, random);
+//		boolean done = false;
+//		//Range Variable
+//		int halfRange;
+//
+//		//Other
+//		int counter;
+//
+//		//CODE
+//		if (maxFriends % 2 == 0) {
+//			halfRange = maxFriends / 2;
+//		} else {
+//			halfRange = (maxFriends + 1) / 2;
+//		}
+//		ArrayList<Person> possibleFriends = new ArrayList<Person>();
+//		//This is where actual befriending starts! Otdel Znakmostv!!! Get Excited
+//		for (Person person : people) {
+//			//Add People in the Possible Friend range to ArrayList
+//			int ID = (((person.getID() - halfRange)) % numPeople + numPeople) % numPeople;
+//			for (int x = 0; x < halfRange * 2; x++) {
+//				ID = (((ID)) % numPeople + numPeople) % numPeople;
+//				if (ID == 0) {
+//					ID = numPeople;
+//				}
+//				possibleFriends.add(people.get(ID - 1));
+//				ID = (((ID + 1)) % numPeople + numPeople) % numPeople;
+//			}
+//			//System.out.println(person + " : " + possibleFriends + " ' " + person.getCapacity());
+//			while (!person.capacityFull()) {
+//				Collections.shuffle(possibleFriends);
+//				for (Person friendApplicant : possibleFriends) {
+//					if (person.capacityFull()) {
+//						break;
+//					}
+//					if (friendApplicant.capacityFull()) {
+//						continue;
+//					}
+//					if (person.getFriends().contains(friendApplicant)) {
+//						continue;
+//					}
+//					if (person == friendApplicant) {
+//						continue;
+//					}
+//					if (!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)) {
+//						person.addFriend(people.get(friendApplicant.getID() - 1));
+//						people.get(friendApplicant.getID() - 1).addFriend(person);
+//					}
+//				}
+//				counter = 0;
+//				for (Person control : possibleFriends) {
+//					if (control.capacityFull()) {
+//						counter++;
+//					}
+//					if (person.getFriends().contains(control)) {
+//						counter++;
+//					}
+//					if (control == person) {
+//						counter++;
+//					}
+//				}
+//				if (counter >= possibleFriends.size()) {
+//					break;
+//				}
+//			}
+//			done = false;
+//			if (person.isHub()) {
+//				while (!done) {
+//					randomPersonForHub = random.nextInt(people.size());
+//					if ((people.get(randomPersonForHub) != person) && !person.getFriends().contains(people.get(randomPersonForHub))) {
+//						person.addFriend(people.get(randomPersonForHub));
+//						people.get(randomPersonForHub).addFriend(person);
+//						done = true;
+//					}
+//				}
+//			}
+//			possibleFriends.clear();
+//		}
+//	}
 	public void befriendSmallWorld(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
 		int randomPersonForHub;
 		assignCapacities(people, minFriends, maxFriends, random);
