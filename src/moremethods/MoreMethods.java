@@ -73,7 +73,7 @@ public class MoreMethods {
 		arlList.clear();
 		arlList.addAll(newList);
 	}
-	
+
 	public double sum (ArrayList<Double> list) {
 		double sum = 0.0;
 		for (double i : list) {
@@ -352,88 +352,88 @@ public class MoreMethods {
 		}
 	}
 
-//	public void befriendSmallWorld(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
-//		int randomPersonForHub;
-//		assignCapacities(people, minFriends, maxFriends, random);
-//		int numPeople = people.size();
-//		makeHubs(hubNumber, people, random);
-//		boolean done = false;
-//		//Range Variable
-//		int halfRange;
-//
-//		//Other
-//		int counter;
-//
-//		//CODE
-//		if (maxFriends % 2 == 0) {
-//			halfRange = maxFriends / 2;
-//		} else {
-//			halfRange = (maxFriends + 1) / 2;
-//		}
-//		ArrayList<Person> possibleFriends = new ArrayList<Person>();
-//		//This is where actual befriending starts! Otdel Znakmostv!!! Get Excited
-//		for (Person person : people) {
-//			//Add People in the Possible Friend range to ArrayList
-//			int ID = (((person.getID() - halfRange)) % numPeople + numPeople) % numPeople;
-//			for (int x = 0; x < halfRange * 2; x++) {
-//				ID = (((ID)) % numPeople + numPeople) % numPeople;
-//				if (ID == 0) {
-//					ID = numPeople;
-//				}
-//				possibleFriends.add(people.get(ID - 1));
-//				ID = (((ID + 1)) % numPeople + numPeople) % numPeople;
-//			}
-//			//System.out.println(person + " : " + possibleFriends + " ' " + person.getCapacity());
-//			while (!person.capacityFull()) {
-//				Collections.shuffle(possibleFriends);
-//				for (Person friendApplicant : possibleFriends) {
-//					if (person.capacityFull()) {
-//						break;
-//					}
-//					if (friendApplicant.capacityFull()) {
-//						continue;
-//					}
-//					if (person.getFriends().contains(friendApplicant)) {
-//						continue;
-//					}
-//					if (person == friendApplicant) {
-//						continue;
-//					}
-//					if (!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)) {
-//						person.addFriend(people.get(friendApplicant.getID() - 1));
-//						people.get(friendApplicant.getID() - 1).addFriend(person);
-//					}
-//				}
-//				counter = 0;
-//				for (Person control : possibleFriends) {
-//					if (control.capacityFull()) {
-//						counter++;
-//					}
-//					if (person.getFriends().contains(control)) {
-//						counter++;
-//					}
-//					if (control == person) {
-//						counter++;
-//					}
-//				}
-//				if (counter >= possibleFriends.size()) {
-//					break;
-//				}
-//			}
-//			done = false;
-//			if (person.isHub()) {
-//				while (!done) {
-//					randomPersonForHub = random.nextInt(people.size());
-//					if ((people.get(randomPersonForHub) != person) && !person.getFriends().contains(people.get(randomPersonForHub))) {
-//						person.addFriend(people.get(randomPersonForHub));
-//						people.get(randomPersonForHub).addFriend(person);
-//						done = true;
-//					}
-//				}
-//			}
-//			possibleFriends.clear();
-//		}
-//	}
+	//	public void befriendSmallWorld(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
+	//		int randomPersonForHub;
+	//		assignCapacities(people, minFriends, maxFriends, random);
+	//		int numPeople = people.size();
+	//		makeHubs(hubNumber, people, random);
+	//		boolean done = false;
+	//		//Range Variable
+	//		int halfRange;
+	//
+	//		//Other
+	//		int counter;
+	//
+	//		//CODE
+	//		if (maxFriends % 2 == 0) {
+	//			halfRange = maxFriends / 2;
+	//		} else {
+	//			halfRange = (maxFriends + 1) / 2;
+	//		}
+	//		ArrayList<Person> possibleFriends = new ArrayList<Person>();
+	//		//This is where actual befriending starts! Otdel Znakmostv!!! Get Excited
+	//		for (Person person : people) {
+	//			//Add People in the Possible Friend range to ArrayList
+	//			int ID = (((person.getID() - halfRange)) % numPeople + numPeople) % numPeople;
+	//			for (int x = 0; x < halfRange * 2; x++) {
+	//				ID = (((ID)) % numPeople + numPeople) % numPeople;
+	//				if (ID == 0) {
+	//					ID = numPeople;
+	//				}
+	//				possibleFriends.add(people.get(ID - 1));
+	//				ID = (((ID + 1)) % numPeople + numPeople) % numPeople;
+	//			}
+	//			//System.out.println(person + " : " + possibleFriends + " ' " + person.getCapacity());
+	//			while (!person.capacityFull()) {
+	//				Collections.shuffle(possibleFriends);
+	//				for (Person friendApplicant : possibleFriends) {
+	//					if (person.capacityFull()) {
+	//						break;
+	//					}
+	//					if (friendApplicant.capacityFull()) {
+	//						continue;
+	//					}
+	//					if (person.getFriends().contains(friendApplicant)) {
+	//						continue;
+	//					}
+	//					if (person == friendApplicant) {
+	//						continue;
+	//					}
+	//					if (!person.getFriends().contains(friendApplicant) && !friendApplicant.getFriends().contains(person)) {
+	//						person.addFriend(people.get(friendApplicant.getID() - 1));
+	//						people.get(friendApplicant.getID() - 1).addFriend(person);
+	//					}
+	//				}
+	//				counter = 0;
+	//				for (Person control : possibleFriends) {
+	//					if (control.capacityFull()) {
+	//						counter++;
+	//					}
+	//					if (person.getFriends().contains(control)) {
+	//						counter++;
+	//					}
+	//					if (control == person) {
+	//						counter++;
+	//					}
+	//				}
+	//				if (counter >= possibleFriends.size()) {
+	//					break;
+	//				}
+	//			}
+	//			done = false;
+	//			if (person.isHub()) {
+	//				while (!done) {
+	//					randomPersonForHub = random.nextInt(people.size());
+	//					if ((people.get(randomPersonForHub) != person) && !person.getFriends().contains(people.get(randomPersonForHub))) {
+	//						person.addFriend(people.get(randomPersonForHub));
+	//						people.get(randomPersonForHub).addFriend(person);
+	//						done = true;
+	//					}
+	//				}
+	//			}
+	//			possibleFriends.clear();
+	//		}
+	//	}
 	public void befriendSmallWorld(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
 		int randomPersonForHub;
 		assignCapacities(people, minFriends, maxFriends, random);
@@ -787,7 +787,7 @@ public class MoreMethods {
 		//System.out.println("RunTimes: " + runTimes);
 
 		ArrayList<ArrayList<InfoStorage>> infoStorage = new ArrayList<ArrayList<InfoStorage>>();
-		
+
 		/*
 		// Make progress bar
 		JPanel panel = new JPanel();
@@ -811,7 +811,7 @@ public class MoreMethods {
 		pBar.setVisible(true);
 		pBar.setTitle("Running simulations...");
 		pBar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		*/
+		 */
 
 		int averageDuration = 0;
 
@@ -829,7 +829,7 @@ public class MoreMethods {
 			if (runTime == Math.floor(runTimes * 0.75)) {
 				pBar.setTitle("Running simulations... 75%");
 			}
-			*/
+			 */
 			infoStorage.add(new ArrayList<InfoStorage>());
 			//System.out.println(runTime);
 			//System.out.println(getNumSickPeople(people));
@@ -895,14 +895,14 @@ public class MoreMethods {
 							sickPeople.add(p);
 						}
 					}
-					
+
 					jungStorage.add(new JungStorage(vaccPeople, sickPeople, day));
 				}
 				//System.out.println("Day is : " + day);
 				//System.out.println(getNumSickPeople(people));
 				for(Person p : people){
 					if(p.isSick()){
-						//System.out.println("The Sick Annoying Person is: " + p);	
+						System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes);	
 					}	
 				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
@@ -927,12 +927,13 @@ public class MoreMethods {
 			resetAll(people);
 			people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
 			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
+			System.out.println("LO AND BEHOLD NEW RUNTIME!!!!!!!!!!!!!!");
 		}
 
 		averageDuration /= runTimes;
 		ManyLinesAverageObject.maxDays = averageDuration;
 
-		
+
 		InfoJungStorage infoJungStorage = new InfoJungStorage(infoStorage, jungStorage);
 		return infoJungStorage;
 	}
@@ -1226,7 +1227,7 @@ public class MoreMethods {
 
 		return avgInfoStorage;
 	}
-	
+
 	public double findAverage(ArrayList<Double> numbers){
 		double result = 0;
 		for(double i : numbers){
