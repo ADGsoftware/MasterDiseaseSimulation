@@ -298,15 +298,15 @@ public class MoreMethods {
 			// If not HUB
 			else {
 				Collections.shuffle(peopleReference);
-				//System.out.println(person.getID());
+				System.out.println(person.getID());
 				for (Person possibleFriend : peopleReference) {
-					//System.out.println(possibleFriend.getID());
+					System.out.println(possibleFriend.getID());
 					if (possibleFriend.getID() <= person.getID()) {
-						//System.out.println("PERSON BEFRIEND HIMSELF ERROR");
+						System.out.println("PERSON BEFRIEND HIMSELF ERROR");
 					} else if (possibleFriend.capacityFull() || person.capacityFull()) {
-						//System.out.println("Capacity full ERROR");
+						System.out.println("Capacity full ERROR");
 					} else {
-						//System.out.println("FRIENDSHIP!!!!!!!!!!!");
+						System.out.println("FRIENDSHIP!!!!!!!!!!!");
 						person.addFriend(people.get(possibleFriend.getID() - 1));
 						people.get(possibleFriend.getID() - 1).addFriend(person);
 					}
