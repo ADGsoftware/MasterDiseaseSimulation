@@ -45,8 +45,8 @@ public class ModelTown {
         frame.add(panel);
         frame.setLocationRelativeTo(null);
         frame.setResizable(true);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         stamp("Reading and saving CSV...");
 
         CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTH2_with_ann.csv"));
@@ -58,19 +58,19 @@ public class ModelTown {
         for (int i = 1; i < 8; i++) {
             int number = Integer.parseInt(rows.get(2)[getColumnByPeoplePerHousehold(i)]);
             numberOfHouseholdsBasedOnPeople.put(i, number);
-            System.out.println("People: " + i + " number: " + number);
+            //System.out.println("People: " + i + " number: " + number);
         }
         
         for(int i = 1; i < 9; i++) {
         	float number = Float.parseFloat(rows.get(2)[getColumnByOwnerAge(i)]);
         	ownersAndAges.put(10*i + 5, number);
-        	System.out.println("OwnerAge: " + (10*i+5) + " Percent: " + number);
+        	//System.out.println("OwnerAge: " + (10*i+5) + " Percent: " + number);
         }
         
         for(int i = 1; i < 20; i++) {
         	float number = Float.parseFloat(rows1.get(1)[getColumnAge(i-1)]);
         	agesAndPrecentages.put(i*5, number);
-        	System.out.println("Age: " + i*5 + " Percent: " + number);
+        	//System.out.println("Age: " + i*5 + " Percent: " + number);
         }
 
         getOperationTime();
@@ -78,17 +78,17 @@ public class ModelTown {
 
         int id = 1;
         for (int i = 1; i < 8; i++) {
-            System.out.println("There are " + numberOfHouseholdsBasedOnPeople.get(i) + " households with " + i + " people in them in Lexington, MA.");
+            //System.out.println("There are " + numberOfHouseholdsBasedOnPeople.get(i) + " households with " + i + " people in them in Lexington, MA.");
             for (int j = 0; j < numberOfHouseholdsBasedOnPeople.get(i); j++) {
                 ArrayList<Person> people = createPeople("random:" + i);
                 households.add(new Household(id, people));
                 id++;
             }
         }
-        System.out.println(households);
+       // System.out.println(households);
         getOperationTime();
 
-        System.out.println(households.size() + " households created.");
+       // System.out.println(households.size() + " households created.");
         
         stamp("Generating network...");
 
@@ -117,7 +117,7 @@ public class ModelTown {
         }
         for(Household h : households){
         	for(Person p : h.getResidents()){
-        		System.out.println(p.getFriends().size() + " : Many Friends");
+        		//System.out.println(p.getFriends().size() + " : Many Friends");
         	}
         }
         
@@ -139,7 +139,7 @@ public class ModelTown {
         HistogramGenerator hist = new HistogramGenerator();   
         hist.makeHistAges(people, "AgesHistogram");
         
-        
+        System.out.println("DONE!!!!!!!");
 /*
         //Simulation method_____
 
@@ -323,7 +323,7 @@ public class ModelTown {
 	        		}
 	        	}
 	    		if(!doneResidentAgeDist){
-	    			System.out.println("I AM HERE");
+	    			//System.out.println("I AM HERE");
 	        		resident.setAge(95 + r.nextInt(5));
 	        	}
 	    	}

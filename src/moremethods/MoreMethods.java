@@ -19,6 +19,9 @@ import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
@@ -273,12 +276,54 @@ public class MoreMethods {
 	 * NETWORK/BEFRIENDING METHODS ----------------------------------------------------------------------
 	 */
 
+//	public void befriendRandom(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {//It will be possible to make this algorhyth even better suggest way!!1
+//		//Choose people for hubs
+//		makeHubs(hubNumber, people, random);
+//		assignCapacities(people, minFriends, maxFriends, random);
+//		// Make friends
+//		ArrayList<Person> peopleReference = new ArrayList<Person>();
+//		for (Person newPerson : people) {
+//			peopleReference.add(newPerson);
+//		}
+//		for (Person person : people) {
+//			//Hub Case
+//			if (person.isHub()) {
+//				person.setCapacity(people.size() + 1);
+//				for (Person hubFriend : people) {
+//					if ((hubFriend != person) && !(person.getFriends().contains(hubFriend))) {
+//						if ((random.nextInt(100) + 1 > 20) && !(hubFriend.capacityFull())) {
+//							person.addFriend(hubFriend);
+//							hubFriend.addFriend(person);
+//						}
+//					}
+//				}
+//			}
+//			// If not HUB
+//			else {
+//				Collections.shuffle(peopleReference);
+//				System.out.println(person.getID());
+//				for (Person possibleFriend : peopleReference) {
+//					System.out.println(possibleFriend.getID());
+//					if (possibleFriend.getID() <= person.getID()) {
+//						System.out.println("PERSON BEFRIEND HIMSELF ERROR");
+//					} else if (possibleFriend.capacityFull() || person.capacityFull()) {
+//						System.out.println("Capacity full ERROR");
+//					} else {
+//						System.out.println("FRIENDSHIP!!!!!!!!!!!");
+//						person.addFriend(people.get(possibleFriend.getID() - 1));
+//						people.get(possibleFriend.getID() - 1).addFriend(person);
+//					}
+//				}
+//			}
+//		}
+//	}
 	public void befriendRandom(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {//It will be possible to make this algorhyth even better suggest way!!1
 		//Choose people for hubs
 		makeHubs(hubNumber, people, random);
 		assignCapacities(people, minFriends, maxFriends, random);
 		// Make friends
 		ArrayList<Person> peopleReference = new ArrayList<Person>();
+		ArrayList<Person> badOptions = new ArrayList<Person>();
 		for (Person newPerson : people) {
 			peopleReference.add(newPerson);
 		}
@@ -298,15 +343,22 @@ public class MoreMethods {
 			// If not HUB
 			else {
 				Collections.shuffle(peopleReference);
-				System.out.println(person.getID());
+				//System.out.println(person.getID());
 				for (Person possibleFriend : peopleReference) {
-					System.out.println(possibleFriend.getID());
+					System.out.println(possibleFriend);
 					if (possibleFriend.getID() <= person.getID()) {
-						System.out.println("PERSON BEFRIEND HIMSELF ERROR");
-					} else if (possibleFriend.capacityFull() || person.capacityFull()) {
-						System.out.println("Capacity full ERROR");
-					} else {
-						System.out.println("FRIENDSHIP!!!!!!!!!!!");
+						//System.out.println("PERSON BEFRIEND HIMSELF ERROR");
+						continue;
+					} 
+					else if (possibleFriend.capacityFull()) {
+						//System.out.println("Capacity full ERROR");
+						continue;
+					} 
+					else if(person.capacityFull()){
+						break;
+					}
+					else {
+						//System.out.println("FRIENDSHIP!!!!!!!!!!!");
 						person.addFriend(people.get(possibleFriend.getID() - 1));
 						people.get(possibleFriend.getID() - 1).addFriend(person);
 					}
@@ -314,7 +366,6 @@ public class MoreMethods {
 			}
 		}
 	}
-
 	public void befriendScaleFree(ArrayList<Person> people, int minFriends, int maxFriends, Random random) {
 		ArrayList<Person> relativeConnections = new ArrayList<Person>();
 		ArrayList<Person> check = new ArrayList<Person>();
@@ -684,12 +735,12 @@ public class MoreMethods {
 		float mean = averageConnectivityPercentage(people);
 		float result = 0;
 		for (Person person : people) {
-			System.out.println("Mean Is: " + mean);
-			System.out.println(result);
-			System.out.println("Connectivity Is: " + person.getConnectivity());
-			System.out.println("We are Adding: " + Math.pow((mean - 100 * person.getConnectivity()), 2) + " To the Result");
+			//System.out.println("Mean Is: " + mean);
+			//System.out.println(result);
+			//System.out.println("Connectivity Is: " + person.getConnectivity());
+			//System.out.println("We are Adding: " + Math.pow((mean - 100 * person.getConnectivity()), 2) + " To the Result");
 			result = (float) (result + Math.pow((mean - 100 * person.getConnectivity()), 2));
-			System.out.println("Result Is: " + result);
+			//System.out.println("Result Is: " + result);
 		}
 		return (float) (Math.sqrt((result / people.size())));
 	}
@@ -902,7 +953,7 @@ public class MoreMethods {
 				//System.out.println(getNumSickPeople(people));
 				for(Person p : people){
 					if(p.isSick()){
-						System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes);	
+						//System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes);	
 					}	
 				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
@@ -927,7 +978,7 @@ public class MoreMethods {
 			resetAll(people);
 			people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
 			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
-			System.out.println("LO AND BEHOLD NEW RUNTIME!!!!!!!!!!!!!!");
+			//System.out.println("LO AND BEHOLD NEW RUNTIME!!!!!!!!!!!!!!");
 		}
 
 		averageDuration /= runTimes;
@@ -1129,8 +1180,7 @@ public class MoreMethods {
 
 	public static File makeChart(DefaultCategoryDataset dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
 		JFreeChart lineChartObject = ChartFactory.createLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
-
-
+		
 		int width = 640;
 		int height = 480;
 		File lineChart = new File(filename + ".png");

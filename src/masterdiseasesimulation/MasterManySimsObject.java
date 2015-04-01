@@ -33,6 +33,7 @@ import jxl.write.WritableWorkbook;
 import moremethods.MoreMethods;
 
 import org.apache.commons.collections15.Transformer;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import datacontainers.InfoStorage;
@@ -731,7 +732,6 @@ public class MasterManySimsObject
 				value = entry.getValue();
 				derivatives.addValue(value, "2nd Derivative", Integer.toString(key));
 			}
-
 			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
 			//File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
 
@@ -741,7 +741,7 @@ public class MasterManySimsObject
 				panel.add(status);
 
 				//Desktop.getDesktop().open(derivativeChart);
-				Desktop.getDesktop().open(lineChart);
+				//Desktop.getDesktop().open(lineChart);
 			}
 			
 			//JUNG
