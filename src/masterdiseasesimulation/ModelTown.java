@@ -1,12 +1,11 @@
 package masterdiseasesimulation;
 
+import au.com.bytecode.opencsv.CSVReader;
 import datacontainers.InfoStorage;
 import moremethods.MoreMethods;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-
-import au.com.bytecode.opencsv.CSVReader;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

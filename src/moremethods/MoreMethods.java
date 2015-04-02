@@ -1198,7 +1198,36 @@ public class MoreMethods {
 		openWebpage("https://www.youtube.com/watch?v=VnjguD9M_v0");
 		openWebpage("https://www.youtube.com/watch?v=xcSSM7m1VVs");
 		openWebpage("https://www.youtube.com/watch?v=3wCK6INQcHs");
-		openWebpage("https://www.youtube.com/watch?v=Zi7OXmTmgGg");	
+		openWebpage("https://www.youtube.com/watch?v=Zi7OXmTmgGg");
+		openWebpage("https://www.youtube.com/watch?v=IDtdQ8bTvRc");
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		openWebpage("https://www.facebook.com/");
+		openWebpage("https://www.youtube.com/watch?v=DYW50F42ss8");
+		openWebpage("https://www.youtube.com/watch?v=gXlfXirQF3A");
+		openWebpage("https://www.youtube.com/watch?v=wZZ7oFKsKzY");
+		openWebpage("https://www.youtube.com/watch?v=pRpeEdMmmQ0");
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		openWebpage("https://www.youtube.com/watch?v=be7O4m9rOZE");
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		openWebpage("https://www.youtube.com/watch?v=-XB7aftz6zY");
+		openWebpage("https://www.youtube.com/watch?v=yRhq-yO1KN8");
+		openWebpage("https://www.youtube.com/watch?v=_O0m4PdQz8M");
+		System.out.println("Yet another...");
+		for (int i = 0; i < 10; i++) {
+			openWebpage("https://www.youtube.com/watch?v=Tm88QAI8I5A");
+		}
 	}
 	
 	public static void openWebpage(URI uri) {

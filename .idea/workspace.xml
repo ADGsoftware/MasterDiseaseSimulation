@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="MasterDiseaseSimulation:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="b60d5e25-e758-47af-bd52-2ab82d70eaed" name="Default" comment="" />
     <ignored path="MasterDiseaseSimulation.iws" />
@@ -25,12 +30,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="67" max-vertical-offset="680">
-              <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+            <state vertical-scroll-proportion="0.2806604" vertical-offset="0" max-vertical-offset="848">
+              <caret line="18" column="39" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="39" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ModelTown.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/ModelTown.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1072" max-vertical-offset="6137">
+              <caret line="79" column="144" selection-start-line="79" selection-start-column="135" selection-end-line="79" selection-end-column="144" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -38,34 +55,9 @@
       <file leaf-file-name="MasterManySimsObject.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="14024" max-vertical-offset="15130">
-              <caret line="283" column="21" selection-start-line="272" selection-start-column="12" selection-end-line="283" selection-end-column="13" />
-              <folding>
-                <element signature="e#10193#10210#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataSearch.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/DataSearch.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.776509" vertical-offset="2465" max-vertical-offset="3978">
-              <caret line="173" column="27" selection-start-line="173" selection-start-column="27" selection-end-line="173" selection-end-column="27" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#533#551#0" expanded="true" />
-                <element signature="e#606#617#0" expanded="true" />
-                <element signature="e#2563#2571#0" expanded="true" />
-                <element signature="e#3721#3729#0" expanded="true" />
-                <element signature="e#3788#3796#0" expanded="true" />
-                <element signature="e#3850#3858#0" expanded="true" />
-                <element signature="e#6706#6707#0" expanded="true" />
-                <element signature="e#6756#6757#0" expanded="true" />
-                <element signature="e#6868#6876#0" expanded="true" />
-                <element signature="e#7558#7559#0" expanded="true" />
-                <element signature="e#7600#7601#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="5066" max-vertical-offset="15283">
+              <caret line="342" column="91" selection-start-line="342" selection-start-column="82" selection-end-line="342" selection-end-column="91" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -73,8 +65,8 @@
       <file leaf-file-name="MoreMethods.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/moremethods/MoreMethods.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5287" max-vertical-offset="18921">
-              <caret line="354" column="16" selection-start-line="354" selection-start-column="16" selection-end-line="354" selection-end-column="16" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="19635" max-vertical-offset="23477">
+              <caret line="1220" column="32" selection-start-line="1220" selection-start-column="32" selection-end-line="1220" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -83,18 +75,10 @@
       <file leaf-file-name="Household.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Household.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1054">
-              <caret line="48" column="66" selection-start-line="48" selection-start-column="66" selection-end-line="48" selection-end-column="66" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="74" max-vertical-offset="935">
+              <caret line="48" column="55" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#461#462#0" expanded="true" />
-                <element signature="e#486#487#0" expanded="true" />
-                <element signature="e#533#534#0" expanded="true" />
-                <element signature="e#565#566#0" expanded="true" />
-                <element signature="e#648#1133#0" expanded="true" />
-                <element signature="e#1132#1133#0" expanded="true" />
-                <element signature="e#1390#1391#0" expanded="true" />
-                <element signature="e#1417#1418#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -103,20 +87,9 @@
       <file leaf-file-name="Person.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Person.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1492" max-vertical-offset="3553">
-              <caret line="143" column="18" selection-start-line="143" selection-start-column="18" selection-end-line="143" selection-end-column="18" />
-              <folding>
-                <element signature="e#900#901#0" expanded="true" />
-                <element signature="e#919#920#0" expanded="true" />
-                <element signature="e#1423#1424#0" expanded="true" />
-                <element signature="e#1451#1452#0" expanded="true" />
-                <element signature="e#2065#2066#0" expanded="true" />
-                <element signature="e#2093#2094#0" expanded="true" />
-                <element signature="e#3067#3068#0" expanded="true" />
-                <element signature="e#3101#3102#0" expanded="true" />
-                <element signature="e#3600#3601#0" expanded="true" />
-                <element signature="e#3633#3634#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3655">
+              <caret line="143" column="0" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -130,11 +103,12 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java" />
-        <option value="$PROJECT_DIR$/src/masterdiseasesimulation/Main.java" />
         <option value="$PROJECT_DIR$/src/masterdiseasesimulation/Household.java" />
-        <option value="$PROJECT_DIR$/src/moremethods/MoreMethods.java" />
         <option value="$PROJECT_DIR$/src/masterdiseasesimulation/Person.java" />
         <option value="$PROJECT_DIR$/src/masterdiseasesimulation/DataSearch.java" />
+        <option value="$PROJECT_DIR$/src/masterdiseasesimulation/ModelTown.java" />
+        <option value="$PROJECT_DIR$/src/masterdiseasesimulation/Main.java" />
+        <option value="$PROJECT_DIR$/src/moremethods/MoreMethods.java" />
       </list>
     </option>
   </component>
@@ -230,11 +204,11 @@
     <property name="MemberChooser.sorted" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/csv/opencsv-3.2.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="recentsLimit" value="5" />
     <property name="dynamic.classpath" value="false" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
     <property name="OverrideImplement.combined" value="true" />
@@ -444,7 +418,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1046" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -465,6 +439,11 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -492,11 +471,104 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="697">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/ModelTown.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1072" max-vertical-offset="6137">
+          <caret line="79" column="144" selection-start-line="79" selection-start-column="135" selection-end-line="79" selection-end-column="144" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5066" max-vertical-offset="15351">
+          <caret line="342" column="91" selection-start-line="342" selection-start-column="82" selection-end-line="342" selection-end-column="91" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moremethods/MoreMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="23579">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Household.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="969">
+          <caret line="48" column="55" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Person.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3655">
+          <caret line="143" column="0" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="663">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4063" max-vertical-offset="15351">
+          <caret line="283" column="21" selection-start-line="272" selection-start-column="12" selection-end-line="283" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/moremethods/MoreMethods.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5287" max-vertical-offset="23086">
+          <caret line="354" column="16" selection-start-line="354" selection-start-column="16" selection-end-line="354" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Household.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="935">
+          <caret line="48" column="66" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Person.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3570">
+          <caret line="143" column="18" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.7.0_11/jre/lib/rt.jar!/javax/swing/JOptionPane.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34848484" vertical-offset="1686" max-vertical-offset="14654">
           <caret line="156" column="22" selection-start-line="156" selection-start-column="22" selection-end-line="156" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -508,87 +580,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Person.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="680">
-          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1564" max-vertical-offset="3570">
+          <caret line="143" column="0" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/ModelTown.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1072" max-vertical-offset="6137">
+          <caret line="79" column="144" selection-start-line="79" selection-start-column="135" selection-end-line="79" selection-end-column="144" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="5066" max-vertical-offset="15351">
+          <caret line="342" column="91" selection-start-line="342" selection-start-column="82" selection-end-line="342" selection-end-column="91" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Household.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1054">
-          <caret line="48" column="66" selection-start-line="48" selection-start-column="66" selection-end-line="48" selection-end-column="66" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="629" max-vertical-offset="935">
+          <caret line="48" column="55" selection-start-line="48" selection-start-column="55" selection-end-line="48" selection-end-column="55" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#461#462#0" expanded="true" />
-            <element signature="e#486#487#0" expanded="true" />
-            <element signature="e#533#534#0" expanded="true" />
-            <element signature="e#565#566#0" expanded="true" />
-            <element signature="e#648#1133#0" expanded="true" />
-            <element signature="e#1132#1133#0" expanded="true" />
-            <element signature="e#1390#1391#0" expanded="true" />
-            <element signature="e#1417#1418#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Person.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1492" max-vertical-offset="3553">
-          <caret line="143" column="18" selection-start-line="143" selection-start-column="18" selection-end-line="143" selection-end-column="18" />
-          <folding>
-            <element signature="e#900#901#0" expanded="true" />
-            <element signature="e#919#920#0" expanded="true" />
-            <element signature="e#1423#1424#0" expanded="true" />
-            <element signature="e#1451#1452#0" expanded="true" />
-            <element signature="e#2065#2066#0" expanded="true" />
-            <element signature="e#2093#2094#0" expanded="true" />
-            <element signature="e#3067#3068#0" expanded="true" />
-            <element signature="e#3101#3102#0" expanded="true" />
-            <element signature="e#3600#3601#0" expanded="true" />
-            <element signature="e#3633#3634#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/moremethods/MoreMethods.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5287" max-vertical-offset="18921">
-          <caret line="354" column="16" selection-start-line="354" selection-start-column="16" selection-end-line="354" selection-end-column="16" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="19635" max-vertical-offset="23477">
+          <caret line="1220" column="32" selection-start-line="1220" selection-start-column="32" selection-end-line="1220" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/MasterManySimsObject.java">
+    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="14024" max-vertical-offset="15130">
-          <caret line="283" column="21" selection-start-line="272" selection-start-column="12" selection-end-line="283" selection-end-column="13" />
-          <folding>
-            <element signature="e#10193#10210#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/masterdiseasesimulation/DataSearch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.776509" vertical-offset="2465" max-vertical-offset="3978">
-          <caret line="173" column="27" selection-start-line="173" selection-start-column="27" selection-end-line="173" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#533#551#0" expanded="true" />
-            <element signature="e#606#617#0" expanded="true" />
-            <element signature="e#2563#2571#0" expanded="true" />
-            <element signature="e#3721#3729#0" expanded="true" />
-            <element signature="e#3788#3796#0" expanded="true" />
-            <element signature="e#3850#3858#0" expanded="true" />
-            <element signature="e#6706#6707#0" expanded="true" />
-            <element signature="e#6756#6757#0" expanded="true" />
-            <element signature="e#6868#6876#0" expanded="true" />
-            <element signature="e#7558#7559#0" expanded="true" />
-            <element signature="e#7600#7601#0" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.2806604" vertical-offset="0" max-vertical-offset="848">
+          <caret line="18" column="39" selection-start-line="18" selection-start-column="39" selection-end-line="18" selection-end-column="39" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -598,10 +638,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>MasterDiseaseSimulation:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -649,6 +691,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -656,7 +699,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>opencsv-3.2</last-edited>
+          <last-edited>opencsv-2.3</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

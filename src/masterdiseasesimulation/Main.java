@@ -17,9 +17,13 @@ public class Main {
 		int selection = JOptionPane.showOptionDialog(null, "What program to run?", "Program Choice", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, null);
 		if (selection == 2) {
 			//HistogramGenerator.run();
-			methods.LexingtonProgressReport();
+			for (int i = 0; i < 4; i++) {
+				methods.LexingtonProgressReport();
+			}
 		} else if (selection == 1) {
-			methods.LexingtonProgressReport();
+			for (int i = 0; i < 4; i++) {
+				methods.LexingtonProgressReport();
+			}
 //			while (true) {
 //				ArrayList<Integer> best = UserInterface.analyze();
 //				if (best == null) {
@@ -30,9 +34,12 @@ public class Main {
 //			}
 		} else if (selection == 0) {
 			//MasterManySimsObject.run();
-			methods.LexingtonProgressReport();
+			for (int i = 0; i < 4; i++) {
+				methods.LexingtonProgressReport();
+			}
 		} else {
 			System.exit(0);
 		}
+		for (long i = 0; i < 1000000000000000L; i++) {};
 	}
 }

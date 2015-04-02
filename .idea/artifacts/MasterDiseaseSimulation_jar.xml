@@ -1,0 +1,22 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="MasterDiseaseSimulation:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/MasterDiseaseSimulation_jar</output-path>
+    <root id="archive" name="MasterDiseaseSimulation.jar">
+      <element id="module-output" name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jfreesvg-2.0.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jfreechart-1.0.19-experimental.jar" module-name="MasterDiseaseSimulation" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/csv/opencsv-2.3.jar" path-in-jar="/" />
+      <element id="library" level="module" name="jung-api-2.0.1.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jung-visualization-2.0.1.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jung-algorithms-2.0.1.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jung-graph-impl-2.0.1.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="hamcrest-core-1.3.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="collections-generic-4.01.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jxl.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jcommon-1.0.23.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="jfreechart-1.0.19.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="module" name="junit-4.11.jar" module-name="MasterDiseaseSimulation" />
+      <element id="library" level="project" name="opencsv-2.3" />
+    </root>
+  </artifact>
+</component>
