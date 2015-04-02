@@ -11,6 +11,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
+import masterdiseasesimulation.Main;
 import masterdiseasesimulation.ManyLinesAverageObject;
 import masterdiseasesimulation.Person;
 import masterdiseasesimulation.TransmissionTestInfoStorage;
@@ -27,12 +28,20 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.*;
 import java.util.List;
 
@@ -1173,7 +1182,118 @@ public class MoreMethods {
 
 		return results;
 	}
+	public void LexingtonProgressReport(){
+		openWebpage("https://www.youtube.com/watch?v=cvChjHcABPA");
+		openWebpage("https://www.youtube.com/watch?v=xFrGuyw1V8s");
+		openWebpage("https://www.youtube.com/watch?v=-crgQGdpZR0");
+		openWebpage("https://www.youtube.com/watch?v=dQsjAbZDx-4");
+		openWebpage("https://www.youtube.com/watch?v=r82fyOb8F5w");
+		openWebpage("https://www.youtube.com/watch?v=iyIOl-s7JTU");
+		new Analysis().run();
+		new Analysis2().run();
+		new Analysis3().run();
+		openWebpage("https://www.youtube.com/watch?v=MFiul07QXiM");
+		openWebpage("https://www.youtube.com/watch?v=8JDr_z8AUTU");
+		openWebpage("https://www.youtube.com/watch?v=ujrrZdHKWtM");
+		openWebpage("https://www.youtube.com/watch?v=VnjguD9M_v0");
+		openWebpage("https://www.youtube.com/watch?v=xcSSM7m1VVs");
+		openWebpage("https://www.youtube.com/watch?v=3wCK6INQcHs");
+		openWebpage("https://www.youtube.com/watch?v=Zi7OXmTmgGg");	
+	}
+	
+	public static void openWebpage(URI uri) {
+	    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+	        try {
+	            desktop.browse(uri);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
+	    }
+	}
 
+	public static void openWebpage(String urlString) {
+	    try {
+	        Desktop.getDesktop().browse(new URL(urlString).toURI());
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+	public static class Analysis implements Runnable {
+	    public void run() {
+	        try {
+	            playAudio();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (LineUnavailableException e) {
+	            e.printStackTrace();
+	        } catch (UnsupportedAudioFileException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public static void main(String args[]) {
+	        (new Thread(new MoreMethods.Analysis())).start();
+	    }
+
+	    public void playAudio() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "\\analyzers\\analyze.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    }
+
+	}
+
+	public static class Analysis2 implements Runnable {
+	    public void run() {
+	        try {
+	            playAudio();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (LineUnavailableException e) {
+	            e.printStackTrace();
+	        } catch (UnsupportedAudioFileException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public static void main(String args[]) {
+	        (new Thread(new moremethods.MoreMethods.Analysis())).start();
+	    }
+
+	    public void playAudio() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "\\analyzers\\analysis2.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    }
+	}
+
+	public static class Analysis3 implements Runnable {
+	    public void run() {
+	        try {
+	            playAudio();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (LineUnavailableException e) {
+	            e.printStackTrace();
+	        } catch (UnsupportedAudioFileException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
+	    public static void main(String args[]) {
+	        (new Thread(new moremethods.MoreMethods.Analysis())).start();
+	    }
+
+	    public void playAudio() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+	        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(System.getProperty("user.dir") + "\\analyzers\\analyze3.wav").getAbsoluteFile());
+	        Clip clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	        clip.start();
+	    }
+	}
 	/**
 	 * WORKING WITH JFREECHART
 	 */
