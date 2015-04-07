@@ -1,6 +1,7 @@
 package masterdiseasesimulation;
 
 import datacontainers.DayStat;
+import datacontainers.InfoJungStorage;
 import datacontainers.InfoStorage;
 import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
@@ -33,7 +34,7 @@ public class ManyLinesAverageObject {
 	public static int daysLimit = 0; //Never go above 10000 days
 	public static int maxDays = 100; //Default
 
-	public static void run() throws IOException {
+	public static void run() throws IOException, InterruptedException {
 		//.config
 		List<String> config = new ArrayList<String>();
 		//List<String> config = readFile(".manyLinesAverageConfig", StandardCharsets.UTF_8); // COMMENTED OUT FOR JAVA VERSION
@@ -50,6 +51,7 @@ public class ManyLinesAverageObject {
 		int maxFriends = -1;
 		String layoutString = "";
 		String networkSelectString = "";
+		boolean modelTownSim = true;
 		//String graphString = "";
 		boolean drawJung = true;
 		boolean doFwF = true;
@@ -86,6 +88,8 @@ public class ManyLinesAverageObject {
 			checkBoxGraph.setSelected(false);
 			JCheckBox checkBoxFwF = new JCheckBox();
 			checkBoxFwF.setSelected(false);
+			JCheckBox modelTownSimBox = new JCheckBox();
+			modelTownSimBox.setSelected(false);
 
 			panel.add(new JLabel("PEOPLE SETUP:"));
 			panel.add(new JLabel("----------------------------------------------"));
@@ -107,6 +111,8 @@ public class ManyLinesAverageObject {
 			panel.add(checkBoxFwF);
 			panel.add(new JLabel("Which layout?"));
 			panel.add(layoutAnswer);
+			panel.add(new JLabel("modelTown?"));
+			panel.add(modelTownSimBox);
 
 			int result = JOptionPane.showConfirmDialog(null, panel, "Before-Graph Configuration", JOptionPane.OK_CANCEL_OPTION);
 
@@ -147,6 +153,9 @@ public class ManyLinesAverageObject {
 				if (!checkBoxFwF.isSelected()) {
 					doFwF = false;
 				}
+				if (!modelTownSimBox.isSelected()) {
+					modelTownSim = false;
+				}
 
 				done = true; // Only done when go through try without errors
 			} catch (NumberFormatException e) {
@@ -159,18 +168,25 @@ public class ManyLinesAverageObject {
 		}
 		// ARAYLIST OF PEOPLE THAT WE WILL BE WORKING WITH!!! IMPORTANT IMPORTANT IMPORTANT!!!!!
 		ArrayList<Person> people = new ArrayList<Person>();
+		if(modelTownSim){
+			ModelTown modelTown = new ModelTown(networkSelectString, minFriends, maxFriends, hubNumber, new Random());
+			people = modelTown.getPeople();
+		}
+		else{	
+			for (int i = 1; i <= numPeople; i++) { // Start with 1 so we don't have a number 0 which is extra
+				Person person = new Person(i);
+				people.add(person);
+			}
+			if (networkSelectString.equals("Random")) {
+				methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
+			} else if (networkSelectString.equals("Small World")) {
+				methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
+			} else if (networkSelectString.equals("Scale-Free")) {
+				methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
+			}
+		}
 		JFrame frame = new JFrame("ManyLinesAverage");
-		for (int i = 1; i <= numPeople; i++) { // Start with 1 so we don't have a number 0 which is extra
-			Person person = new Person(i);
-			people.add(person);
-		}
-		if (networkSelectString.equals("Random")) {
-			methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
-		} else if (networkSelectString.equals("Small World")) {
-			methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
-		} else if (networkSelectString.equals("Scale-Free")) {
-			methods.befriendScaleFree(people, minFriends, maxFriends, new Random());
-		}
+		
 		if (drawJung) {
 			// Creating the graph, vertices and frame
 			UndirectedSparseMultigraph<Person, String> graph = new UndirectedSparseMultigraph<Person, String>();
@@ -254,7 +270,6 @@ public class ManyLinesAverageObject {
 			JTextField percentCurfewedAnswer = new JTextField("20", 10);
 			JTextField curfewDaysAnswer = new JTextField("50", 10);
 			final JButton browse = new JButton("Browse...");
-			filePath[0] = "C:\\Users\\Irochka\\workspace\\and\\PROEKT12";
 			browse.setText(filePath[0]);
 			//browse.setLabel(filePath[0]);
 
@@ -443,6 +458,7 @@ public class ManyLinesAverageObject {
 		}
 		for (int i : vaccinatedPeople) {
 			people.get(i - 1).setImmune(true);
+			
 		}
 		//Record params into .config
 		params.add("numPeople`" + numPeople);
@@ -465,7 +481,6 @@ public class ManyLinesAverageObject {
 
 		createConfig(params);
 		//Begin actual simulations
-
 		double estimatedTime = Math.floor(0.447 * runTimes + 2768.902);
 
 		int estimatedTimeInt = (int) estimatedTime;
@@ -475,9 +490,9 @@ public class ManyLinesAverageObject {
 		}
 
 		Long startTime = System.currentTimeMillis();
-		ArrayList<ArrayList<InfoStorage>> results = new ArrayList<ArrayList<InfoStorage>>();
+		InfoJungStorage results;
 
-		results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest); //Meh I don't know how to do it better
+		results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest, modelTownSim); //Meh I don't know how to do it better
 
 		Long endTime = System.currentTimeMillis();
 
@@ -500,10 +515,10 @@ public class ManyLinesAverageObject {
 		for (int i = 0; i < runTimes; i++) {
 			for (int j = 0; j < maxDays; j++) {
 				//System.out.println(results.get(i).size() + " " + j);
-				if (results.get(i).size() > j + 1) { //If this day is existent
-					days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.get(i).get(j).getNumSick());
-					days.get(j).setTotalSick(days.get(j).getTotalSick() + results.get(i).get(j).getTotalSick());
-					days.get(j).setCost(days.get(j).getCost() + results.get(i).get(j).getCost());
+				if (results.getInfoStorages().get(i).size() > j + 1) { //If this day is existent
+					days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.getInfoStorages().get(i).get(j).getNumSick());
+					days.get(j).setTotalSick(days.get(j).getTotalSick() + results.getInfoStorages().get(i).get(j).getTotalSick());
+					days.get(j).setCost(days.get(j).getCost() + results.getInfoStorages().get(i).get(j).getCost());
 				} else {
 					//Add 0 to numSick and cost, which is the same as doing nothing
 				}
@@ -518,7 +533,7 @@ public class ManyLinesAverageObject {
 		}
 
 		if (display) {
-			for (ArrayList<InfoStorage> alis : results) {
+			for (ArrayList<InfoStorage> alis : results.getInfoStorages()) {
 				System.out.println("NEW RUNTIME_________________________________________________________________________");
 				for (InfoStorage is : alis) {
 					System.out.println("Welcome to day " + is.getDay() + ". Sick: " + is.getNumSick() + ". Total sick: " + is.getTotalSick() + " Cost: " + is.getCost() + ".");
