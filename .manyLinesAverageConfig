@@ -1,4 +1,4 @@
-numPeople`1034
+numPeople`1000
 minFriends`3
 maxFriends`10
 hubNumber`0
@@ -13,5 +13,5 @@ percentTeenagers`0
 percentCurfewed`20
 curfewDays`50
 runTimes`100
-filePath`C:\Users\a_barboy\Grishka\MasterDiseaseSimulation
+filePath`K:\grisha\JAVA\GitHub\MasterDiseaseSimulation
 fileName`simResults

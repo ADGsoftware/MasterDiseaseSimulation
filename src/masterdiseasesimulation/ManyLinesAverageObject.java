@@ -73,7 +73,7 @@ public class ManyLinesAverageObject {
 			*/ // COMMENTED OUT FOR JAVA VERSION
 
 			JPanel panel = new JPanel();
-			panel.setLayout(new GridLayout(10, 0));
+			panel.setLayout(new GridLayout(11, 0));
 			JTextField numPeopleAnswer = new JTextField("1000", 10);
 			JTextField minFriendsAnswer = new JTextField("3", 10);
 			JTextField hubNumberAnswer = new JTextField("0", 10);
@@ -452,7 +452,7 @@ public class ManyLinesAverageObject {
 		}
 
 		Collections.sort(people, Person.orderByID);
-
+		System.out.println(people.size());
 		for (int i : infectedPeople) {
 			people.get(i - 1).setSick(true);
 		}

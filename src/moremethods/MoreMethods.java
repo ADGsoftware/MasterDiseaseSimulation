@@ -909,8 +909,10 @@ public class MoreMethods {
 						for (Person friend : friends) {
 							if (friend.getDaysSick() > 0 && friend.isSick()) {
 								boolean getSick;
+								//System.out.println(person + " has a get vac of : " + person.getSuceptability());
 								if(modelTownSim){
 									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability();
+									//System.out.println(person + "got Sick");
 								}
 								else{
 									getSick = (new Random().nextInt(99) + 1) < percentSick;
