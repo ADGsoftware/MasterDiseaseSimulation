@@ -348,23 +348,23 @@ public class ModelTown {
     private void setSucaptablies(ArrayList<Person> people){
     	for(Person p : people){
     		if(p.getAge() >=0 && p.getAge() <=4){
-    			System.out.println("Here!!!!1");
+    			//System.out.println("Here!!!!1");
     			p.setSuceptability(66.4/14.5);
     		}
     		if(p.getAge() >=5 && p.getAge() <=17){
-    			System.out.println("Here!!!!2");
+    			//System.out.println("Here!!!!2");
     			p.setSuceptability(14.5/14.5);
     		}
     		if(p.getAge() >=18 && p.getAge() <=49){
-    			System.out.println("Here!!!!3");
+    			//System.out.println("Here!!!!3");
     			p.setSuceptability(16.2/14.5);
     		}
     		if(p.getAge() >=50 && p.getAge() <=64){
-    			System.out.println("Here!!!!4");
+    			//System.out.println("Here!!!!4");
     			p.setSuceptability(41.3/14.5);
     		}
     		if(p.getAge() >=65){
-    			System.out.println("Here!!!!5");
+    			//System.out.println("Here!!!!5");
     			p.setSuceptability(192.4/14.5);
     		}
     	}
