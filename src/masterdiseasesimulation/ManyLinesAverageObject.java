@@ -178,7 +178,7 @@ public class ManyLinesAverageObject {
 				people.add(person);
 			}
 			if (networkSelectString.equals("Random")) {
-				methods.befriendRandom(people, minFriends, maxFriends, new Random(), hubNumber);
+				methods.befreindRandomNew(people, minFriends, maxFriends, new Random(), hubNumber);
 			} else if (networkSelectString.equals("Small World")) {
 				methods.befriendSmallWorld(people, minFriends, maxFriends, new Random(), hubNumber);
 			} else if (networkSelectString.equals("Scale-Free")) {
@@ -213,7 +213,7 @@ public class ManyLinesAverageObject {
 			//DrawJung
 			methods.drawJung(graph, vv, people);
 
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			frame.add(vv);
 			frame.pack();
 			frame.setVisible(true);

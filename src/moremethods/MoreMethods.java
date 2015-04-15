@@ -317,13 +317,14 @@ public class MoreMethods {
 //			}
 //		}
 //	}
-	public void befriendRandom(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {//It will be possible to make this algorhyth even better suggest way!!1
+	public void befriendRandom(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber) {
 		//Choose people for hubs
 		makeHubs(hubNumber, people, random);
 		assignCapacities(people, minFriends, maxFriends, random);
 		// Make friends
 		ArrayList<Person> peopleReference = new ArrayList<Person>();
-		ArrayList<Person> badOptions = new ArrayList<Person>();
+		ArrayList<Person> fullCapacitiesNew = new ArrayList<Person>();
+		ArrayList<Person> fullCapacities = new ArrayList<Person>();
 		for (Person newPerson : people) {
 			peopleReference.add(newPerson);
 		}
@@ -351,10 +352,11 @@ public class MoreMethods {
 						continue;
 					} 
 					else if (possibleFriend.capacityFull()) {
-						//System.out.println("Capacity full ERROR");
+						fullCapacitiesNew.add(possibleFriend);
 						continue;
 					} 
 					else if(person.capacityFull()){
+						fullCapacitiesNew.add(person);
 						break;
 					}
 					else {
@@ -363,6 +365,79 @@ public class MoreMethods {
 						people.get(possibleFriend.getID() - 1).addFriend(person);
 					}
 				}
+				for(Person p : fullCapacitiesNew){
+					fullCapacities.add(p);
+					if(!fullCapacities.contains(p)){
+						int index = peopleReference.indexOf(p);
+						peopleReference.remove(index);
+					}
+				}
+			System.out.println(peopleReference);
+			}
+		}
+	}
+	public void befreindRandomNew(ArrayList<Person> people, int minFriends, int maxFriends, Random random, int hubNumber){
+		makeHubs(hubNumber, people, random);
+		int numEdges = random.nextInt(people.size()*maxFriends/2) + minFriends*people.size()/2;
+		int minEdgesNum = minFriends*people.size()/2;
+		int additionalEdgesNum = numEdges - minEdgesNum;
+		
+		ArrayList<Person> peopleCopy = new ArrayList<Person>();
+		for(Person p : people){
+			peopleCopy.add(p);
+		}
+
+		iterateForBefriendRandomNew(minFriends, maxFriends, people, peopleCopy, minEdgesNum, additionalEdgesNum, random, true);
+		
+		peopleCopy.clear();
+		for(Person p : people){
+			peopleCopy.add(p);
+		}
+		
+		iterateForBefriendRandomNew(minFriends, maxFriends, people, peopleCopy, minEdgesNum, additionalEdgesNum, random, false);
+
+		for (Person person : people) {
+			//Hub Case
+			if (person.isHub()) {
+				person.setCapacity(people.size() + 1);
+				for (Person hubFriend : people) {
+					if ((hubFriend != person) && !(person.getFriends().contains(hubFriend))) {
+						if ((random.nextInt(100) + 1 > 20) && !(hubFriend.capacityFull())) {
+							person.addFriend(hubFriend);
+							hubFriend.addFriend(person);
+						}
+					}
+				}
+			}
+		}
+	}
+	public void iterateForBefriendRandomNew(int minFriends,int maxFriends, ArrayList<Person> people, ArrayList<Person> peopleCopy, int minEdgesNum, int additionalEdgesNum, Random random, boolean min){
+		int minOrAdditionalEdgesNum;
+		int minOrMaxFriends;
+		if (min){
+			minOrAdditionalEdgesNum = minEdgesNum;
+			minOrMaxFriends = minFriends;
+		}
+		else{
+			minOrAdditionalEdgesNum =  additionalEdgesNum;
+			minOrMaxFriends = maxFriends;
+		}
+		
+		for(int i = 0; i < minOrAdditionalEdgesNum; i++){
+			int index1 = random.nextInt(peopleCopy.size()-1);
+			int index2 = random.nextInt(peopleCopy.size()-1);
+			
+			int index1Real = people.indexOf(peopleCopy.get(index1));
+			int index2Real = people.indexOf(peopleCopy.get(index2));
+			
+			people.get(index1Real).addReflexiveFriend(people.get(index2Real));
+			peopleCopy.get(index1).addReflexiveFriend(peopleCopy.get(index2));
+			
+			if(peopleCopy.get(index1).getNumFriends() == minOrMaxFriends){
+				peopleCopy.remove(index1);
+			}
+			if(peopleCopy.get(index2).getNumFriends() == minOrMaxFriends){
+				peopleCopy.remove(index1);
 			}
 		}
 	}

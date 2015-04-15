@@ -108,7 +108,7 @@ public class ModelTown {
         if (networkType.equals("Small World")) {
             methods.befriendSmallWorld(this.people, minFriends, maxFriends, random, hubNumber);
         } else if (networkType.equals("Random")) {
-            methods.befriendRandom(this.people, minFriends, maxFriends, random, hubNumber);
+            methods.befreindRandomNew(this.people, minFriends, maxFriends, random, hubNumber);
         } else if (networkType.equals("Scale-Free")) {
             methods.befriendScaleFree(this.people, minFriends, maxFriends, random);
         } else {
