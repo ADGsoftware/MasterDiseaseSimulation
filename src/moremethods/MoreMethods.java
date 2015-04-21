@@ -1270,8 +1270,8 @@ public class MoreMethods {
 		JFreeChart lineChartObject = ChartFactory.createXYLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
 
 
-		int width = 640;
-		int height = 480;
+		int width = 1920;
+		int height = 1440;
 		File lineChart = new File(filename + ".png");
 		ChartUtilities.saveChartAsPNG(lineChart, lineChartObject, width, height);
 

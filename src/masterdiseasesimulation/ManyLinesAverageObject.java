@@ -567,27 +567,31 @@ public class ManyLinesAverageObject {
 			MoreMethods.addPoint(cost, day.getDay(), day.getCost());
 		}
 
-		MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People (out of " + numPeople + ")");
+		MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People (out of " + people.size() + ")");
 
 
 //		//Open graph image
 //		File f = new File(filePath[0] + "/" + fileName + ".png");
 //		Desktop dt = Desktop.getDesktop();
 //		dt.open(f);
-
+		XYSeriesCollection datasetAverages = new XYSeriesCollection();
 		for(ArrayList<InfoStorage> runtime  : results.getInfoStorages()){
 			int j = results.getInfoStorages().indexOf(runtime);
 			
 			XYSeriesCollection dataset1 = new XYSeriesCollection();
 
-			XYSeries numSick1 = new XYSeries("Sick People");
-			XYSeries totalSick1 = new XYSeries("Total Sick People");
-			XYSeries cost1 = new XYSeries("Cost");
+			XYSeries numSick1 = new XYSeries("Sick People" + j);
+			XYSeries totalSick1 = new XYSeries("Total Sick People" + j);
+			XYSeries cost1 = new XYSeries("Cost" + j);
 			System.out.println("NewGraph!");
 			
 			dataset1.addSeries(numSick1);
 			dataset1.addSeries(totalSick1);
 			dataset1.addSeries(cost1);
+			
+			datasetAverages.addSeries(numSick1);
+			datasetAverages.addSeries(totalSick1);
+			datasetAverages.addSeries(cost1);
 			for(InfoStorage day : runtime){
 				int i = runtime.indexOf(day);
 				System.out.println("Day Number: " + i + ", of runtime " + j);
@@ -604,6 +608,7 @@ public class ManyLinesAverageObject {
 			//XYSeriesCollection datasetPlaceHolder = new XYSeriesCollection();
 			//dataset1 = datasetPlaceHolder;
 		}
+		MoreMethods.makeChart(datasetAverages, filePath[0] + "/Averages", "Layers Graph" + networkSelectString + " Network", "Days", "Infected People");
 		if (doFwF) {
 			//Friends with Friends stuff---------------------------------------
 			methods.calculateConnectivityRatios(people);
