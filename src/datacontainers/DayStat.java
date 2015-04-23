@@ -5,12 +5,14 @@ public class DayStat {
     private double currentSick;
     private double totalSick;
     private double cost;
+    private double immune;
 
-    public DayStat(int day, double currentSick, double totalSick, double cost) {
+    public DayStat(int day, double currentSick, double totalSick, double cost, double immune) {
         this.day = day;
         this.currentSick = currentSick;
         this.totalSick = totalSick;
         this.cost = cost;
+        this.immune = immune;
     }
 
     //Getters
@@ -46,4 +48,10 @@ public class DayStat {
     public void setCost(double cost) {
         this.cost = cost;
     }
+    public void setNumImmune(double immuneNum){
+		this.immune = immuneNum;
+	}
+	public double getImmune(){
+		return this.immune;
+	}
 }

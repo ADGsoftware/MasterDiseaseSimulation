@@ -380,7 +380,7 @@ public class MasterManySimsObject
 																	//System.out.println(numPeopleI + " " + minFriendsI  + " " +  maxFriendsI + " " + hubNumberI + " " + getWellDaysI + " " + discoveryI + " " + newGetWellDaysI + " " + initiallySickI + " " + initiallyVaccI + " " + percentSickI + " " + getVacI);
 																	//System.out.println(results);
 																	
-																	results = new InfoStorage(methods.sum(daysList) / runs, 0.0, methods.sum(totalSickList) / runs, methods.sum(costList) / runs);
+																	results = new InfoStorage(methods.sum(daysList) / runs, 0.0, methods.sum(totalSickList) / runs, methods.sum(costList) / runs, 0);//Placeholder for now (ya pro 0 govoryu) add later if time but not crucial???
 										
 																	//System.out.println("Cost: $" + results.getCost() + " Total Sick:" + results.getTotalSick() + " Days:" + results.getDay() + ". Thank you very much.");
 																	// Add value to graph

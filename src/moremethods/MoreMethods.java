@@ -909,6 +909,7 @@ public class MoreMethods {
 		ArrayList<JungStorage> jungStorage = new ArrayList<JungStorage>();
 		int day = 0;
 		int cost = origVacc;
+		Random random = new Random();
 
 		//System.out.println("RunTimes: " + runTimes);
 
@@ -942,7 +943,38 @@ public class MoreMethods {
 		int averageDuration = 0;
 
 		ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
+		ArrayList<Integer> totalImmunePeople = new ArrayList<Integer>();
 		for (int runTime = 0; runTime < runTimes; runTime++) {
+			//Makes Random people sick or immune, this should result in less stable graphs
+			for (int i= 0 ; i < origSick; i++) {
+				Boolean done = false;
+				while(!done){
+					int index = random.nextInt(people.size() - 1);
+					if(people.get(index).isSick()){
+						continue;
+					}
+					else{
+						people.get(index).setSick(true);
+						totalSickPeople.add(people.get(index).getID());
+						System.out.println("PersonL " + people.get(index) + " is intialy Sick");
+						done = true;
+					}
+				}
+			}
+			for (int i= 0 ; i < origVacc; i++) {
+				Boolean done = false;
+				while(!done){
+					int index = random.nextInt(people.size() - 1);
+					if(people.get(index).isSick() || people.get(index).isImmune()){
+						continue;
+					}
+					else{
+						people.get(index).setImmune(true);
+						totalImmunePeople.add(people.get(index).getID());
+						done = true;
+					}
+				}
+			}
 			/*
 			int value = runTime * 100 / runTimes;
 			progressBar.setValue(value);
@@ -995,11 +1027,19 @@ public class MoreMethods {
 								boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
 								if (getSick) {
 									person.setSick(true);
+									if(day <= 4){
+										System.out.println(day);
+										System.out.println("Person " + person + " got sick from " + friend);
+									}
 									totalSickPeople.add(person.getID());
 									break;
 								}
+								else{
+									//System.out.println("Person " + person + " did not get sick from " + friend);
+								}
 								if (getVacc) {
 									person.getWell();
+									totalImmunePeople.add(person.getID());
 									cost++;
 									break;
 								}
@@ -1009,6 +1049,7 @@ public class MoreMethods {
 					//System.out.println(person.getDaysSick());
 					if (person.getDaysSick() >= getWellDays) { // && !person.isImmune()
 						person.getWell();
+						totalImmunePeople.add(person.getID());
 					}
 				}
 				day++;
@@ -1034,7 +1075,7 @@ public class MoreMethods {
 					}	
 				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
-				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost));
+				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost, totalImmunePeople.size()));
 				//System.out.println(people);
 				//System.out.println(getNumSickPeople(people));
 			}
@@ -1044,16 +1085,21 @@ public class MoreMethods {
 			while (day < ManyLinesAverageObject.daysLimit) {
 				day++;
 				//System.out.println("totalSickPeople.size() = " + totalSickPeople.size());
-				infoStorage.get(runTime).add(new InfoStorage(day, 0, totalSickPeople.size(), cost));
+				infoStorage.get(runTime).add(new InfoStorage(day, 0, totalSickPeople.size(), cost, totalImmunePeople.size()));
 			}
 
 			day = 0;
 			cost = origVacc;
 
 			totalSickPeople.clear();
+			totalImmunePeople.clear();
 
-			resetAll(people);
-			people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
+			//This should be the new RestAll method but i'm not changing it for now...
+			for(Person p : people){
+				p.setSick(false);
+				p.setImmune(false);
+			}
+			//people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
 			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
 			//System.out.println("LO AND BEHOLD NEW RUNTIME!!!!!!!!!!!!!!");
 		}
@@ -1188,7 +1234,7 @@ public class MoreMethods {
 		int totalTotalSick = 0;
 
 		for (int runTime = 1; runTime <= runTimes; runTime++) {
-			//System.out.println(runTime);
+			System.out.println("Simulation RunTime: " + runTime);
 			while (getNumSickPeople(people) > 0) {
 				for (Person person : people) {
 					if (person.isTeenager()) {
@@ -1258,8 +1304,8 @@ public class MoreMethods {
 	public static File makeChart(DefaultCategoryDataset dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
 		JFreeChart lineChartObject = ChartFactory.createLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
 		
-		int width = 640;
-		int height = 480;
+		int width = 1920;
+		int height = 1440;
 		File lineChart = new File(filename + ".png");
 		ChartUtilities.saveChartAsPNG(lineChart, lineChartObject, width, height);
 
@@ -1334,6 +1380,7 @@ public class MoreMethods {
 		ArrayList<Double> costs = new ArrayList<Double>();
 		ArrayList<Double> days = new ArrayList<Double>();
 		ArrayList<Double> totalSick = new ArrayList<Double>();
+		ArrayList<Double> totalImmune = new ArrayList<Double>();
 
 		//Add to arrayLists
 		for (ArrayList<InfoStorage> runtimeList : simOutput) {
@@ -1345,12 +1392,14 @@ public class MoreMethods {
 			//System.out.println("Get day = " + lastInfoStorage.getDay());
 			totalSick.add(lastInfoStorage.getTotalSick());
 			//System.out.println("Get totalSick = " + lastInfoStorage.getTotalSick());
+			totalImmune.add(lastInfoStorage.getImmune());
 		}
 		double avgCost = findAverage(costs);
 		double avgDays = findAverage(days);
 		double avgTotalSick = findAverage(totalSick);
+		double avgImmunePeople = findAverage(totalImmune);
 
-		InfoStorage avgInfoStorage = new InfoStorage((double) avgDays, (double)0, (double)avgTotalSick, (double)avgCost);
+		InfoStorage avgInfoStorage = new InfoStorage((double) avgDays, (double)0, (double)avgTotalSick, (double)avgCost, (double) avgImmunePeople);
 
 		return avgInfoStorage;
 	}

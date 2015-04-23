@@ -5,12 +5,14 @@ public class InfoStorage {
 	private double numSick;
 	private double totalSick;
 	private double cost;
+	private double immune;
 
-	public InfoStorage(double day, double numSick, double totalSick, double cost) {
+	public InfoStorage(double day, double numSick, double totalSick, double cost, double immune) {
 		this.day = day;
 		this.numSick = numSick;
 		this.totalSick = totalSick;
 		this.cost = cost;
+		this.immune = immune;
 	}
 	public void setDay(double day) {
 		this.day = day;
@@ -42,5 +44,11 @@ public class InfoStorage {
 
 	public double getTotalSick() {
 		return totalSick;
+	}
+	public void setNumImmune(double immuneNum){
+		this.immune = immuneNum;
+	}
+	public double getImmune(){
+		return this.immune;
 	}
 }

@@ -119,7 +119,6 @@ public class ManyLinesAverageObject {
 			if (result != JOptionPane.OK_OPTION) {
 				System.exit(0);
 			}
-
 			try {
 				String numPeopleAnswerString = numPeopleAnswer.getText();
 				numPeople = Integer.parseInt(numPeopleAnswerString);
@@ -156,7 +155,6 @@ public class ManyLinesAverageObject {
 				if (!modelTownSimBox.isSelected()) {
 					modelTownSim = false;
 				}
-
 				done = true; // Only done when go through try without errors
 			} catch (NumberFormatException e) {
 				if (result == JOptionPane.OK_OPTION) {
@@ -171,8 +169,9 @@ public class ManyLinesAverageObject {
 		if(modelTownSim){
 			ModelTown modelTown = new ModelTown(networkSelectString, minFriends, maxFriends, hubNumber, new Random());
 			people = modelTown.getPeople();
+			numPeople = people.size();
 		}
-		else{	
+		if(!modelTownSim){	
 			for (int i = 1; i <= numPeople; i++) { // Start with 1 so we don't have a number 0 which is extra
 				Person person = new Person(i);
 				people.add(person);
@@ -224,13 +223,13 @@ public class ManyLinesAverageObject {
 		int getWellDays = 0;
 		int discovery = 0;
 		int newGetWell = 0;
-		ArrayList<Integer> infectedPeople = new ArrayList<Integer>();
+		int infectedPeople = 0;
 		int percentSick = 0;
 		int getVac = -1;
 		int percentTeenagers = 0;
 		int percentCurfewed = -1;
 		int curfewDays = -1;
-		ArrayList<Integer> vaccinatedPeople = new ArrayList<Integer>();
+		int vaccinatedPeople = 0;
 		ArrayList<Person> teens = new ArrayList<Person>();
 		final String[] filePath = {System.getProperty("user.dir")}; //Default filepath
 		String fileName = "simResults";
@@ -377,12 +376,9 @@ public class ManyLinesAverageObject {
 				}
 
 				String initiallySickString = initiallySickAnswer.getText();
-				infectedPeople = MoreMethods.commaListToArrayList(initiallySickString);
-				methods.removeDuplicate(infectedPeople);
-				for (int i : infectedPeople) {
-					if (i > numPeople) {
-						throw new NumberFormatException();
-					}
+				infectedPeople = Integer.parseInt(initiallySickString);
+				if (infectedPeople > numPeople) {
+					throw new NumberFormatException();
 				}
 
 				String percentSickString = percentSickAnswer.getText();
@@ -398,12 +394,9 @@ public class ManyLinesAverageObject {
 				}
 
 				String vaccinatedPeopleString = vaccinatedPeopleAnswer.getText();
-				vaccinatedPeople = MoreMethods.commaListToArrayList(vaccinatedPeopleString);
-				methods.removeDuplicate(vaccinatedPeople);
-				for (int i : vaccinatedPeople) {
-					if (i > numPeople) {
-						throw new NumberFormatException();
-					}
+				vaccinatedPeople = Integer.parseInt(vaccinatedPeopleString);
+				if (vaccinatedPeople > numPeople - infectedPeople) {
+					throw new NumberFormatException();
 				}
 
 				fileName = fileAnswer.getText();
@@ -432,13 +425,8 @@ public class ManyLinesAverageObject {
 				if (curfewDays < 0) {
 					throw new NumberFormatException();
 				}
-
-				for (int i : infectedPeople) {
-					for (int j : vaccinatedPeople) {
-						if (i == j) {
-							throw new NumberFormatException();
-						}
-					}
+				if (infectedPeople == vaccinatedPeople) {
+					throw new NumberFormatException();
 				}
 
 				done = true; // Only done when go through try without errors
@@ -453,13 +441,6 @@ public class ManyLinesAverageObject {
 
 		Collections.sort(people, Person.orderByID);
 		System.out.println(people.size());
-		for (int i : infectedPeople) {
-			people.get(i - 1).setSick(true);
-		}
-		for (int i : vaccinatedPeople) {
-			people.get(i - 1).setImmune(true);
-			
-		}
 		//Record params into .config
 		params.add("numPeople`" + numPeople);
 		params.add("minFriends`" + minFriends);
@@ -492,7 +473,7 @@ public class ManyLinesAverageObject {
 		Long startTime = System.currentTimeMillis();
 		InfoJungStorage results;
 
-		results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople.size(), vaccinatedPeople.size(), discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest, modelTownSim); //Meh I don't know how to do it better
+		results = MoreMethods.simulate(people, teens, getWellDays, infectedPeople, vaccinatedPeople, discovery, newGetWell, percentSick, getVac, curfewDays, runTimes, percentCurfewed, transmissionTest, modelTownSim); //Meh I don't know how to do it better
 
 		Long endTime = System.currentTimeMillis();
 
@@ -509,8 +490,8 @@ public class ManyLinesAverageObject {
 		
 		//Initialize daystat array
 		for (int k = 0; k < maxDays; k++) {
-			days.add(new DayStat(k, 0, 0, 0));
-			dayStorage.add(new DayStat(k, 0, 0, 0));
+			days.add(new DayStat(k, 0, 0, 0, 0));
+			dayStorage.add(new DayStat(k, 0, 0, 0, 0));
 		}
 
 		//Add totals for each day
@@ -521,6 +502,7 @@ public class ManyLinesAverageObject {
 					days.get(j).setCurrentSick(days.get(j).getCurrentSick() + results.getInfoStorages().get(i).get(j).getNumSick());
 					days.get(j).setTotalSick(days.get(j).getTotalSick() + results.getInfoStorages().get(i).get(j).getTotalSick());
 					days.get(j).setCost(days.get(j).getCost() + results.getInfoStorages().get(i).get(j).getCost());
+					days.get(j).setNumImmune(days.get(j).getImmune() + results.getInfoStorages().get(i).get(j).getImmune());
 				} else {
 					//Add 0 to numSick and cost, which is the same as doing nothing
 				}
@@ -532,6 +514,7 @@ public class ManyLinesAverageObject {
 			dayStat.setCurrentSick(dayStat.getCurrentSick() / runTimes);
 			dayStat.setTotalSick(dayStat.getTotalSick() / runTimes);
 			dayStat.setCost(dayStat.getCost() / runTimes);
+			dayStat.setNumImmune(dayStat.getImmune()/runTimes);
 		}
 
 		if (display) {
@@ -556,15 +539,18 @@ public class ManyLinesAverageObject {
 		XYSeries numSick = new XYSeries("Sick People");
 		XYSeries totalSick = new XYSeries("Total Sick People");
 		XYSeries cost = new XYSeries("Cost");
+		XYSeries immune = new XYSeries("Immune");
 
 		dataset.addSeries(numSick);
 		dataset.addSeries(totalSick);
 		dataset.addSeries(cost);
+		dataset.addSeries(immune);
 
 		for (DayStat day : days) {
 			MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
 			MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
 			MoreMethods.addPoint(cost, day.getDay(), day.getCost());
+			MoreMethods.addPoint(immune, day.getDay(), day.getImmune());
 		}
 
 		MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People (out of " + people.size() + ")");
@@ -583,27 +569,33 @@ public class ManyLinesAverageObject {
 			XYSeries numSick1 = new XYSeries("Sick People" + j);
 			XYSeries totalSick1 = new XYSeries("Total Sick People" + j);
 			XYSeries cost1 = new XYSeries("Cost" + j);
-			System.out.println("NewGraph!");
+			XYSeries immune1 = new XYSeries("Total Immune People" + j);
+			//System.out.println("NewGraph!");
 			
 			dataset1.addSeries(numSick1);
 			dataset1.addSeries(totalSick1);
 			dataset1.addSeries(cost1);
+			dataset1.addSeries(immune1);
 			
 			datasetAverages.addSeries(numSick1);
 			datasetAverages.addSeries(totalSick1);
 			datasetAverages.addSeries(cost1);
+			datasetAverages.addSeries(immune1);
 			for(InfoStorage day : runtime){
-				int i = runtime.indexOf(day);
-				System.out.println("Day Number: " + i + ", of runtime " + j);
-				System.out.println(day.getNumSick() + " Sick People");
-				System.out.println(day.getTotalSick() + " TotalSick People");
-				MoreMethods.addPoint(numSick1, i, day.getNumSick());
-				MoreMethods.addPoint(totalSick1, i, day.getTotalSick());
-				MoreMethods.addPoint(cost1, i, day.getCost());
-				System.out.println("NewPoint!");
+				if(day.getDay() <= 10){
+					int i = runtime.indexOf(day);
+					//System.out.println("Day Number: " + i + ", of runtime " + j);
+					//System.out.println(day.getNumSick() + " Sick People");
+					//System.out.println(day.getTotalSick() + " TotalSick People");
+					MoreMethods.addPoint(numSick1, i, day.getNumSick());
+					MoreMethods.addPoint(totalSick1, i, day.getTotalSick());
+					MoreMethods.addPoint(cost1, i, day.getCost());
+					MoreMethods.addPoint(immune1, i, day.getImmune());
+					//System.out.println("NewPoint!");
+				}
 			}
 			String newFileName = "notAveragedGraph used with: " + fileName + Integer.toString(j);
-			System.out.println(newFileName);
+			//System.out.println(newFileName);
 			MoreMethods.makeChart(dataset1, filePath[0] + "/" + Integer.toString(j), "non - Averaged Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
 			//XYSeriesCollection datasetPlaceHolder = new XYSeriesCollection();
 			//dataset1 = datasetPlaceHolder;

@@ -1,8 +1,8 @@
-numPeople`1000
+numPeople`25614
 minFriends`3
 maxFriends`10
 hubNumber`0
-networkSelectString`Random
+networkSelectString`Scale-Free
 drawJung`false
 dofWF`false
 layoutString`Circle
@@ -13,5 +13,5 @@ percentTeenagers`0
 percentCurfewed`20
 curfewDays`50
 runTimes`100
-filePath`K:\grisha\JAVA\GitHub\MasterDiseaseSimulation\LexSimTests\SFRunsLex
-fileName`YipeKayay
+filePath`K:\grisha\JAVA\GitHub\MasterDiseaseSimulation\LexSimTests\SmallZoom
+fileName`OI
