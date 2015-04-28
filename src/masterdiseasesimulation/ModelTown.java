@@ -217,6 +217,108 @@ public class ModelTown {
 
         Thread.sleep(1000000000);*/
     }
+    
+    public ModelTown(String networkType, int minFriends, int maxFriends, int hubNumber, Random random, int[] hs, double[] ha, double[] ages) throws IOException, InterruptedException {
+    	
+        status.setColumns(89);
+        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
+        panel.add(status);
+        frame.setTitle("Status...");
+        frame.setSize(1000, 800);
+        frame.add(panel);
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(true);
+        //frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        stamp("Reading and saving CSV...");
+        
+        //Reading CSV
+        for (int i = 1; i < 8; i++) {
+            numberOfHouseholdsBasedOnPeople.put(i, hs[i - 1]);
+            //System.out.println("People: " + i + " number: " + number);
+        }
+        
+        for(int i = 1; i < 9; i++) {
+        	ownersAndAges.put(10*i + 5, (float)ha[i - 1]);
+        	//System.out.println("OwnerAge: " + (10*i+5) + " Percent: " + number);
+        }
+        
+        LinkedHashMap<Integer, Float> test = new LinkedHashMap<Integer, Float>();
+        for(int i = 1; i < 19; i++) {
+        	agesAndPrecentages.put(i*5, (float)ages[i - 1]);
+        }
+        //System.out.println(agesAndPrecentages);
+        //System.out.println(test);
+
+        getOperationTime();
+        stamp("Creating households...");
+
+        int id = 1;
+        for (int i = 1; i < 8; i++) {
+            //System.out.println("There are " + numberOfHouseholdsBasedOnPeople.get(i) + " households with " + i + " people in them in Lexington, MA.");
+            for (int j = 0; j < numberOfHouseholdsBasedOnPeople.get(i); j++) {
+                ArrayList<Person> people = createPeople("random:" + i);
+                households.add(new Household(id, people));
+                id++;
+            }
+        }
+       // System.out.println(households);
+        getOperationTime();
+
+       // System.out.println(households.size() + " households created.");
+        
+        stamp("Generating network...");
+
+       int cpID = 1; //Universal identification number for each person
+        for (Household household : households) {
+            for (Person person : household.getResidents()) {
+                person.setID(cpID);
+                person.setHousehold(household);
+                this.people.add(person);
+                cpID++;
+            }
+        }
+        //Befriending Methods
+        for (Household household : households) {
+            befriend(household, "reflexive");
+        }
+        if (networkType.equals("Small World")) {
+            methods.befriendSmallWorld(this.people, minFriends, maxFriends, random, hubNumber);
+        } else if (networkType.equals("Random")) {
+            methods.befreindRandomNew(this.people, minFriends, maxFriends, random, hubNumber);
+        } else if (networkType.equals("Scale-Free")) {
+            methods.befriendScaleFree(this.people, minFriends, maxFriends, random);
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
+            //System.exit(0);
+        }
+        for(Household h : households){
+        	for(Person p : h.getResidents()){
+        		//System.out.println(p.getFriends().size() + " : Many Friends");
+        	}
+        }
+        
+        //AGES STUFF-----------
+        ownersAndAges = rewritePercentMap(ownersAndAges);
+        agesAndPrecentages = rewritePercentMap(agesAndPrecentages);
+       
+        for(Household household : households){
+        	distributeAgesAndOwnerNew(household, ownersAndAges, agesAndPrecentages);
+        	setSucaptablies(household.getResidents());
+        }
+        //------------------------
+        
+        getOperationTime();
+        stamp("Printing results...");
+
+        getOperationTime();
+        
+        //Hist
+        HistogramGenerator hist = new HistogramGenerator();   
+        hist.makeHistAges(people, "AgesHistogram");
+        
+        System.out.println("DONE!!!!!!!");
+	}
 
     private int getColumnByPeoplePerHousehold(int peoplePerHousehold) {
         return 2 * peoplePerHousehold + 11;
@@ -326,6 +428,49 @@ public class ModelTown {
 	    		if(!doneResidentAgeDist){
 	    			//System.out.println("I AM HERE");
 	        		resident.setAge(95 + r.nextInt(5));
+	        	}
+	    	}
+    	}
+    }
+    private void distributeAgesAndOwnerNew(Household household, LinkedHashMap<Integer, Float> ownersAndAges, LinkedHashMap<Integer, Float> agesAndPrecentages){
+    	ArrayList<Person> residents = household.getResidents();
+    	
+    	//OwnerStuffs
+    	residents.get(0).isOwner();
+    	household.newOwner();
+    	
+    	//Owner Age
+    	Random r = new Random();
+    	float ageFloat = 100*r.nextFloat();
+    	Boolean doneOwnerAgeDist = false;
+    	for(Map.Entry<Integer, Float> entry : ownersAndAges.entrySet()){
+    		if(entry.getValue() < ageFloat){
+    			continue;
+    		}
+    		else{
+    			residents.get(0).setAge(entry.getKey() - r.nextInt(10));
+    			doneOwnerAgeDist = true;
+    			break;
+    		}
+    	}
+    	if(!doneOwnerAgeDist){
+    		residents.get(0).setAge(90 + r.nextInt(10));
+    	}
+    	//Other Residents Age
+    	for(Person resident : residents){
+	    	if(!resident.getIsOwner()){
+	    		ageFloat = r.nextFloat()*100;
+	    		Boolean doneResidentAgeDist = false;
+	    		for(Map.Entry<Integer, Float> entry : agesAndPrecentages.entrySet()){
+	        		if(entry.getValue() >= ageFloat){
+	        			resident.setAge(entry.getKey() - r.nextInt(5));
+	        			doneResidentAgeDist = true;
+	        			break;
+	        		}
+	        	}
+	    		if (!doneResidentAgeDist) {
+	    			//System.out.println("I AM HERE");
+	        		resident.setAge(90 + r.nextInt(5));
 	        	}
 	    	}
     	}

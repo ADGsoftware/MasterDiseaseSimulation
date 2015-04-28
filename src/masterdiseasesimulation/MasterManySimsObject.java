@@ -33,7 +33,6 @@ import jxl.write.WritableWorkbook;
 import moremethods.MoreMethods;
 
 import org.apache.commons.collections15.Transformer;
-import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import datacontainers.InfoStorage;
@@ -131,7 +130,10 @@ public class MasterManySimsObject
 		String layoutString = inputs.get(54).toString();
 		
 		int runs = Integer.parseInt(inputs.get(55).toString());
-		boolean modelTownSim = (Boolean)inputs.get(56);
+		int[] hs = (int[])inputs.get(56);
+		double[] ha = (double[])inputs.get(57);
+		double[] ages = (double[])inputs.get(58);
+		boolean modelTownSim = (hs != null);
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
 		//System.out.println(totalRuns);
 
@@ -339,12 +341,12 @@ public class MasterManySimsObject
 																	InfoStorage results;
 																	
 																	ArrayList<Person> teenagers = new ArrayList<Person>();
-																	if(modelTownSim){
-																		ModelTown lexington = new ModelTown(networkType, minFriendsI, maxFriendsI, hubNumberI, random);
-																		people = lexington.getPeople();
-																		teenagers = lexington.getTeenagers();
+																	if (modelTownSim) {
+																		ModelTown town = new ModelTown(networkType, minFriendsI, maxFriendsI, hubNumberI, random, hs, ha, ages);
+																		people = town.getPeople();
+																		teenagers = town.getTeenagers();
 																	}
-																	else{	
+																	else {	
 																		people = methods.getPeople(numPeople);
 																		if (networkType.equals("Small World")) {
 																			methods.befriendSmallWorld(people, minFriendsI, maxFriendsI, random, hubNumberI);
@@ -732,7 +734,7 @@ public class MasterManySimsObject
 				value = entry.getValue();
 				derivatives.addValue(value, "2nd Derivative", Integer.toString(key));
 			}
-			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
+			//File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
 			//File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
 
 			if (openGraph) {

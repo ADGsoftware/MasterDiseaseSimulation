@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -30,6 +31,8 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import datacontainers.StringStorage;
+import moremethods.Feedback;
+import moremethods.GetData;
 import moremethods.MoreMethods;
 import jxl.read.biff.BiffException;
 
@@ -242,7 +245,8 @@ public class UserInterface {
 		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
 		scrollPane.setBounds(0, 0, 500, 500);
 		scrollPane.setPreferredSize(new Dimension(515, maxOut((int)(screenSize.height / 1.6), 500))); //515
-
+		//500
+		
 		JPanel contentPane = new JPanel(new GridBagLayout());
 		c = new GridBagConstraints();
 		c.ipadx = 0;
@@ -738,21 +742,21 @@ public class UserInterface {
 		c.ipadx = 0;
 		int padding = 15;
 
-		JTextField numPeopleMinAnswer = new JTextField("100", 10);
-		JTextField numPeopleStepAnswer = new JTextField("1", 10);
-		JTextField numPeopleMaxAnswer = new JTextField("100", 10);
+		final JTextField numPeopleMinAnswer = new JTextField("100", 10);
+		final JTextField numPeopleStepAnswer = new JTextField("1", 10);
+		final JTextField numPeopleMaxAnswer = new JTextField("100", 10);
 
-		JTextField minFriendsMinAnswer = new JTextField("2", 5);
-		JTextField minFriendsStepAnswer = new JTextField("1", 5);
-		JTextField minFriendsMaxAnswer = new JTextField("3", 5);
+		final JTextField minFriendsMinAnswer = new JTextField("2", 5);
+		final JTextField minFriendsStepAnswer = new JTextField("1", 5);
+		final JTextField minFriendsMaxAnswer = new JTextField("3", 5);
 
-		JTextField maxFriendsMinAnswer = new JTextField("2", 5);
-		JTextField maxFriendsStepAnswer = new JTextField("1", 5);
-		JTextField maxFriendsMaxAnswer = new JTextField("2", 5);
+		final JTextField maxFriendsMinAnswer = new JTextField("2", 5);
+		final JTextField maxFriendsStepAnswer = new JTextField("1", 5);
+		final JTextField maxFriendsMaxAnswer = new JTextField("2", 5);
 
-		JTextField hubNumberMinAnswer = new JTextField("0", 5);
-		JTextField hubNumberStepAnswer = new JTextField("1", 5);
-		JTextField hubNumberMaxAnswer = new JTextField("0", 5);
+		final JTextField hubNumberMinAnswer = new JTextField("0", 5);
+		final JTextField hubNumberStepAnswer = new JTextField("1", 5);
+		final JTextField hubNumberMaxAnswer = new JTextField("0", 5);
 
 		JTextField getWellDaysMinAnswer = new JTextField("3", 5);
 		JTextField getWellDaysStepAnswer = new JTextField("1", 5);
@@ -801,8 +805,6 @@ public class UserInterface {
 
 		String[] possibilitiesNetwork = {"Small World", "Random", "Scale-Free"};
 		final JComboBox comboBoxNetwork = new JComboBox(possibilitiesNetwork);
-
-		JCheckBox modelTownSimBox = new JCheckBox();
 
 		JButton openButton = new JButton("Open config...");
 		openButton.addActionListener(new ActionListener() {
@@ -1084,6 +1086,12 @@ public class UserInterface {
 				}
 			}
 		});
+		
+		final JLabel townName = new JLabel();
+		
+		final JButton getTownData = new JButton();
+		getTownData.setText("Enter Town");
+		
 
 		/*
 	JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
@@ -1156,9 +1164,14 @@ public class UserInterface {
 		panel.add(comboBoxNetwork, c);
 		c.gridx = 0;
 		c.gridy += 1;
-		panel.add(new JLabel("Lex Sim:"), c);
+		panel.add(new JLabel("Town Sim:"), c);
 		c.gridx = 1;
-		panel.add(modelTownSimBox, c);
+		panel.add(getTownData, c);
+		c.gridx = 2;
+		panel.add(townName, c);
+		//c.gridx = 3;
+		//GetData.createProgressBar(1);
+		//panel.add(GetData.progressBar, c);
 
 		c.ipady = padding;
 		c.gridx = 0;
@@ -1374,7 +1387,7 @@ public class UserInterface {
 
 		Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-		int[] moveOver = {1, 1, 1, 1, 3, 1, 2, 1, 2, 2, 1, 2, 1, 1};
+		int[] moveOver = {1, 1, 1, 1, 4, 1, 2, 1, 2, 2, 1, 2, 1, 1};
 
 		final ArrayList<JCheckBox> checkBoxes = new ArrayList<JCheckBox>();
 
@@ -1408,12 +1421,66 @@ public class UserInterface {
 			c.gridy += moveOver[i / 3];
 			panel.add(box, c);
 		}
+		
+		getTownData.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				try {
+					if (getTownData.getText().equals("Enter Town")) {
+						townName.setText("  Working...");
+						boolean worked = GetData.run();
+						if (worked) {
+							townName.setText("  " + capitalizeEachWord(GetData.locInfo[0].replace("+", " ")) + ", " + GetData.locInfo[1]);
+							
+							numPeopleMinAnswer.setEnabled(false);
+							numPeopleStepAnswer.setEnabled(false);
+							numPeopleMaxAnswer.setEnabled(false);
+							
+							checkBoxes.get(0).setEnabled(false);
+							checkBoxes.get(0).setSelected(false);
+							
+							numPeopleMinAnswer.setBackground(Color.LIGHT_GRAY);
+							numPeopleStepAnswer.setBackground(Color.LIGHT_GRAY);
+							numPeopleMaxAnswer.setBackground(Color.LIGHT_GRAY);
+							
+							getTownData.setText("Clear");
+						}
+						else if (!worked && townName.getText().equals("  Working...")) {
+							townName.setText("");
+						}
+					}
+					else {
+						townName.setText("");
+						
+						numPeopleMinAnswer.setEnabled(true);
+						numPeopleStepAnswer.setEnabled(true);
+						numPeopleMaxAnswer.setEnabled(true);
+						
+						checkBoxes.get(0).setEnabled(true);
+						checkBoxes.get(0).setSelected(true);
+						
+						numPeopleMinAnswer.setBackground(Color.WHITE);
+						numPeopleStepAnswer.setBackground(Color.WHITE);
+						numPeopleMaxAnswer.setBackground(Color.WHITE);
+						
+						GetData.clear();
+						
+						getTownData.setText("Enter Town");
+					}
+					System.out.println(GetData.hs);
+				} catch (MalformedURLException e) {
+				} catch (IOException e) {
+				}
+			}
+		});
 
 		final JCheckBox allBox = new JCheckBox();
 		allBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (allBox.isSelected()) {
 					for (JCheckBox box : checkBoxes) {
+						if (getTownData.getText().equals("Clear") && checkBoxes.indexOf(box) == 0) {
+							continue;
+						}
 						box.setSelected(true);
 						int i = checkBoxes.indexOf(box) * 3 + 1;
 						for (int j = i; j < i + 2; j++) {
@@ -1426,6 +1493,9 @@ public class UserInterface {
 					for (JCheckBox box : checkBoxes) {
 						box.setSelected(false);
 						int i = checkBoxes.indexOf(box) * 3 + 1;
+						if (fields[i].isEnabled() == false) {
+							continue;
+						}
 						for (int j = i; j < i + 2; j++) {
 							fields[j].setBackground(Color.LIGHT_GRAY);
 							fields[j].setEnabled(false);
@@ -1439,7 +1509,9 @@ public class UserInterface {
 		allBox.setSelected(true);
 		c.gridy = 1;
 		panel.add(allBox, c);
-
+		
+		String OS = System.getProperty("os.name").toLowerCase();
+		
 		JPanel header = new JPanel (new GridBagLayout());
 		c = new GridBagConstraints();
 		c.ipady = 5;
@@ -1447,22 +1519,50 @@ public class UserInterface {
 		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
 		c.anchor = GridBagConstraints.CENTER;
-		header.add(new JLabel("                                                                  "), c);
-		c.gridx = 1;
-		header.add(new JLabel("Min               |"), c);
-		c.gridx = 2;
-		header.add(new JLabel("           Step              |"), c);
-		c.gridx = 3;
-		header.add(new JLabel("            Max               "), c);
-
-		c.gridy = 0;
-		c.gridx = 4;
-		header.add(allBox, c);
-
 		JScrollPane scrollPane = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER); // Make scroll bars on the panel
-		scrollPane.setBounds(0, 0, 500, 500);
-		scrollPane.setPreferredSize(new Dimension(690, maxOut((int)(screenSize.height / 1.6), 500))); //640
-
+		if (OS.indexOf("win") >= 0) { // If Windows
+			header.add(new JLabel("                                                                         "), c);
+			c.gridx = 1;
+			header.add(new JLabel("Min                 |"), c);
+			c.gridx = 2;
+			header.add(new JLabel("             Step               |"), c);
+			c.gridx = 3;
+			header.add(new JLabel("                Max               "), c);
+	
+			c.gridy = 0;
+			c.gridx = 4;
+			header.add(allBox, c);
+	
+			scrollPane.setBounds(0, 0, 500, 500);
+			scrollPane.setPreferredSize(new Dimension(590, maxOut((int)(screenSize.height / 1.6), 500))); //640
+			//690
+		}
+		else { // If Mac or other
+			header.add(new JLabel("                                                                  "), c);
+			c.gridx = 1;
+			header.add(new JLabel("Min               |"), c);
+			c.gridx = 2;
+			header.add(new JLabel("           Step              |"), c);
+			c.gridx = 3;
+			header.add(new JLabel("            Max               "), c);
+	
+			c.gridy = 0;
+			c.gridx = 4;
+			header.add(allBox, c);
+	
+			scrollPane.setBounds(0, 0, 500, 500);
+			scrollPane.setPreferredSize(new Dimension(690, maxOut((int)(screenSize.height / 1.6), 500))); //640
+			//690
+		}
+		
+		JButton feedback = new JButton("Feedback");
+		feedback.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				Feedback.run();
+			}
+		});
+		JLabel copyrightLabel = new JLabel("© ADG Research 2014-2015");
+		
 		c = new GridBagConstraints();
 		c.ipadx = 0;
 		c.ipady = 0;
@@ -1471,6 +1571,11 @@ public class UserInterface {
 		contentPane.add(header, c);
 		c.gridy = 1;
 		contentPane.add(scrollPane, c);
+		c.gridy = 2;
+		c.anchor = GridBagConstraints.WEST;
+		contentPane.add(feedback, c);
+		c.anchor = GridBagConstraints.EAST;
+		contentPane.add(copyrightLabel, c);
 
 		// Restore previous configuration from previousConfig.adg
 		try {
@@ -1567,7 +1672,9 @@ public class UserInterface {
 			inputs.add(drawJung.isSelected());
 			inputs.add(comboBoxLayout.getSelectedItem());
 			inputs.add(runTimes);
-			inputs.add(modelTownSimBox.isSelected());
+			inputs.add(GetData.hs);
+			inputs.add(GetData.ha);
+			inputs.add(GetData.ages);
 
 			if (error) {
 				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Input is invalid. Invalid inputs have been cleared.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -1610,6 +1717,20 @@ public class UserInterface {
 			return max;
 		}
 		return largeNum;
+	}
+	
+	private static String capitalizeEachWord (String source) {
+		StringBuffer res = new StringBuffer();
+		String[] strArr = source.split(" ");
+	    for (String str : strArr) {
+	        char[] stringArray = str.trim().toCharArray();
+	        stringArray[0] = Character.toUpperCase(stringArray[0]);
+	        str = new String(stringArray);
+
+	        res.append(str).append(" ");
+	    }
+	    
+	    return res.toString().trim();
 	}
 
 	/**
