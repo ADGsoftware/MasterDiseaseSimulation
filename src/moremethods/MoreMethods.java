@@ -1027,9 +1027,6 @@ public class MoreMethods {
 								boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
 								if (getSick) {
 									person.setSick(true);
-									if(person.isImmune()){
-										//System.out.println(person + "Had his immunity ruthlessly ignored by the IT gods");
-									}
 									totalSickPeople.add(person.getID());
 									break;
 								}
@@ -1069,8 +1066,11 @@ public class MoreMethods {
 				//System.out.println("Day is : " + day);
 				//System.out.println(getNumSickPeople(people));
 				for(Person p : people){
-					if(p.isSick()){
-						//System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes + "He has been sick for: " + p.getDaysSick());	
+					if(p.isSick() && day == 1000){
+						System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes + "He has been sick for: " + p.getDaysSick());
+						System.out.println("He is Included in Immune People " + totalImmunePeople.contains(p));
+						System.out.println("He is Included in Sick People" + totalSickPeople.contains(p));
+						System.out.println(people.contains(p));
 					}	
 				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
