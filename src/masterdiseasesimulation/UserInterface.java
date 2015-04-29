@@ -1068,7 +1068,7 @@ public class UserInterface {
 		openGraph.add(openGraphBox);
 
 		final JCheckBox drawJung = new JCheckBox();
-		drawJung.setSelected(true);
+		drawJung.setSelected(false);
 		String[] layoutChoices = {"Circle", "ISOM", "FR"};
 		final JComboBox comboBoxLayout = new JComboBox(layoutChoices);
 

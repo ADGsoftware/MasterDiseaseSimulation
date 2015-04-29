@@ -313,7 +313,13 @@ public class MasterManySimsObject
 		double execTime = 0;
 		double endTime = startTime;
 		String estDisplay = "";
-
+		
+		if(modelTownSim){
+			ModelTown peopleCount = new ModelTown(networkType, minFriends, maxFriends, hubNumber, new Random(), hs, ha, ages);
+			int numPeopleNew = peopleCount.getPeople().size();
+			numPeopleMax = numPeopleNew;
+			numPeople = numPeopleNew;
+		}
 		for (int numPeopleI = numPeople; numPeopleI <= numPeopleMax; numPeopleI += numPeopleStep){
 			for (int minFriendsI = minFriends; minFriendsI <= minFriendsMax; minFriendsI += minFriendsStep){
 				for (int maxFriendsI = maxFriends; maxFriendsI <= maxFriendsMax; maxFriendsI += maxFriendsStep){
@@ -323,6 +329,7 @@ public class MasterManySimsObject
 								for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep){
 									for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep){
 										for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep){
+											System.out.println("IntiallyVaccIs: " + initiallyVaccI);
 											for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep){
 												for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep){
 													for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep){
@@ -332,6 +339,7 @@ public class MasterManySimsObject
 																	//Do nothing
 																}
 																else {
+																	
 																	i++;
 																	progress++;
 

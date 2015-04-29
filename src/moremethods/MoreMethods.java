@@ -956,7 +956,6 @@ public class MoreMethods {
 					else{
 						people.get(index).setSick(true);
 						totalSickPeople.add(people.get(index).getID());
-						System.out.println("PersonL " + people.get(index) + " is intialy Sick");
 						done = true;
 					}
 				}
@@ -991,6 +990,8 @@ public class MoreMethods {
 			infoStorage.add(new ArrayList<InfoStorage>());
 			//System.out.println(runTime);
 			//System.out.println(getNumSickPeople(people));
+			
+			System.out.println(totalSickPeople);
 			while (getNumSickPeople(people) > 0) {
 				//int numberSickOnDay = 0;
 				for (Person person : people) {
@@ -1019,7 +1020,6 @@ public class MoreMethods {
 								//System.out.println(person + " has a get vac of : " + person.getSuceptability());
 								if(modelTownSim){
 									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability();
-									//System.out.println(person + "got Sick");
 								}
 								else{
 									getSick = (new Random().nextInt(99) + 1) < percentSick;
@@ -1027,9 +1027,8 @@ public class MoreMethods {
 								boolean getVacc = (new Random().nextInt(99) + 1) < getVac;
 								if (getSick) {
 									person.setSick(true);
-									if(day <= 4){
-										System.out.println(day);
-										System.out.println("Person " + person + " got sick from " + friend);
+									if(person.isImmune()){
+										//System.out.println(person + "Had his immunity ruthlessly ignored by the IT gods");
 									}
 									totalSickPeople.add(person.getID());
 									break;
@@ -1071,7 +1070,7 @@ public class MoreMethods {
 				//System.out.println(getNumSickPeople(people));
 				for(Person p : people){
 					if(p.isSick()){
-						//System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes);	
+						//System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes + "He has been sick for: " + p.getDaysSick());	
 					}	
 				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
@@ -1098,6 +1097,7 @@ public class MoreMethods {
 			for(Person p : people){
 				p.setSick(false);
 				p.setImmune(false);
+				p.setDaysSick(0);
 			}
 			//people.get(2).setSick(true); //TODO:Yes, yes! This is the problem. Resetting does not work properly. For now, setting 2 as sick to make it work.
 			// It should, Person.reset() sets the person's sick and vacc states to their original sick and vacc states...
@@ -1109,6 +1109,7 @@ public class MoreMethods {
 
 
 		InfoJungStorage infoJungStorage = new InfoJungStorage(infoStorage, jungStorage);
+		System.out.println("SIMULATION COMPLETE");
 		return infoJungStorage;
 	}
 
