@@ -1,0 +1,83 @@
+GEO.id,Id
+GEO.id2,Id2
+GEO.display-label,Geography
+HD01_S01,Number; TENURE - Occupied housing units
+HD02_S01,Percent; TENURE - Occupied housing units
+HD01_S02,Number; TENURE - Occupied housing units - Owned with a mortgage or loan
+HD02_S02,Percent; TENURE - Occupied housing units - Owned with a mortgage or loan
+HD01_S03,Number; TENURE - Occupied housing units - Owned free and clear
+HD02_S03,Percent; TENURE - Occupied housing units - Owned free and clear
+HD01_S04,Number; TENURE - Occupied housing units - Renter occupied
+HD02_S04,Percent; TENURE - Occupied housing units - Renter occupied
+HD01_S05,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units
+HD02_S05,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units
+HD01_S06,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 1-person household
+HD02_S06,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 1-person household
+HD01_S07,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 2-person household
+HD02_S07,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 2-person household
+HD01_S08,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 3-person household
+HD02_S08,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 3-person household
+HD01_S09,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 4-person household
+HD02_S09,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 4-person household
+HD01_S10,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 5-person household
+HD02_S10,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 5-person household
+HD01_S11,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 6-person household
+HD02_S11,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 6-person household
+HD01_S12,Number; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 7-or-more-person household
+HD02_S12,Percent; TENURE BY HOUSEHOLD SIZE - Owner-occupied housing units - 7-or-more-person household
+HD01_S13,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units
+HD02_S13,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units
+HD01_S14,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 1-person household
+HD02_S14,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 1-person household
+HD01_S15,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 2-person household
+HD02_S15,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 2-person household
+HD01_S16,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 3-person household
+HD02_S16,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 3-person household
+HD01_S17,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 4-person household
+HD02_S17,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 4-person household
+HD01_S18,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 5-person household
+HD02_S18,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 5-person household
+HD01_S19,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 6-person household
+HD02_S19,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 6-person household
+HD01_S20,Number; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 7-or-more-person household
+HD02_S20,Percent; TENURE BY HOUSEHOLD SIZE - Renter-occupied housing units - 7-or-more-person household
+HD01_S21,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units
+HD02_S21,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units
+HD01_S22,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 15 to 24 years
+HD02_S22,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 15 to 24 years
+HD01_S23,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 25 to 34 years
+HD02_S23,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 25 to 34 years
+HD01_S24,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 35 to 44 years
+HD02_S24,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 35 to 44 years
+HD01_S25,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 45 to 54 years
+HD02_S25,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 45 to 54 years
+HD01_S26,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 55 to 64 years
+HD02_S26,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 55 to 64 years
+HD01_S27,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over
+HD02_S27,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over
+HD01_S28,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 65 to 74 years
+HD02_S28,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 65 to 74 years
+HD01_S29,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 75 to 84 years
+HD02_S29,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 75 to 84 years
+HD01_S30,Number; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 85 years and over
+HD02_S30,Percent; TENURE BY AGE OF HOUSEHOLDER - Owner-occupied housing units - 65 years and over - 85 years and over
+HD01_S31,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units
+HD02_S31,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units
+HD01_S32,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 15 to 24 years
+HD02_S32,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 15 to 24 years
+HD01_S33,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 25 to 34 years
+HD02_S33,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 25 to 34 years
+HD01_S34,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 35 to 44 years
+HD02_S34,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 35 to 44 years
+HD01_S35,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 45 to 54 years
+HD02_S35,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 45 to 54 years
+HD01_S36,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 55 to 64 years
+HD02_S36,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 55 to 64 years
+HD01_S37,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over
+HD02_S37,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over
+HD01_S38,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 65 to 74 years
+HD02_S38,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 65 to 74 years
+HD01_S39,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 75 to 84 years
+HD02_S39,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 75 to 84 years
+HD01_S40,Number; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 85 years and over
+HD02_S40,Percent; TENURE BY AGE OF HOUSEHOLDER - Renter-occupied housing units - 65 years and over - 85 years and over
