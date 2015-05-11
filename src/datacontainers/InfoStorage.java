@@ -51,4 +51,7 @@ public class InfoStorage {
 	public double getImmune(){
 		return this.immune;
 	}
+	public String toString() {
+		return " " + day + " " + totalSick + " " + cost;
+	}
 }

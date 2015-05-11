@@ -197,7 +197,7 @@ public class Person implements Transformer<Person, String>, Comparator<Person> {
 		return isOwner;
 	}
 	public void getWell() {
-		this.daysSick = 0;
+//		this.daysSick = 0;
 		this.vacc = true;
 		this.sick = false;
 	}

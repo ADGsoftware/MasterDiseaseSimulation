@@ -1,12 +1,26 @@
 package moremethods;
 
-import datacontainers.InfoJungStorage;
-import datacontainers.InfoStorage;
-import datacontainers.JungStorage;
-import edu.uci.ics.jung.algorithms.layout.*;
-import edu.uci.ics.jung.algorithms.layout.SpringLayout;
-import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
-import edu.uci.ics.jung.visualization.VisualizationViewer;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.GridLayout;
+import java.awt.Paint;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.EmptyBorder;
+
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
@@ -19,22 +33,21 @@ import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
-import java.util.List;
+import datacontainers.InfoJungStorage;
+import datacontainers.InfoStorage;
+import datacontainers.JungStorage;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
 
 public class MoreMethods {
 	/**
@@ -346,7 +359,7 @@ public class MoreMethods {
 				Collections.shuffle(peopleReference);
 				//System.out.println(person.getID());
 				for (Person possibleFriend : peopleReference) {
-					System.out.println(possibleFriend);
+					//System.out.println(possibleFriend);
 					if (possibleFriend.getID() <= person.getID()) {
 						//System.out.println("PERSON BEFRIEND HIMSELF ERROR");
 						continue;
@@ -372,7 +385,7 @@ public class MoreMethods {
 						peopleReference.remove(index);
 					}
 				}
-			System.out.println(peopleReference);
+			//System.out.println(peopleReference);
 			}
 		}
 	}
@@ -437,7 +450,7 @@ public class MoreMethods {
 				peopleCopy.remove(index1);
 			}
 			if(peopleCopy.get(index2).getNumFriends() == minOrMaxFriends){
-				peopleCopy.remove(index2);
+				peopleCopy.remove(index1);
 			}
 		}
 	}
@@ -941,7 +954,14 @@ public class MoreMethods {
 		 */
 
 		int averageDuration = 0;
-
+		
+		for(Person p : people){
+			p.setSick(false);
+			p.setImmune(false);
+			p.setDaysSick(0);
+		}
+		
+		//Why are we using ArrayLists, and not Lists?     
 		ArrayList<Integer> totalSickPeople = new ArrayList<Integer>();
 		ArrayList<Integer> totalImmunePeople = new ArrayList<Integer>();
 		for (int runTime = 0; runTime < runTimes; runTime++) {
@@ -950,7 +970,7 @@ public class MoreMethods {
 				Boolean done = false;
 				while(!done){
 					int index = random.nextInt(people.size() - 1);
-					if(people.get(index).isSick()){
+					if(people.get(index).isSick() || people.get(index).isImmune()){
 						continue;
 					}
 					else{
@@ -974,6 +994,7 @@ public class MoreMethods {
 					}
 				}
 			}
+			//System.out.println("VARS DEFINED");
 			/*
 			int value = runTime * 100 / runTimes;
 			progressBar.setValue(value);
@@ -991,7 +1012,7 @@ public class MoreMethods {
 			//System.out.println(runTime);
 			//System.out.println(getNumSickPeople(people));
 			
-			System.out.println(totalSickPeople);
+			//System.out.println(totalSickPeople);
 			while (getNumSickPeople(people) > 0) {
 				//int numberSickOnDay = 0;
 				for (Person person : people) {
@@ -1008,7 +1029,7 @@ public class MoreMethods {
 							teenager.setImmuneToCurfews(true);
 						}
 					}
-					if (person.isImmune()) {
+					if (person.isImmune() && !person.isSick()) {
 						// Do nothing
 					} else if (person.isSick()) {
 						person.incrementDaysSick();
@@ -1018,8 +1039,8 @@ public class MoreMethods {
 							if (friend.getDaysSick() > 0 && friend.isSick()) {
 								boolean getSick;
 								//System.out.println(person + " has a get vac of : " + person.getSuceptability());
-								if(modelTownSim){
-									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability()*percentSick;
+								if(modelTownSim) {
+									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability()*percentSick; //because susceptabilities are relative [incorrect]
 								}
 								else{
 									getSick = (new Random().nextInt(99) + 1) < percentSick;
@@ -1042,13 +1063,13 @@ public class MoreMethods {
 							}
 						}
 					}
-					//System.out.println(person.getDaysSick());
 					if (person.getDaysSick() >= getWellDays) { // && !person.isImmune()
 						person.getWell();
 						totalImmunePeople.add(person.getID());
 					}
 				}
 				day++;
+				//FOR JUNG
 				if (runTime == 0) {
 					ArrayList<Person> vaccPeople = new ArrayList<Person>();
 					ArrayList<Person> sickPeople = new ArrayList<Person>();
@@ -1065,14 +1086,14 @@ public class MoreMethods {
 				}
 				//System.out.println("Day is : " + day);
 				//System.out.println(getNumSickPeople(people));
-				for(Person p : people){
-					if(p.isSick() && day == 1000){
-						System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes + "He has been sick for: " + p.getDaysSick());
-						System.out.println("He is Included in Immune People " + totalImmunePeople.contains(p));
-						System.out.println("He is Included in Sick People" + totalSickPeople.contains(p));
-						System.out.println(people.contains(p));
-					}	
-				}
+//				for(Person p : people){
+//					if(p.isSick() && day == 1000){
+//						System.out.println("The Sick Annoying Person is: " + p + ". THIS PERSON IS VACCINATED: " + p.isImmune() + ". The Day IS: " + day + " .The Runtime is: " + runTime + " out of: " + runTimes + "He has been sick for: " + p.getDaysSick());
+//						System.out.println("He is Included in Immune People " + totalImmunePeople.contains(p));
+//						System.out.println("He is Included in Sick People" + totalSickPeople.contains(p));
+//						System.out.println(people.contains(p));
+//					}	
+//				}
 				//System.out.println("Total sick:" + totalSickPeople.size());
 				infoStorage.get(runTime).add(new InfoStorage(day, getNumSickPeople(people), totalSickPeople.size(), cost, totalImmunePeople.size()));
 				//System.out.println(people);
@@ -1109,7 +1130,7 @@ public class MoreMethods {
 
 
 		InfoJungStorage infoJungStorage = new InfoJungStorage(infoStorage, jungStorage);
-		System.out.println("SIMULATION COMPLETE");
+		//System.out.println("SIMULATION COMPLETE");
 		return infoJungStorage;
 	}
 
@@ -1225,78 +1246,78 @@ public class MoreMethods {
 		return infoStorage;
 	}
 
-	// Simulation for MasterManySims
-	public static ArrayList<Integer> simulate(ArrayList<Person> people, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes) {
-		int day = 0;
-		int totalDay = 0;
-		int cost = origVacc;
-		int totalCost = 0;
-		int totalSick = origSick;
-		int totalTotalSick = 0;
-
-		for (int runTime = 1; runTime <= runTimes; runTime++) {
-			System.out.println("Simulation RunTime: " + runTime);
-			while (getNumSickPeople(people) > 0) {
-				for (Person person : people) {
-					if (person.isTeenager()) {
-						if (day == curfewDays) {
-							person.setCurfewed(false);
-							person.setCurfewedDays(0);
-							person.setImmuneToCurfews(true);
-						}
-					}
-					if (person.isImmune()) {
-						// Do nothing
-					} else if (person.isSick()) {
-						person.incrementDaysSick();
-					} else {
-						ArrayList<Person> friends = person.getFriends();
-						for (Person friend : friends) {
-							if (friend.getDaysSick() > 0 && friend.isSick()) {
-								boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
-								boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
-								if (getSick) {
-									person.setSick(true);
-									totalSick++;
-									break;
-								}
-								if (getVacc) {
-									person.getWell();
-									cost++;
-									break;
-								}
-							}
-						}
-					}
-					//System.out.println(person.getDaysSick());
-					if (person.getDaysSick() == getWellDays && !person.isImmune()) {
-						person.getWell();
-					}
-				}
-				day++;
-				//System.out.println(people);
-				//System.out.println(getNumSickPeople(people));
-			}
-			totalDay += day;
-			day = 0;
-			totalCost += cost;
-			cost = origVacc;
-			totalTotalSick += totalSick;
-			totalSick = origSick;
-			resetAll(people);
-		}
-
-		day = totalDay / runTimes;
-		cost = totalCost / runTimes;
-		totalSick = totalTotalSick / runTimes;
-
-		ArrayList<Integer> results = new ArrayList<Integer>();
-		results.add(day);
-		results.add(cost);
-		results.add(totalSick);
-
-		return results;
-	}
+	// Simulation for MasterManySims - DEPRECATED -----------------------
+//	public static ArrayList<Integer> simulate(ArrayList<Person> people, int getWellDays, int origSick, int origVacc, int discovery, int newGetWellDays, int percentSick, int percentVacc, int curfewDays, int runTimes) {
+//		int day = 0;
+//		int totalDay = 0;
+//		int cost = origVacc;
+//		int totalCost = 0;
+//		int totalSick = origSick;
+//		int totalTotalSick = 0;
+//
+//		for (int runTime = 1; runTime <= runTimes; runTime++) {
+//			//System.out.println("Simulation RunTime: " + runTime);
+//			while (getNumSickPeople(people) > 0) {
+//				for (Person person : people) {
+//					if (person.isTeenager()) {
+//						if (day == curfewDays) {
+//							person.setCurfewed(false);
+//							person.setCurfewedDays(0);
+//							person.setImmuneToCurfews(true);
+//						}
+//					}
+//					if (person.isImmune()) {
+//						// Do nothing
+//					} else if (person.isSick()) {
+//						person.incrementDaysSick();
+//					} else {
+//						ArrayList<Person> friends = person.getFriends();
+//						for (Person friend : friends) {
+//							if (friend.getDaysSick() > 0 && friend.isSick()) {
+//								boolean getSick = (new Random().nextInt(99) + 1) < percentSick;
+//								boolean getVacc = (new Random().nextInt(99) + 1) < percentVacc;
+//								if (getSick) {
+//									person.setSick(true);
+//									totalSick++;
+//									break;
+//								}
+//								if (getVacc) {
+//									person.getWell();
+//									cost++;
+//									break;
+//								}
+//							}
+//						}
+//					}
+//					//System.out.println(person.getDaysSick());
+//					if (person.getDaysSick() == getWellDays && !person.isImmune()) {
+//						person.getWell();
+//					}
+//				}
+//				day++;
+//				//System.out.println(people);
+//				//System.out.println(getNumSickPeople(people));
+//			}
+//			totalDay += day;
+//			day = 0;
+//			totalCost += cost;
+//			cost = origVacc;
+//			totalTotalSick += totalSick;
+//			totalSick = origSick;
+//			resetAll(people);
+//		}
+//
+//		day = totalDay / runTimes;
+//		cost = totalCost / runTimes;
+//		totalSick = totalTotalSick / runTimes;
+//
+//		ArrayList<Integer> results = new ArrayList<Integer>();
+//		results.add(day);
+//		results.add(cost);
+//		results.add(totalSick);
+//
+//		return results;
+//	}
 
 	/**
 	 * WORKING WITH JFREECHART

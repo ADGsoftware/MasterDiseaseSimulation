@@ -596,7 +596,7 @@ public class ManyLinesAverageObject {
 			}
 			String newFileName = "notAveragedGraph used with: " + fileName + Integer.toString(j);
 			//System.out.println(newFileName);
-			//MoreMethods.makeChart(dataset1, filePath[0] + "/" + Integer.toString(j), "non - Averaged Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+			MoreMethods.makeChart(dataset1, filePath[0] + "/" + Integer.toString(j), "non - Averaged Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
 			//XYSeriesCollection datasetPlaceHolder = new XYSeriesCollection();
 			//dataset1 = datasetPlaceHolder;
 		}

@@ -53,7 +53,7 @@ public class MasterManySimsObject
 		Random random = new Random();
 
 		ArrayList<Object> inputs = UserInterface.getInput(); // Get inputs from user
-		System.out.println(inputs);
+		//System.out.println(inputs);
 
 		// Separate input into variables
 		int numPeople = Integer.parseInt(inputs.get(0).toString());
@@ -136,6 +136,10 @@ public class MasterManySimsObject
 		boolean modelTownSim = (hs != null);
 		//int totalRuns = (((numPeopleMax - numPeople) / numPeopleStep) + 1) * (((minFriendsMax - minFriends) / minFriendsStep) + 1) * (((maxFriendsMax - maxFriends) / maxFriendsStep) + 1) * (((hubNumberMax - hubNumber) / hubNumberStep) + 1) * (((getWellDaysMax - getWellDays) / getWellDaysStep) + 1) * (((discoveryMax - discovery) / discoveryStep) + 1) * (((newGetWellDaysMax - newGetWellDays) / newGetWellDaysStep) + 1) * (((initiallySickMax - initiallySick) / initiallySickStep) + 1) * (((initiallyVaccMax - initiallyVacc) / initiallyVaccStep) + 1) * (((percentSickMax - percentSick) / percentSickStep) + 1) * (((getVacMax - getVac) / getVacStep) + 1);
 		//System.out.println(totalRuns);
+//		modelTownSim = true;
+//		hs = new int[] {4,6,1,1,0,0,0};
+//		ha = new double[] {8.3,0.0,0.0,25.0,33.3,25.0,8.3,0.0};
+//		ages = new double[] {0.0,4.3,8.7,4.3,0.0,0.0,0.0,0.0,4.3,8.7,17.4,30.4,4.3,4.3,8.7,4.3,0.0,0.0};
 
 		// Calculate totalRuns for progress bar
 		int totalRuns = 0;
@@ -226,7 +230,8 @@ public class MasterManySimsObject
 		LinkedHashMap<Integer, Double> dataDays = new LinkedHashMap<Integer, Double>();
 
 		LinkedHashMap<Integer, Double> dataTotalSick = new LinkedHashMap<Integer, Double>();
-
+		
+		/*
 		if (saveGraph) {
 			int init = 0;
 			int step = 0;
@@ -286,6 +291,7 @@ public class MasterManySimsObject
 				runTimes.put(j, 0.0);
 			}
 		}
+		*/
 
 		// Make progress bar
 		JPanel panel = new JPanel();
@@ -317,6 +323,7 @@ public class MasterManySimsObject
 		if(modelTownSim){
 			ModelTown peopleCount = new ModelTown(networkType, minFriends, maxFriends, hubNumber, new Random(), hs, ha, ages);
 			int numPeopleNew = peopleCount.getPeople().size();
+			//System.out.println(numPeopleNew);
 			numPeopleMax = numPeopleNew;
 			numPeople = numPeopleNew;
 		}
@@ -329,13 +336,13 @@ public class MasterManySimsObject
 								for (int newGetWellDaysI = newGetWellDays; newGetWellDaysI <= newGetWellDaysMax; newGetWellDaysI += newGetWellDaysStep){
 									for (int initiallySickI = initiallySick; initiallySickI <= initiallySickMax; initiallySickI += initiallySickStep){
 										for (int initiallyVaccI = initiallyVacc; initiallyVaccI <= initiallyVaccMax; initiallyVaccI += initiallyVaccStep){
-											System.out.println("IntiallyVaccIs: " + initiallyVaccI);
+											//System.out.println("IntiallyVaccIs: " + initiallyVaccI);
 											for (int percentSickI = percentSick; percentSickI <= percentSickMax; percentSickI += percentSickStep){
 												for (int getVacI = getVac; getVacI <= getVacMax; getVacI += getVacStep){
 													for (int percentTeensI = percentTeens; percentTeensI <= percentTeensMax; percentTeensI += percentTeensStep){
 														for (int percentCurfewI = percentCurfew; percentCurfewI <= percentCurfewMax; percentCurfewI += percentCurfewStep){
 															for (int curfewDaysI = curfewDays; curfewDaysI <= curfewDaysMax; curfewDaysI += curfewDaysStep){
-																if ((minFriendsI > numPeopleI) || (maxFriendsI > numPeopleI) || (minFriendsI > maxFriendsI) || (hubNumberI > numPeopleI) || (initiallySickI + initiallyVaccI > numPeople)) {
+																if ((minFriendsI > numPeopleI) || (maxFriendsI > numPeopleI) || (minFriendsI > maxFriendsI) || (hubNumberI > numPeopleI) || (initiallySickI + initiallyVaccI + 1 > numPeople)) {
 																	//Do nothing
 																}
 																else {
@@ -378,20 +385,30 @@ public class MasterManySimsObject
 																		//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
 																		//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
 																		//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
-
+																		
+																		//System.out.println("STARTING SIM");
 																		results = methods.averageInfostorage(methods.simulate(people, teenagers, getWellDaysI, initiallySickI,  initiallyVaccI, discoveryI, newGetWellDaysI, percentSickI, getVacI, curfewDaysI, 1, percentCurfewI, false, modelTownSim).getInfoStorages());
 																		
 																		daysList.add(results.getDay());
 																		totalSickList.add(results.getTotalSick());
 																		costList.add(results.getCost());
 																		
+																		//System.out.println(daysList);
+																		//System.out.println(totalSickList);
+																		//System.out.println(costList);
+																		
 																		methods.resetAll(people);
 																	}
 																	//System.out.println(numPeopleI + " " + minFriendsI  + " " +  maxFriendsI + " " + hubNumberI + " " + getWellDaysI + " " + discoveryI + " " + newGetWellDaysI + " " + initiallySickI + " " + initiallyVaccI + " " + percentSickI + " " + getVacI);
 																	//System.out.println(results);
 																	
-																	results = new InfoStorage(methods.sum(daysList) / runs, 0.0, methods.sum(totalSickList) / runs, methods.sum(costList) / runs, 0);//Placeholder for now (ya pro 0 govoryu) add later if time but not crucial???
-										
+																	results = new InfoStorage((1.0 * methods.sum(daysList)) / runs, 0.0, (1.0 * methods.sum(totalSickList)) / runs, (1.0 * methods.sum(costList)) / runs, 0);//Placeholder for now (ya pro 0 govoryu) add later if time but not crucial???
+																	//System.out.println(results);
+																	
+																	daysList.clear();
+																	totalSickList.clear();
+																	costList.clear();
+																	
 																	//System.out.println("Cost: $" + results.getCost() + " Total Sick:" + results.getTotalSick() + " Days:" + results.getDay() + ". Thank you very much.");
 																	// Add value to graph
 																	if (saveGraph) {
@@ -699,7 +716,8 @@ public class MasterManySimsObject
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-
+		
+		//System.out.println(saveGraph);
 		// Graph
 		if (saveGraph) {
 			status.setText("Saving graph...");
@@ -742,7 +760,7 @@ public class MasterManySimsObject
 				value = entry.getValue();
 				derivatives.addValue(value, "2nd Derivative", Integer.toString(key));
 			}
-			//File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
+			File lineChart = MoreMethods.makeChart(dataset, graphFileName, "Results" + " vs. " + xAxis, xAxis, "");
 			//File derivativeChart = MoreMethods.makeChart(derivatives, graphFileName + " (derivatives)", "Results" + " vs. " + xAxis, xAxis, "");
 
 			if (openGraph) {
@@ -751,7 +769,7 @@ public class MasterManySimsObject
 				panel.add(status);
 
 				//Desktop.getDesktop().open(derivativeChart);
-				//Desktop.getDesktop().open(lineChart);
+				Desktop.getDesktop().open(lineChart);
 			}
 			
 			//JUNG
@@ -924,7 +942,8 @@ public class MasterManySimsObject
 		else {
 			file.delete();
 		}
-
+		
+		//System.out.println(dataDays);
 		status.setText("Cleaning up...");
 		panel.remove(status);
 		panel.add(status);
@@ -944,12 +963,21 @@ public class MasterManySimsObject
 	}
 
 	public static void addValues(int var, LinkedHashMap<Integer, Double> dataCost, LinkedHashMap<Integer, Double> dataDays, LinkedHashMap<Integer, Double> dataTotalSick, HashMap<Integer, Double> runTimes, InfoStorage results){
-		System.out.println(var);
-		System.out.println(results.getCost());
-		System.out.println(dataCost.get(var));
-		dataCost.put(var, dataCost.get(var) + results.getCost());
-		dataDays.put(var, dataDays.get(var) + results.getDay());
-		dataTotalSick.put(var, dataTotalSick.get(var) + results.getTotalSick());
-		runTimes.put(var, runTimes.get(var) + 1);
+		//System.out.println(dataCost);
+		//System.out.println(var);
+		//System.out.println(results);
+		
+		if (dataCost.get(var) == null) {
+			dataCost.put(var, results.getCost());
+			dataDays.put(var, results.getDay());
+			dataTotalSick.put(var, results.getTotalSick());
+			runTimes.put(var, 1.0);
+		}
+		else {
+			dataCost.put(var, dataCost.get(var) + results.getCost());
+			dataDays.put(var, dataDays.get(var) + results.getDay());
+			dataTotalSick.put(var, dataTotalSick.get(var) + results.getTotalSick());
+			runTimes.put(var, runTimes.get(var) + 1);
+		}
 	}
 }

@@ -49,8 +49,8 @@ public class ModelTown {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         stamp("Reading and saving CSV...");
 
-        CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTH2_with_ann.csv"));
-        CSVReader reader1 = new CSVReader(new FileReader(System.getProperty("user.dir") + "\\data\\householdinfo\\DEC_10_SF1_QTP1.csv"));
+        CSVReader reader = new CSVReader(new FileReader(System.getProperty("user.dir") + "//data//householdinfo//DEC_10_SF1_QTH2_with_ann.csv"));
+        CSVReader reader1 = new CSVReader(new FileReader(System.getProperty("user.dir") + "//data//householdinfo//DEC_10_SF1_QTP1.csv"));
         
         List<String[]> rows = reader.readAll();
         List<String[]> rows1 = reader1.readAll();
