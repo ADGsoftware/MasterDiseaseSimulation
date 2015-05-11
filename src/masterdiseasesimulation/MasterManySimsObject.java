@@ -944,6 +944,9 @@ public class MasterManySimsObject
 	}
 
 	public static void addValues(int var, LinkedHashMap<Integer, Double> dataCost, LinkedHashMap<Integer, Double> dataDays, LinkedHashMap<Integer, Double> dataTotalSick, HashMap<Integer, Double> runTimes, InfoStorage results){
+		System.out.println(var);
+		System.out.println(results.getCost());
+		System.out.println(dataCost.get(var));
 		dataCost.put(var, dataCost.get(var) + results.getCost());
 		dataDays.put(var, dataDays.get(var) + results.getDay());
 		dataTotalSick.put(var, dataTotalSick.get(var) + results.getTotalSick());

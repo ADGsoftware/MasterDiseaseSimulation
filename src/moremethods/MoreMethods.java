@@ -437,7 +437,7 @@ public class MoreMethods {
 				peopleCopy.remove(index1);
 			}
 			if(peopleCopy.get(index2).getNumFriends() == minOrMaxFriends){
-				peopleCopy.remove(index1);
+				peopleCopy.remove(index2);
 			}
 		}
 	}
@@ -1019,7 +1019,7 @@ public class MoreMethods {
 								boolean getSick;
 								//System.out.println(person + " has a get vac of : " + person.getSuceptability());
 								if(modelTownSim){
-									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability();
+									getSick = (new Random().nextInt(99) + 1) < person.getSuceptability()*percentSick;
 								}
 								else{
 									getSick = (new Random().nextInt(99) + 1) < percentSick;
