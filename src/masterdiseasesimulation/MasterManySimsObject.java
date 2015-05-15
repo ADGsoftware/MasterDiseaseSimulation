@@ -771,149 +771,149 @@ public class MasterManySimsObject
 				//Desktop.getDesktop().open(derivativeChart);
 				Desktop.getDesktop().open(lineChart);
 			}
-			
-			//JUNG
-			if (drawJung) {
-				status.setText("Drawing Jung Diagram...");
-				//System.out.println("Ready to draw jung.");
-				Thread.sleep(1000);
-				if(modelTownSim){
-					people = new ModelTown(networkType,  minFriends,  maxFriends,  hubNumber, random).getPeople();
-				}
-				else{
-					people = methods.getPeople(numPeople);
-				}
-				if (networkType.equals("Small World")) {
-					methods.befriendSmallWorld(people, minFriends, maxFriends, random, hubNumber);
-				}
-				else if (networkType.equals("Random")) {
-					methods.befriendRandom(people, minFriends, maxFriends, random, hubNumber);
-				}
-				else if (networkType.equals("Scale-Free")) {
-					methods.befriendScaleFree(people, minFriends, maxFriends, random);
-				}
-				else {
-					JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
-					//System.exit(0);
-				}
-				//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
-				//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
-				//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
-
-				ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeens);
-
-				methods.infectRandom(people, initiallySick);
-				methods.vaccRandom(people, initiallyVacc);
-				
-				ArrayList<JungStorage> jungStorage = methods.simulate(people, teenagers, getWellDays, initiallySick,  initiallyVacc, discovery, newGetWellDays, percentSick, getVac, curfewDays, 1, percentCurfew, false, modelTownSim).getJungStorage();
-				
-				// Creating the graph, vertices and jungDiagramFrame
-				UndirectedSparseMultigraph<Person, String> graph = new UndirectedSparseMultigraph<Person, String>();
-				methods.drawVerticies(graph, people);
-
-				// Create vv and layout
-				int xDim = 1000;
-				int yDim = 600;
-				//String layoutString = "Circle";
-				//LAYOUT STUFF THAT SHOULD WORK BUT PROBABLY WON"T
-				Layout<Person, String> layout = methods.chooseLayout(graph, layoutString);
-				layout.setSize(new Dimension(xDim, yDim));
-				VisualizationViewer<Person, String> vv = new VisualizationViewer<Person, String>(layout);
-				vv.setPreferredSize(new Dimension(xDim + 50, yDim + 50));
-				vv.getRenderContext().setVertexLabelTransformer(Person.labelByID);//Makes Labels on Vertices/
-				vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
-	
-			    // Graph Mouse
-				DefaultModalGraphMouse<Object, Object> mouse = new DefaultModalGraphMouse<Object, Object>();
-				mouse.setMode(ModalGraphMouse.Mode.PICKING);
-				vv.addKeyListener(mouse.getModeKeyListener());
-				vv.setGraphMouse(mouse);
-				//DrawJung
-				methods.drawJung(graph, vv, people);
-				
-				JPanel sliderPanel = new JPanel(new GridBagLayout());
-				panel.setMinimumSize(new Dimension(100, 100));
-				panel.setPreferredSize(new Dimension(100, 100));
-				GridBagConstraints c = new GridBagConstraints();
-				c.fill = GridBagConstraints.BOTH;
-				c.anchor = GridBagConstraints.CENTER;
-				c.ipadx = 1;
-				c.ipady = 5;
-				c.gridx = 0;
-				c.gridy = 0;
-				c.gridheight = 1;
-				c.weighty = 0;
-				PauseResume pauseButton = new PauseResume(sliderPanel, c);
-				c.gridy = 1;
-				final JLabel delayLabel = new JLabel("500ms");
-				sliderPanel.add(delayLabel, c);
-				final StringStorage delayF = new StringStorage(Integer.toString(500));
-				final JSlider delaySlider = new JSlider(JSlider.VERTICAL, 0, 3000, 500);
-				delaySlider.addChangeListener(new ChangeListener() {
-					public void stateChanged(ChangeEvent arg0) {
-						int val = delaySlider.getValue();
-						delayF.set(Integer.toString(val));
-						delayLabel.setText(val + "ms");
-					}
-				});
-				
-				//Turn on labels at major tick marks.
-				delaySlider.setMajorTickSpacing(500);
-				delaySlider.setMinorTickSpacing(100);
-				delaySlider.setPaintTicks(true);
-				delaySlider.setPaintLabels(true);
-				Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
-				labelTable.put(new Integer(0), new JLabel("Fast") );
-				labelTable.put(new Integer(3000), new JLabel("Slow"));
-				delaySlider.setLabelTable(labelTable);
-				c.gridheight = 40;
-				c.gridy = 2;
-				c.ipady = 40;
-				c.weighty = 0.1;
-				sliderPanel.add(delaySlider, c);
-				
-				JFrame jungDiagramFrame = new JFrame();
-				jungDiagramFrame.setTitle("Jung Simulation");
-				jungDiagramFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				jungDiagramFrame.add(sliderPanel, java.awt.BorderLayout.EAST);
-				jungDiagramFrame.add(vv);
-				jungDiagramFrame.pack();
-				jungDiagramFrame.setVisible(true);
-				int lastDay = jungStorage.get(jungStorage.size() - 1).getDay();
-				pauseButton.allowPause();
-				status.setText("Displaying simulation...");
-				for(JungStorage storage : jungStorage){
-					final JungStorage storageF = storage;
-					final ArrayList<Person> vaccPeople = storageF.getVaccPeople();
-					final ArrayList<Person> sickPeople = storageF.getSickPeople();
-					pauseButton.allowPause();
-					//System.out.println("Next step...");
-					Thread.sleep(1000);
-					Transformer<Person, Paint> recolorVertices = new Transformer<Person,Paint>() {
-						public Paint transform(Person p) {
-							if(vaccPeople.contains(p)){
-								return Color.BLUE;
-							}
-							if(sickPeople.contains(p)){
-								return Color.RED;
-							}
-							return Color.GREEN;
-						}
-					};
-					pauseButton.allowPause();
-					vv.getRenderContext().setVertexFillPaintTransformer(recolorVertices);
-					pauseButton.allowPause();
-					jungDiagramFrame.repaint();
-					pauseButton.allowPause();
-					jungDiagramFrame.setTitle("Simulation Day: " + storage.getDay() + " out of " + lastDay);
-					//System.out.println("Next step...");
-					pauseButton.allowPause();
-					Thread.sleep(Integer.parseInt(delayF.get()));
-					pauseButton.allowPause();
-				}
-				
-				pauseButton.disable();
+		}
+		
+		//JUNG
+		if (drawJung) {
+			status.setText("Drawing Jung Diagram...");
+			//System.out.println("Ready to draw jung.");
+			Thread.sleep(1000);
+			if(modelTownSim){
+				people = new ModelTown(networkType,  minFriends,  maxFriends,  hubNumber, random).getPeople();
 			}
+			else{
+				people = methods.getPeople(numPeople);
+			}
+			if (networkType.equals("Small World")) {
+				methods.befriendSmallWorld(people, minFriends, maxFriends, random, hubNumber);
+			}
+			else if (networkType.equals("Random")) {
+				methods.befriendRandom(people, minFriends, maxFriends, random, hubNumber);
+			}
+			else if (networkType.equals("Scale-Free")) {
+				methods.befriendScaleFree(people, minFriends, maxFriends, random);
+			}
+			else {
+				JOptionPane.showMessageDialog(new JFrame(), "ERROR: Network selection error. Shutting down program..." + networkType, "Input Error", JOptionPane.ERROR_MESSAGE);
+				//System.exit(0);
+			}
+			//ArrayList<Person> infected = methods.infectRandom(people, initiallySickI);
+			//ArrayList<Person> vaccinnated = methods.vaccRandom(people, initiallyVaccI);
+			//ArrayList<Person> teens = methods.getAndSetTeenagers(people, percentTeensI);
+
+			ArrayList<Person> teenagers = methods.getAndSetTeenagers(people, percentTeens);
+
+			methods.infectRandom(people, initiallySick);
+			methods.vaccRandom(people, initiallyVacc);
+			
+			ArrayList<JungStorage> jungStorage = methods.simulate(people, teenagers, getWellDays, initiallySick,  initiallyVacc, discovery, newGetWellDays, percentSick, getVac, curfewDays, 1, percentCurfew, false, modelTownSim).getJungStorage();
+			
+			// Creating the graph, vertices and jungDiagramFrame
+			UndirectedSparseMultigraph<Person, String> graph = new UndirectedSparseMultigraph<Person, String>();
+			methods.drawVerticies(graph, people);
+
+			// Create vv and layout
+			int xDim = 1000;
+			int yDim = 600;
+			//String layoutString = "Circle";
+			//LAYOUT STUFF THAT SHOULD WORK BUT PROBABLY WON"T
+			Layout<Person, String> layout = methods.chooseLayout(graph, layoutString);
+			layout.setSize(new Dimension(xDim, yDim));
+			VisualizationViewer<Person, String> vv = new VisualizationViewer<Person, String>(layout);
+			vv.setPreferredSize(new Dimension(xDim + 50, yDim + 50));
+			vv.getRenderContext().setVertexLabelTransformer(Person.labelByID);//Makes Labels on Vertices/
+			vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);
+
+		    // Graph Mouse
+			DefaultModalGraphMouse<Object, Object> mouse = new DefaultModalGraphMouse<Object, Object>();
+			mouse.setMode(ModalGraphMouse.Mode.PICKING);
+			vv.addKeyListener(mouse.getModeKeyListener());
+			vv.setGraphMouse(mouse);
+			//DrawJung
+			methods.drawJung(graph, vv, people);
+			
+			JPanel sliderPanel = new JPanel(new GridBagLayout());
+			panel.setMinimumSize(new Dimension(100, 100));
+			panel.setPreferredSize(new Dimension(100, 100));
+			GridBagConstraints c = new GridBagConstraints();
+			c.fill = GridBagConstraints.BOTH;
+			c.anchor = GridBagConstraints.CENTER;
+			c.ipadx = 1;
+			c.ipady = 5;
+			c.gridx = 0;
+			c.gridy = 0;
+			c.gridheight = 1;
+			c.weighty = 0;
+			PauseResume pauseButton = new PauseResume(sliderPanel, c);
+			c.gridy = 1;
+			final JLabel delayLabel = new JLabel("500ms");
+			sliderPanel.add(delayLabel, c);
+			final StringStorage delayF = new StringStorage(Integer.toString(500));
+			final JSlider delaySlider = new JSlider(JSlider.VERTICAL, 0, 3000, 500);
+			delaySlider.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent arg0) {
+					int val = delaySlider.getValue();
+					delayF.set(Integer.toString(val));
+					delayLabel.setText(val + "ms");
+				}
+			});
+			
+			//Turn on labels at major tick marks.
+			delaySlider.setMajorTickSpacing(500);
+			delaySlider.setMinorTickSpacing(100);
+			delaySlider.setPaintTicks(true);
+			delaySlider.setPaintLabels(true);
+			Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+			labelTable.put(new Integer(0), new JLabel("Fast") );
+			labelTable.put(new Integer(3000), new JLabel("Slow"));
+			delaySlider.setLabelTable(labelTable);
+			c.gridheight = 40;
+			c.gridy = 2;
+			c.ipady = 40;
+			c.weighty = 0.1;
+			sliderPanel.add(delaySlider, c);
+			
+			JFrame jungDiagramFrame = new JFrame();
+			jungDiagramFrame.setTitle("Jung Simulation");
+			jungDiagramFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			jungDiagramFrame.add(sliderPanel, java.awt.BorderLayout.EAST);
+			jungDiagramFrame.add(vv);
+			jungDiagramFrame.pack();
+			jungDiagramFrame.setVisible(true);
+			int lastDay = jungStorage.get(jungStorage.size() - 1).getDay();
+			pauseButton.allowPause();
+			status.setText("Displaying simulation...");
+			for(JungStorage storage : jungStorage){
+				final JungStorage storageF = storage;
+				final ArrayList<Person> vaccPeople = storageF.getVaccPeople();
+				final ArrayList<Person> sickPeople = storageF.getSickPeople();
+				pauseButton.allowPause();
+				//System.out.println("Next step...");
+				Thread.sleep(1000);
+				Transformer<Person, Paint> recolorVertices = new Transformer<Person,Paint>() {
+					public Paint transform(Person p) {
+						if(vaccPeople.contains(p)){
+							return Color.BLUE;
+						}
+						if(sickPeople.contains(p)){
+							return Color.RED;
+						}
+						return Color.GREEN;
+					}
+				};
+				pauseButton.allowPause();
+				vv.getRenderContext().setVertexFillPaintTransformer(recolorVertices);
+				pauseButton.allowPause();
+				jungDiagramFrame.repaint();
+				pauseButton.allowPause();
+				jungDiagramFrame.setTitle("Simulation Day: " + storage.getDay() + " out of " + lastDay);
+				//System.out.println("Next step...");
+				pauseButton.allowPause();
+				Thread.sleep(Integer.parseInt(delayF.get()));
+				pauseButton.allowPause();
+			}
+			
+			pauseButton.disable();
 		}
 
 		// Results spreadsheet

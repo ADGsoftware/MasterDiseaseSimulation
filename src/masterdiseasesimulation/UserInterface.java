@@ -1071,6 +1071,7 @@ public class UserInterface {
 		drawJung.setSelected(false);
 		String[] layoutChoices = {"Circle", "ISOM", "FR"};
 		final JComboBox comboBoxLayout = new JComboBox(layoutChoices);
+		comboBoxLayout.setEnabled(false);
 
 		JPanel drawJungPanel = new JPanel(new GridLayout(1, 2));
 		drawJungPanel.add(drawJung);
