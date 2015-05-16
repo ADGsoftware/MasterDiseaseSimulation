@@ -537,20 +537,20 @@ public class ManyLinesAverageObject {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
 		XYSeries numSick = new XYSeries("Sick People");
-		XYSeries totalSick = new XYSeries("Total Sick People");
-		XYSeries cost = new XYSeries("Cost");
-		XYSeries immune = new XYSeries("Immune");
+//		XYSeries totalSick = new XYSeries("Total Sick People");
+//		XYSeries cost = new XYSeries("Cost");
+//		XYSeries immune = new XYSeries("Immune");
 
 		dataset.addSeries(numSick);
-		dataset.addSeries(totalSick);
-		dataset.addSeries(cost);
-		dataset.addSeries(immune);
+//		dataset.addSeries(totalSick);
+//		dataset.addSeries(cost);
+//		dataset.addSeries(immune);
 
 		for (DayStat day : days) {
 			MoreMethods.addPoint(numSick, day.getDay(), day.getCurrentSick());
-			MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
-			MoreMethods.addPoint(cost, day.getDay(), day.getCost());
-			MoreMethods.addPoint(immune, day.getDay(), day.getImmune());
+//			MoreMethods.addPoint(totalSick, day.getDay(), day.getTotalSick());
+//			MoreMethods.addPoint(cost, day.getDay(), day.getCost());
+//			MoreMethods.addPoint(immune, day.getDay(), day.getImmune());
 		}
 
 		MoreMethods.makeChart(dataset, filePath[0] + "/" + fileName, "Average Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People (out of " + people.size() + ")");
@@ -567,36 +567,36 @@ public class ManyLinesAverageObject {
 			XYSeriesCollection dataset1 = new XYSeriesCollection();
 
 			XYSeries numSick1 = new XYSeries("Sick People" + j);
-			XYSeries totalSick1 = new XYSeries("Total Sick People" + j);
-			XYSeries cost1 = new XYSeries("Cost" + j);
-			XYSeries immune1 = new XYSeries("Total Immune People" + j);
+//			XYSeries totalSick1 = new XYSeries("Total Sick People" + j);
+//			XYSeries cost1 = new XYSeries("Cost" + j);
+//			XYSeries immune1 = new XYSeries("Total Immune People" + j);
 			//System.out.println("NewGraph!");
 			
 			dataset1.addSeries(numSick1);
-			dataset1.addSeries(totalSick1);
-			dataset1.addSeries(cost1);
-			dataset1.addSeries(immune1);
+//			dataset1.addSeries(totalSick1);
+//			dataset1.addSeries(cost1);
+//			dataset1.addSeries(immune1);
 			
 			datasetAverages.addSeries(numSick1);
-			datasetAverages.addSeries(totalSick1);
-			datasetAverages.addSeries(cost1);
-			datasetAverages.addSeries(immune1);
+//			datasetAverages.addSeries(totalSick1);
+//			datasetAverages.addSeries(cost1);
+//			datasetAverages.addSeries(immune1);
 			for(InfoStorage day : runtime){
-				if(day.getDay() <= 10){
+				//if(day.getDay() <= 10){
 					int i = runtime.indexOf(day);
 					//System.out.println("Day Number: " + i + ", of runtime " + j);
 					//System.out.println(day.getNumSick() + " Sick People");
 					//System.out.println(day.getTotalSick() + " TotalSick People");
 					MoreMethods.addPoint(numSick1, i, day.getNumSick());
-					MoreMethods.addPoint(totalSick1, i, day.getTotalSick());
-					MoreMethods.addPoint(cost1, i, day.getCost());
-					MoreMethods.addPoint(immune1, i, day.getImmune());
+//					MoreMethods.addPoint(totalSick1, i, day.getTotalSick());
+//					MoreMethods.addPoint(cost1, i, day.getCost());
+//					MoreMethods.addPoint(immune1, i, day.getImmune());
 					//System.out.println("NewPoint!");
-				}
+				//}
 			}
 			String newFileName = "notAveragedGraph used with: " + fileName + Integer.toString(j);
 			//System.out.println(newFileName);
-			MoreMethods.makeChart(dataset1, filePath[0] + "/" + Integer.toString(j), "non - Averaged Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
+			//MoreMethods.makeChart(dataset1, filePath[0] + "/" + Integer.toString(j), "non - Averaged Number of Sick People (" + runTimes + " runs) - " + networkSelectString + " Network", "Days", "Infected People");
 			//XYSeriesCollection datasetPlaceHolder = new XYSeriesCollection();
 			//dataset1 = datasetPlaceHolder;
 		}

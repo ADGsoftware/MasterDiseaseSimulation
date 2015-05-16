@@ -1,5 +1,6 @@
 package moremethods;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.GridLayout;
@@ -33,7 +34,9 @@ import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -1336,10 +1339,16 @@ public class MoreMethods {
 
 	public static File makeChart(XYSeriesCollection dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
 		JFreeChart lineChartObject = ChartFactory.createXYLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
+		
+		XYPlot plot = (XYPlot) lineChartObject.getPlot();		
+		int seriesCount = plot.getSeriesCount();
 
-
-		int width = 1920;
-		int height = 1440;
+		for (int i = 0; i < seriesCount; i++) {
+		   plot.getRenderer().setSeriesStroke(i, new BasicStroke(10));
+		}
+		
+		int width = 960;
+		int height = 720;
 		File lineChart = new File(filename + ".png");
 		ChartUtilities.saveChartAsPNG(lineChart, lineChartObject, width, height);
 

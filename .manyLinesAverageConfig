@@ -1,0 +1,17 @@
+numPeople`25614
+minFriends`3
+maxFriends`7
+hubNumber`0
+networkSelectString`Scale-Free
+drawJung`false
+dofWF`false
+layoutString`Circle
+getWellDays`10
+percentSick`10
+getVac`10
+percentTeenagers`0
+percentCurfewed`20
+curfewDays`50
+runTimes`100
+filePath`/Users/student/Documents/workspaceNew/MasterDiseaseSimulation/Vac5
+fileName`simResults
