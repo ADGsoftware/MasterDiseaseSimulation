@@ -19,7 +19,9 @@ import org.apache.commons.collections15.Transformer;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -1040,8 +1042,12 @@ public class MoreMethods {
 
 	public static File makeChart(DefaultCategoryDataset dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
 		JFreeChart lineChartObject = ChartFactory.createLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
-
-
+		CategoryPlot plot = lineChartObject.getCategoryPlot();
+		int lineWidth = 5;
+		plot.getRenderer().setSeriesStroke(0, new BasicStroke(lineWidth));
+		plot.getRenderer().setSeriesStroke(1, new BasicStroke(lineWidth));
+		plot.getRenderer().setSeriesStroke(2, new BasicStroke(lineWidth));
+		
 		int width = 640;
 		int height = 480;
 		File lineChart = new File(filename + ".png");
@@ -1052,8 +1058,12 @@ public class MoreMethods {
 
 	public static File makeChart(XYSeriesCollection dataset, String filename, String title, String xAxis, String yAxis) throws IOException {
 		JFreeChart lineChartObject = ChartFactory.createXYLineChart(title, xAxis, yAxis, dataset, PlotOrientation.VERTICAL, true, true, false);
-
-
+		CategoryPlot plot = lineChartObject.getCategoryPlot();
+		int lineWidth = 5;
+		plot.getRenderer().setSeriesStroke(0, new BasicStroke(lineWidth));
+		plot.getRenderer().setSeriesStroke(1, new BasicStroke(lineWidth));
+		plot.getRenderer().setSeriesStroke(2, new BasicStroke(lineWidth));
+		
 		int width = 640;
 		int height = 480;
 		File lineChart = new File(filename + ".png");

@@ -2,17 +2,21 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/collections-generic-4.01.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/hamcrest-core-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jcommon-1.0.23.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jfreechart-1.0.19-experimental.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jfreechart-1.0.19.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jfreesvg-2.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-algorithms-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-api-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-graph-impl-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jung-visualization-2.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/junit-4.11.jar"/>
-	<classpathentry kind="lib" path="/Users/student/Dropbox/Research Project/Packages/USED PACKAGES/jxl.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/collections-generic-4.01.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/hamcrest-core-1.3.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/javax.mail-1.5.2.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/javax.mail-api-1.5.2.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/javax.mail.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jfreesvg-2.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jung-algorithms-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jung-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jung-graph-impl-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jung-visualization-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/junit-4.11.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/jxl.jar"/>
+	<classpathentry kind="lib" path="/Users/Albert/Documents/workspace/MasterDiseaseSimulation/jars/opencsv-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
